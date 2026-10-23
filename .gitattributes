@@ -1,0 +1,13 @@
+# Keep source and documentation stable across Windows, macOS, and Linux.
+* text=auto eol=lf
+
+# Binary assets must never be line-ending normalized.
+*.dll -text
+*.exe -text
+*.ico -text
+*.icns -text
+*.mp3 -text
+*.ogg -text
+*.png -text
+*.tex -text
+*.mesh -text
