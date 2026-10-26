@@ -230,7 +230,7 @@ wheels = [
 
 [[package]]
 name = "fleasion"
-version = "1.0.0b12"
+version = "1.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "browser-cookie3", marker = "sys_platform == 'darwin' or sys_platform == 'linux'" },

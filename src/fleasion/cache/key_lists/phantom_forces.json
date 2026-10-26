@@ -1,0 +1,5019 @@
+{
+ "version": 1,
+ "assets": {
+  "287062939": [
+   {
+    "key": "94fdd280bca894856b9ce3b2c41f00f0",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / hitmarker"
+   }
+  ],
+  "898398768": [
+   {
+    "key": "1a42797473165ddf7b1443a56effd7af",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / headshotkill"
+   }
+  ],
+  "898398730": [
+   {
+    "key": "5930997e6c860c5e0fb2482f5f1122d0",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / killshot"
+   }
+  ],
+  "898398743": [
+   {
+    "key": "34250e1ae1630aaaacd438825d0dfa7e",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / killshot"
+   }
+  ],
+  "898398785": [
+   {
+    "key": "8d212634d2982ef4e3e925f477b37315",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / headshotkill"
+   }
+  ],
+  "898398795": [
+   {
+    "key": "a97b89354e163077a8af88ac1ca06735",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / headshotkill"
+   }
+  ],
+  "898398809": [
+   {
+    "key": "fba1fa964427243cfb12e173b41831d8",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / headshotkill"
+   }
+  ],
+  "898398817": [
+   {
+    "key": "7d4d5e51d55f351cbb780aaff38dbd44",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / headshotkill"
+   }
+  ],
+  "898398837": [
+   {
+    "key": "643abeb5aa2342ebe3aa3a5aff991b4c",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / headshotkill"
+   }
+  ],
+  "342423812": [
+   {
+    "key": "005c9b729eb244bc711ed37f660dce40",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / metalshell"
+   }
+  ],
+  "342423826": [
+   {
+    "key": "37388d87dfad441a8a724e3fd0014b34",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / metalshell"
+   }
+  ],
+  "342423844": [
+   {
+    "key": "724ead8734d3abccbe07b8ed07aef603",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / metalshell"
+   }
+  ],
+  "342423860": [
+   {
+    "key": "e35d94e4f94c0548ceec56fd13fea4b8",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / metalshell"
+   }
+  ],
+  "342423873": [
+   {
+    "key": "413dba37e9b58c905eaab044b762e4a5",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / shotgunshell"
+   }
+  ],
+  "342423885": [
+   {
+    "key": "88426942d2fbed2ac2410067f2212f90",
+    "kind": ".ogg",
+    "name": "Sounds / Hit Sounds / shotgunshell"
+   }
+  ],
+  "133516371859543": [
+   {
+    "key": "af94ead4ff73d76d458575e7b2a813a8",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AEK-971 / DEFAULT"
+   }
+  ],
+  "17641130148": [
+   {
+    "key": "65f9c3249532e459257368df264cbb60",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-103 / DEFAULT"
+   }
+  ],
+  "16075127461": [
+   {
+    "key": "2436bcd3794728b4806cb1a51f125658",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-12"
+   }
+  ],
+  "72380614839121": [
+   {
+    "key": "94e8c4cdb230972f81ca19c937c466a9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-12M"
+   }
+  ],
+  "96906485318163": [
+   {
+    "key": "d4ce4caf7147b11e303b5bdf381113ba",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-15"
+   }
+  ],
+  "130525871224619": [
+   {
+    "key": "a08bfdaef3b78332ffdfc8e814833d29",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-19 / DEFAULT"
+   }
+  ],
+  "17602206900": [
+   {
+    "key": "b31b1358b47b0ef3e4dfd1d2e1f85cca",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-47"
+   }
+  ],
+  "17641130928": [
+   {
+    "key": "bc85fc8e58fa9a151395dcc063cf912f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-74"
+   }
+  ],
+  "17641132046": [
+   {
+    "key": "1b847633f9ee8fa69e3ce631786be2f3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AKM / DEFAULT"
+   }
+  ],
+  "136364749371284": [
+   {
+    "key": "f3c809682d70513b5d8c884378c76231",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AN-94 / DEFAULT"
+   }
+  ],
+  "16075134535": [
+   {
+    "key": "5947c9ea8d163e5dd5c8b06b43da53cf",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / SR-3M / Vikhr Suppressor"
+   }
+  ],
+  "16075135523": [
+   {
+    "key": "b3b26bd7c956c238d77542db51388726",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / C7A2 / DEFAULT"
+   }
+  ],
+  "16075135165": [
+   {
+    "key": "62e4f20bca88b43f992cfc2126bb8807",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / FAMAS F1 + Sounds / PRIMARY / ASSAULT RIFLE / FAMAS G2"
+   }
+  ],
+  "137686818026616": [
+   {
+    "key": "44e32eac538fc635bef86a4469c44cb9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / F90 MBR"
+   }
+  ],
+  "17353531353": [
+   {
+    "key": "0eeba4cccaf531162b2a97c1163bbcfa",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / GERAT 90"
+   }
+  ],
+  "86215296083702": [
+   {
+    "key": "701ff35aa032be4fc59271f583a7e7e9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / IA2 AR"
+   }
+  ],
+  "16541359547": [
+   {
+    "key": "70fa590c5fcd26dc44f0b7c0f4453828",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / K1A / DEFAULT"
+   }
+  ],
+  "16075132271": [
+   {
+    "key": "0ce60a9b5d7e4b33311a631a417a6f36",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / L22A2 / DEFAULT"
+   }
+  ],
+  "649184310": [
+   {
+    "key": "a7c6ff683e9e5879d0d3d9f79e328aba",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / L86A2 LSW / SA80 .22 LR"
+   }
+  ],
+  "132262893891624": [
+   {
+    "key": "9bd46e8675664e77841639317b0ef398",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / L85A3 / DEFAULT"
+   }
+  ],
+  "99345281811573": [
+   {
+    "key": "8f7d59f8c16af99d9fa75ee025e7025c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / MAC-15 / DEFAULT"
+   }
+  ],
+  "10661221469": [
+   {
+    "key": "09c4f45365a0b8e51316cd939ae5fcc1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / M16A1"
+   }
+  ],
+  "16075129011": [
+   {
+    "key": "b3b62967ecdc35efd3304e3fe4026993",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / M16A3 + Sounds / PRIMARY / ASSAULT RIFLE / M16A4"
+   }
+  ],
+  "16075130491": [
+   {
+    "key": "a5b683b3bc222bbd78be229d5de9f3d2",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / M231"
+   }
+  ],
+  "125120182502765": [
+   {
+    "key": "cf30843ce4dfd1d58219029e763e61d9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / M38A5"
+   }
+  ],
+  "139650941": [
+   {
+    "key": "698f35b13527d1f10d65fd3b83e86c14",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / M41A / DEFAULT"
+   }
+  ],
+  "16075129748": [
+   {
+    "key": "f94ac34925e7c18c6571999e85bb1f0b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / MK16 SOCOM / DEFAULT"
+   }
+  ],
+  "127238187361320": [
+   {
+    "key": "29717b4d89d7740c08a67464406810f9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / QBZ-95"
+   }
+  ],
+  "84426766948260": [
+   {
+    "key": "f08ff181fe1e4fe8cd649f699d274fe2",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / QBZ-97A"
+   }
+  ],
+  "125219258359288": [
+   {
+    "key": "97683cc0ed62db7733005d2f68b96605",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / SPEAR LT"
+   }
+  ],
+  "15548676127": [
+   {
+    "key": "8010abf101eaa88e0328b7d541086220",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / STG-44"
+   }
+  ],
+  "16075134155": [
+   {
+    "key": "09966779fa7e480573e146308ebf4233",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / STG-527"
+   }
+  ],
+  "16075127693": [
+   {
+    "key": "56eca808a204730acd1eaee35868d096",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / X95R"
+   }
+  ],
+  "15685934472": [
+   {
+    "key": "a73dcf900afcadd512d473e7896f15a0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / TYPE 20 / DEFAULT"
+   }
+  ],
+  "17641125514": [
+   {
+    "key": "36f36791228709bba8af9e8f4ea394ec",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / TYPE 88 / DEFAULT"
+   }
+  ],
+  "16075125338": [
+   {
+    "key": "8fa00bf54cd2b55dcd48fb958627c80f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / UAR A3 PARA"
+   }
+  ],
+  "107515274382191": [
+   {
+    "key": "88c3a41abdce434f90a4b01f28889567",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / VHS-D2"
+   }
+  ],
+  "88786881927780": [
+   {
+    "key": "ad659538f27489a10ff99d853663fd5b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / VZ.806 / DEFAULT"
+   }
+  ],
+  "111235738431634": [
+   {
+    "key": "ef3cd3188f628aabf1da35572cf8b09e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / VZ.808 / DEFAULT"
+   }
+  ],
+  "140183840329940": [
+   {
+    "key": "345f149d049f85be9c615d1723842365",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / XM-ACR"
+   }
+  ],
+  "126464829582837": [
+   {
+    "key": "f079ad44cf8522312062ad22070e214f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / AK-308"
+   }
+  ],
+  "16075138319": [
+   {
+    "key": "7c8ea23e5e6a859210daaf82d6d592d0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / BELERON ECR"
+   }
+  ],
+  "79971257421538": [
+   {
+    "key": "682b6f1335134aac50ce09c85e7326df",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / DOOMBOX "
+   }
+  ],
+  "1994296766": [
+   {
+    "key": "0938011dcc2d60ac92c327d5f831e72f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / FAL PARA SHORTY"
+   }
+  ],
+  "17286165583": [
+   {
+    "key": "4376499f38d59bc37f868c8b10c7abcf",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / GUSTAV 66"
+   }
+  ],
+  "14953333758": [
+   {
+    "key": "f4475a5893dbe916cd905f6f9be67f01",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / HCAR"
+   }
+  ],
+  "16075136171": [
+   {
+    "key": "64093c487f966f5d1ad1d246f654a3a7",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / HENRY 45-70"
+   }
+  ],
+  "140608936370811": [
+   {
+    "key": "fef7c17ddef10840f54c3accb7ba74a5",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / IA2 BR"
+   }
+  ],
+  "16075138809": [
+   {
+    "key": "cd76f5bde3935ce8b31a864412b3aad6",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / M14"
+   }
+  ],
+  "135306327429253": [
+   {
+    "key": "c941c01f91b9e985d64dc4111b96cb7c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / RM 277"
+   }
+  ],
+  "71123885686095": [
+   {
+    "key": "e9d2bf778ecc13d07e5a963695e7f3a3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / MK17 ULTRALIGHT"
+   }
+  ],
+  "122577844167289": [
+   {
+    "key": "ccdc35f44ea04178f41a7dec385ab833",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / M7 NGSW / DEFAULT"
+   }
+  ],
+  "16075138391": [
+   {
+    "key": "a8ea891f3a3d79dac972ccbcee860311",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / MK16 SOCOM CQB / MK17 SOCOM CQB"
+   }
+  ],
+  "16076219756": [
+   {
+    "key": "9698b1e4efb19127e32e75afb119c8a3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / SHAK-12 / DEFAULT"
+   }
+  ],
+  "18998556378": [
+   {
+    "key": "802598e1edfd726ee14fc80d15019aac",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / STG-528"
+   }
+  ],
+  "10634165112": [
+   {
+    "key": "92ee0a657c149eaba9a9de7a03004575",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / STG-59H / DEFAULT"
+   }
+  ],
+  "78160848265873": [
+   {
+    "key": "7ece95160b959ac9c125994f01fead3c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / VZ.806 PPS"
+   }
+  ],
+  "16075140347": [
+   {
+    "key": "15008675fce72c1c3a49d56e44945b50",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / 1858 NEW ARMY"
+   }
+  ],
+  "130045370919248": [
+   {
+    "key": "a8631328abc92f6afe8389c178fb552c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AEK-973S"
+   }
+  ],
+  "17663399383": [
+   {
+    "key": "4140740b203670da605183156d1cfd86",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AK-105 / DEFAULT"
+   }
+  ],
+  "16075139878": [
+   {
+    "key": "9903466c3484288b1b6a228af52f9172",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AK-12U / DEFAULT"
+   }
+  ],
+  "16075141534": [
+   {
+    "key": "e428233aa1b26e8248d6fe5661b1778d",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AK-9 / DEFAULT"
+   }
+  ],
+  "132885483989237": [
+   {
+    "key": "b36fbe3a3b14c0c9ba3da99f6492cbf8",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / C25"
+   }
+  ],
+  "14773344256": [
+   {
+    "key": "45fa5e9f21bc34277d990813da400ed3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / C8A2"
+   }
+  ],
+  "9805582738": [
+   {
+    "key": "e63f073d4b0135c6c9c28b779af7d4a6",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / CAN CANNON"
+   }
+  ],
+  "96232949143296": [
+   {
+    "key": "49253b27fa0ac5e300b442dac325b103",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / EF88"
+   }
+  ],
+  "17641119108": [
+   {
+    "key": "ff50e840352bed51dad597bca54d9924",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / GROZA-1 / DEFAULT"
+   }
+  ],
+  "16075140265": [
+   {
+    "key": "e01ba5e64e66087920d51722e46829f6",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / GROZA-4"
+   }
+  ],
+  "10223145931": [
+   {
+    "key": "1aee87d0d0a750a4daa8049991620b1a",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GYROJET MARK I"
+   }
+  ],
+  "14057273065": [
+   {
+    "key": "299da59dcfe3f2a2aa53dbb0a22bd3da",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / HONEY BADGER / DEFAULT + Sounds / PRIMARY / CARBINE / SALTY WEASLE"
+   }
+  ],
+  "9715057591": [
+   {
+    "key": "62933de0be0a55c6191b5d3bc2059d35",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / JUAN"
+   }
+  ],
+  "174295284": [
+   {
+    "key": "1dc81cab9bf452380f05bde76ac8b4b6",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / JUDGE"
+   }
+  ],
+  "17286166253": [
+   {
+    "key": "89265b0180dcd6aeb3a9da2b882cf237",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / KAC SRR"
+   }
+  ],
+  "16075141380": [
+   {
+    "key": "432c3193801ae38bce0e04735ca5f34e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / M4 + Sounds / PRIMARY / CARBINE / M4A1"
+   }
+  ],
+  "16075142450": [
+   {
+    "key": "1860e85f1ff4666d87f440b82501a062",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / LMG BLING / DEFAULT"
+   }
+  ],
+  "88083046833402": [
+   {
+    "key": "2559b48e806dafaf384b14e31ab05ece",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / MINI FIX / DEFAULT"
+   }
+  ],
+  "95861431416829": [
+   {
+    "key": "d1c066a4c849cb1dc37ff21708fac5af",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / MK16 SOCOM SC / DEFAULT"
+   }
+  ],
+  "16075140110": [
+   {
+    "key": "67d24c8e22ec6a9e99e9018bbfe2dd6f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / MK16 SOCOM CQB / DEFAULT"
+   }
+  ],
+  "102178239466150": [
+   {
+    "key": "509c9bebd9429ffc7d8091b53f273f06",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / RSH-12 / DEFAULT"
+   }
+  ],
+  "9318182121": [
+   {
+    "key": "424895178edfdd54631ebb9cf173097e",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / PP-2000"
+   }
+  ],
+  "89257720427533": [
+   {
+    "key": "face533b363f51efd02e418e4645cf21",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / PKP PECHENEG / DEFAULT"
+   }
+  ],
+  "83252361639763": [
+   {
+    "key": "e9044d4533d0cf52fd2be8a6593a23e8",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / PDC-45"
+   }
+  ],
+  "112559250451577": [
+   {
+    "key": "332aa9aea8939e5f6951d65aa7fd0734",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / SA58 OSW"
+   }
+  ],
+  "16075141599": [
+   {
+    "key": "d31c430d4016f2cb0b545d7efac7d0b4",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / VSS VINTOREZ / VSS 762 Conv"
+   }
+  ],
+  "85130407063434": [
+   {
+    "key": "8205b64b23197af2913d4001f01656ef",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / STG-448"
+   }
+  ],
+  "16075141468": [
+   {
+    "key": "fbbd45a7e98dcab33cc954f2f4d33175",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / STG-89C / DEFAULT"
+   }
+  ],
+  "116741780353536": [
+   {
+    "key": "2fc33703d72c848ef84cdf9f507981f8",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / UAR A3 / DEFAULT"
+   }
+  ],
+  "133574669329887": [
+   {
+    "key": "9361322258ef46eb63a461b3632c69de",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / RATTLER"
+   }
+  ],
+  "16075143837": [
+   {
+    "key": "6eebe4c6942613603e486d51af82521b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / BELERON TCR"
+   }
+  ],
+  "16075144013": [
+   {
+    "key": "b7816130d008273b37903b57ce26e745",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / JG-90"
+   }
+  ],
+  "16075142539": [
+   {
+    "key": "d1d384bacc3f73a7a3010eea96fcf16b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / M21"
+   }
+  ],
+  "130327434899933": [
+   {
+    "key": "d476ae9f10894c82c777cf40e05fdcab",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / M28 GDMR"
+   }
+  ],
+  "9884629368": [
+   {
+    "key": "7fb9eda7dc2ab8c4d8f07885e3993b0e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / MK11 / DEFAULT"
+   }
+  ],
+  "84063148292242": [
+   {
+    "key": "9981768b567f2d8084bd1de929e08823",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / MK12 SPR"
+   }
+  ],
+  "9608734973": [
+   {
+    "key": "65748b77bcaaefcbda00f6de1f060010",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / MK20 SSR"
+   }
+  ],
+  "128514727476738": [
+   {
+    "key": "4a21ea95949d906d722c987142917dd9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / QBU-88"
+   }
+  ],
+  "85263658992614": [
+   {
+    "key": "f21e33a74fbee16715594b3a7d5c5ccf",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / RCS-10/22"
+   }
+  ],
+  "125447900947863": [
+   {
+    "key": "88d1a2bd75e7361914654dcabe321bc1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / REGULATOR"
+   }
+  ],
+  "130940678877691": [
+   {
+    "key": "67847b51b259161907e3d47f3d98959d",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / SA58 SPR"
+   }
+  ],
+  "138788351108723": [
+   {
+    "key": "592407267345eaed77e915fa810e7adf",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / SAIGA SAR / DEFAULT"
+   }
+  ],
+  "16075142638": [
+   {
+    "key": "d82fb322896984672e75ff8dd3814981",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / SKS"
+   }
+  ],
+  "116215047304534": [
+   {
+    "key": "ba8d286f3dc9f932594f8225377da044",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / SVK-12 / DEFAULT"
+   }
+  ],
+  "116025147552242": [
+   {
+    "key": "bd02267e6bf6a430c4af4a7780927d35",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / UAR A3M2"
+   }
+  ],
+  "16075144150": [
+   {
+    "key": "c2e914c8623a9931f59df8edbefdfeb4",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / VSS VINTOREZ / DEFAULT"
+   }
+  ],
+  "140357772905535": [
+   {
+    "key": "abb65da83d0624d6eb37867008b861aa",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / AEK-999"
+   }
+  ],
+  "16075137959": [
+   {
+    "key": "72cd95ca93d32251d51f4ad3906d848a",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / AK-12BR"
+   }
+  ],
+  "13541268422": [
+   {
+    "key": "a42dc29714e4fff33437a205f9258af4",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / ChainSAW + Sounds / PRIMARY / LMG / JUGGUN + Sounds / PRIMARY / LMG / STONER 96"
+   }
+  ],
+  "92409444763779": [
+   {
+    "key": "93865f4b9c716597ab9fe4d0f1d561f0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / FALO 50.41"
+   }
+  ],
+  "10972840437": [
+   {
+    "key": "d5e4c83a860064956cde991f902884ef",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / HAMR IAR / DEFAULT"
+   }
+  ],
+  "13540609737": [
+   {
+    "key": "31c272ffb0c455004d035121c7877955",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / HORNET + Sounds / PRIMARY / LMG / MGV-176"
+   }
+  ],
+  "120390086460620": [
+   {
+    "key": "6dde1d3922d2a7ae3b5766b2f4da9ecc",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / KORD-R"
+   }
+  ],
+  "16075148728": [
+   {
+    "key": "6f25d81ff8aad30370468942220e14e3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / L86A2 LSW / DEFAULT"
+   }
+  ],
+  "9863722067": [
+   {
+    "key": "d6cdb6a74027d8daaa084c57e60fa1d9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / LSV M/04"
+   }
+  ],
+  "14953333043": [
+   {
+    "key": "655283191e3da07457436f1317bd64e1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / M1918A2"
+   }
+  ],
+  "139956715152920": [
+   {
+    "key": "9553caccc20c4d9f323f5f8f9289e56f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / M249 SAW"
+   }
+  ],
+  "94710438614714": [
+   {
+    "key": "079744c99d15bedf78bfb12beebc3f66",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / M27 IAR"
+   }
+  ],
+  "85789586022651": [
+   {
+    "key": "495df533c5958a71908eef8e1828d59f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / M60E6 / DEFAULT"
+   }
+  ],
+  "9690610405": [
+   {
+    "key": "d7833771e352e658293ecc864a535216",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / MG3KWS"
+   }
+  ],
+  "6343876894": [
+   {
+    "key": "71b915aa119300a15cca6f66754a8c03",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / MG42"
+   }
+  ],
+  "17353523008": [
+   {
+    "key": "aca6e7ed94940966268e3d28d885b41f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / MG80"
+   }
+  ],
+  "137143667469930": [
+   {
+    "key": "8c50b0d13fc99aac6b30e6ef25560b16",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / PKM"
+   }
+  ],
+  "121576482132283": [
+   {
+    "key": "6923acff7201840e5643a446ccd4bbbb",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / PKP PECHENEG / SHORT BARREL"
+   }
+  ],
+  "121719251992638": [
+   {
+    "key": "c77cd2c0f08428b3c83e8cc822eed8c0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / REAPR-338"
+   }
+  ],
+  "72005927783779": [
+   {
+    "key": "cc6c8101878de927a3cd3c99492f8281",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / QJB-95 LSW"
+   }
+  ],
+  "16075146918": [
+   {
+    "key": "a69e1d8b948bab2dd9ec608b8050adf0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / RPK"
+   }
+  ],
+  "16075147159": [
+   {
+    "key": "a0385e42e508ec20bb02dba330389349",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / RPK-12"
+   }
+  ],
+  "110236675347398": [
+   {
+    "key": "8cd8723684daed566ec7c04a5e7f382e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / RPK-16"
+   }
+  ],
+  "16075148535": [
+   {
+    "key": "de33f3bdfdb7ffb8fc320b68f00c4331",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / RPK-74"
+   }
+  ],
+  "17641122840": [
+   {
+    "key": "171e377bf8c722873ac6fb389d8311c1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / AKS-74U / DEFAULT"
+   }
+  ],
+  "16075144842": [
+   {
+    "key": "dd8d60bcb273bacf85d1dbf075aa91be",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / G17 + Sounds / SECONDARY / PISTOLS / ZIP 22"
+   }
+  ],
+  "13540609649": [
+   {
+    "key": "1a351fbbff22f37210aee1528c597bec",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / M17"
+   }
+  ],
+  "70896404265084": [
+   {
+    "key": "edc616bd803e91ed1af7726de068ce20",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / FAMAS COMMANDO"
+   }
+  ],
+  "17286162019": [
+   {
+    "key": "cd6ce7d9c68b03ce0305cd0ec936f26a",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / FIVE-0 / DEFAULT"
+   }
+  ],
+  "105323865822334": [
+   {
+    "key": "4f5b977c986854eccf7d70ae8d468911",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / IA2 SMG"
+   }
+  ],
+  "16075154790": [
+   {
+    "key": "6fd1623235b5ef9b314ca5f902d70bad",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / K7 / DEFAULT"
+   }
+  ],
+  "16075152091": [
+   {
+    "key": "12278878c8baadb75154330e13402a9e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / L2A3"
+   }
+  ],
+  "102333295501841": [
+   {
+    "key": "5cbb9574ab427343d7e5a25715d9892e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / LUTY / DEFFAULT"
+   }
+  ],
+  "131385316146612": [
+   {
+    "key": "9b22a82a1bca4a99d966023642459355",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / M3A1 / DEFAULT"
+   }
+  ],
+  "16075154516": [
+   {
+    "key": "1dc4b128e9b52eb3df1a8c231fb8802c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / MAC10 / DEFAULT"
+   }
+  ],
+  "81426178522956": [
+   {
+    "key": "212d1c6c5d7f02eeab94ea981f674a64",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / MAC-31"
+   }
+  ],
+  "16075145504": [
+   {
+    "key": "85694a9907fc8c425597741647447f60",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / TEC-9"
+   }
+  ],
+  "16075151861": [
+   {
+    "key": "dff96a3dff822dc09a4e2df5e548cf37",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / MP40"
+   }
+  ],
+  "17286160893": [
+   {
+    "key": "09076c44b0cc0a82a1c16fd3d4da744f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / P90"
+   }
+  ],
+  "6342509471": [
+   {
+    "key": "2015d3896ed272bc490e9bd5bbf40df1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / PDX-45"
+   }
+  ],
+  "17286115321": [
+   {
+    "key": "0aca29dc747dcf4e6a288e5d2c2ac07c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / PP-19 BIZON"
+   }
+  ],
+  "16075154674": [
+   {
+    "key": "b4d967ee7dbb03418dbcd40087b81354",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / PPSH-41"
+   }
+  ],
+  "6253488888": [
+   {
+    "key": "f818d3d72d2fdabc98c227aaa732f78c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / RAMA 1130"
+   }
+  ],
+  "9864280124": [
+   {
+    "key": "f96a1c0ebad03d1415a46ec8e7bb8cb6",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / SMG 633"
+   }
+  ],
+  "16075151380": [
+   {
+    "key": "f2ad3ee2e339ca6e0bc7c6b9875b2031",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / SMX-10"
+   }
+  ],
+  "16075151751": [
+   {
+    "key": "2fe703948594e4141e349da6a5b5b54b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / SMX-9 + Sounds / PRIMARY / PDW / SMX-9K"
+   }
+  ],
+  "16075154921": [
+   {
+    "key": "07840b7b321c1b82d64ba36ecca96b65",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / SMX-9/10"
+   }
+  ],
+  "16075154071": [
+   {
+    "key": "3ab4766766b4e0d8c0e763ad5fdf8810",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / SMX-9SD"
+   }
+  ],
+  "85773849034946": [
+   {
+    "key": "62c6a64ef65d5bb9bd8ad21e1ded7434",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / STG-527C"
+   }
+  ],
+  "16075150705": [
+   {
+    "key": "40145d87ccb9abd925ce7e22e7ffae75",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / TOMMY GUN"
+   }
+  ],
+  "18625401832": [
+   {
+    "key": "33fd0dc4735d129acde23ed94b2d6a75",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / TYPEWRITER"
+   }
+  ],
+  "16075145292": [
+   {
+    "key": "58047419f5269880e749bf392849a75e",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / MICRO UZI"
+   }
+  ],
+  "16075152939": [
+   {
+    "key": "6f595002ea5dfa8a14eae9c109675250",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / VECTOR 45"
+   }
+  ],
+  "16075152453": [
+   {
+    "key": "aa63bdfea3381997a5f925b4402fe34f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / X46 / DEFAULT"
+   }
+  ],
+  "16075154377": [
+   {
+    "key": "9f3a40edd5fd27b2c45728735550ae2b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / X95 SMG"
+   }
+  ],
+  "14241631460": [
+   {
+    "key": "1454d884bbf9c42164c20edef9bced88",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / XM-MARS"
+   }
+  ],
+  "3175637210": [
+   {
+    "key": "70997665abecda8740d3cfa5f93f22fe",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / AA-12"
+   }
+  ],
+  "114427878430038": [
+   {
+    "key": "3ba8eb9583f3d34d76b6c2fe997163c3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / TERMINATOR 12G"
+   }
+  ],
+  "16075156804": [
+   {
+    "key": "6689b35cc6d8ed08b8160f93f118de14",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / AK-12/76 / DEFAULT"
+   }
+  ],
+  "10583207724": [
+   {
+    "key": "15b1990e4c101da17f43d66b2e484a6e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / DT11 / DEFAULT"
+   }
+  ],
+  "11220430857": [
+   {
+    "key": "96b8959c82780ed14138297e713dc903",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / COILGUN / DEFAULT"
+   }
+  ],
+  "18224393650": [
+   {
+    "key": "6de7f9269975347ed92417e34596ce81",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / GOLDEN SHORTY"
+   }
+  ],
+  "10626512117": [
+   {
+    "key": "861b790fc78adaf4df2d3a425a8375f8",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / KS-23M"
+   }
+  ],
+  "16075157063": [
+   {
+    "key": "151568882f6734f55b57cc9d42b00e8d",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / KSG 12"
+   }
+  ],
+  "85511160904221": [
+   {
+    "key": "1e6dc6d0cbd9996bed83a9151f27c309",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / M37 12G"
+   }
+  ],
+  "16075156898": [
+   {
+    "key": "fa462e817ea82e9038325fac8ee72210",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / MODEL 870"
+   }
+  ],
+  "6823153536": [
+   {
+    "key": "a9f7d734235725ea95c8e7dcc1a0681e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / ROPOD SHOTTY"
+   }
+  ],
+  "16075150185": [
+   {
+    "key": "dc587ce42505fdd5d116106ec7a659da",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / SAIGA-12U / DEFAULT"
+   }
+  ],
+  "97226408700041": [
+   {
+    "key": "68bb45e6371632adb4d02faca0ba93a5",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / SCX-12"
+   }
+  ],
+  "10648390082": [
+   {
+    "key": "d9a5c4ca2ef3b1854857efa1962dd434",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / SPAS-12"
+   }
+  ],
+  "16075149189": [
+   {
+    "key": "d746d28437ac2175d015c16ffc070884",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / SAWED OFF"
+   }
+  ],
+  "9318182796": [
+   {
+    "key": "028fb2deff74adb69b2018ec797f6434",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / USAS-12"
+   }
+  ],
+  "16075157319": [
+   {
+    "key": "a85e98353ece3ead726a4751dab5dba8",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / AWM"
+   }
+  ],
+  "16075159623": [
+   {
+    "key": "76216f3bda495e3264e22591cbb3ea79",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / GOLDHAWK / BLING SRR"
+   }
+  ],
+  "85530370083584": [
+   {
+    "key": "f70863e51e4c6c8c684de65ed9700821",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / BALLISTA"
+   }
+  ],
+  "16075148825": [
+   {
+    "key": "21a827b17c8faadcdfbef0df8e9e0ce3",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / sfg 50"
+   }
+  ],
+  "16075159103": [
+   {
+    "key": "270c4e98f265ae9451388ba447530029",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / DRAGUNOV SVDS"
+   }
+  ],
+  "108947604841287": [
+   {
+    "key": "8f1d3094d6dace51203aed5f76068808",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / DSR-50"
+   }
+  ],
+  "10155561848": [
+   {
+    "key": "092597e5158391ef13be707260c7acce",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / FT300 / DEFAULT"
+   }
+  ],
+  "16075158423": [
+   {
+    "key": "1921828afbabf6b0fc51c3e6693bb31a",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / HECATE II"
+   }
+  ],
+  "16075159216": [
+   {
+    "key": "e92a816dd9a41ccdd81d5065a7c82360",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / INTERVENTION"
+   }
+  ],
+  "16075159335": [
+   {
+    "key": "6509dd9ff58b488484637e7c194480b9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / K14"
+   }
+  ],
+  "81493813404488": [
+   {
+    "key": "44ccf512783454eab2348c9e4954218b",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / KEK-50"
+   }
+  ],
+  "89176477644247": [
+   {
+    "key": "8358a6387988727b79e6523eaa8d896f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / LR-3"
+   }
+  ],
+  "89935122863975": [
+   {
+    "key": "36830d6209942b5b150a755cef27f5f0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / LR-4A"
+   }
+  ],
+  "119218050539899": [
+   {
+    "key": "ef1d93e9d386151c4a737d57537f35d3",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / M110A1 CSASS"
+   }
+  ],
+  "10628614745": [
+   {
+    "key": "f314c7cae9daeb7502325313e8befac0",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / M1903 / DEFAULT"
+   }
+  ],
+  "14241618991": [
+   {
+    "key": "a2547e67412d920954bf68488ed062b7",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / M82A1"
+   }
+  ],
+  "16075157973": [
+   {
+    "key": "d77282febab75a804da76e52bc46248c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / MODEL 700"
+   }
+  ],
+  "16075150290": [
+   {
+    "key": "c335906eb52dd5119c98bdc8da58d0d0",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / OBREZ"
+   }
+  ],
+  "10483076439": [
+   {
+    "key": "ca7542399c71dba745690157b4151fb7",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / NTW-20"
+   }
+  ],
+  "200901180": [
+   {
+    "key": "2f6e892317d34160989b7a8903c1962a",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / RAILGUN"
+   }
+  ],
+  "2694153540": [
+   {
+    "key": "0750b9dfea9896964888e6bf324e3a6c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / SCOUT RIFLE"
+   }
+  ],
+  "105517847477011": [
+   {
+    "key": "2e4e819989f7b1c1bc3a2c5f04d6f48e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / THE FIX / DEFAULT"
+   }
+  ],
+  "82115391293580": [
+   {
+    "key": "aa9fadf02acb912c38487cd314789a82",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / TIMBERWOLF / DEFAULT"
+   }
+  ],
+  "105981600042533": [
+   {
+    "key": "a50704b71001a0e56a6887b547f976cf",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / TRG-42"
+   }
+  ],
+  "72346124985145": [
+   {
+    "key": "978ddf3ecd7440b172af84d8467fc540",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / VKS / DEFAULT"
+   }
+  ],
+  "16075159757": [
+   {
+    "key": "442a4f6f88f6c89989e63b7aef56a295",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / WA2000"
+   }
+  ],
+  "110309837204939": [
+   {
+    "key": "fc01657cc7ab12f7cd52c5ccba8d3b85",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / AEK-919K"
+   }
+  ],
+  "16075146698": [
+   {
+    "key": "b6fed951969a90deb205531b0177d2b4",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / M9 / DEFAULT"
+   }
+  ],
+  "10473353543": [
+   {
+    "key": "275c3cdcd83cb850d03877029391fe90",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / ARM PISTOL"
+   }
+  ],
+  "9318180641": [
+   {
+    "key": "d5e5bae077290508fbc9320a6260026d",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / ASMI"
+   }
+  ],
+  "11301450456": [
+   {
+    "key": "89b32150143e1aa8fbf7dad9dd09c3fe",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / AUTO 9"
+   }
+  ],
+  "86510765054047": [
+   {
+    "key": "7a4fac02dfc0aa32185fc540ac2a6a8a",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / MAC-11 / DEFAULT"
+   }
+  ],
+  "16075146144": [
+   {
+    "key": "7c269377fbff1cba679456ff665987ff",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / AF2011-A1 + Sounds / SECONDARY / PISTOLS / M1911A1 + Sounds / SECONDARY / PISTOLS / M7644"
+   }
+  ],
+  "10936828672": [
+   {
+    "key": "f5ce48e99ec248e116b1c796381041c1",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / MACHINE PISTOLS / SKORPION VZ.61"
+   }
+  ],
+  "5744456369": [
+   {
+    "key": "afc5a17e3b302a5f7a589ab43af84ca3",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / M79 THUMPER"
+   }
+  ],
+  "14773346233": [
+   {
+    "key": "89eda63b09cb73beb0084b5b1d1c4a98",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / SASS 308"
+   }
+  ],
+  "127823525647306": [
+   {
+    "key": "0c2ea1c17db2c2d666bac4f844e2ce20",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / STAKEOUT"
+   }
+  ],
+  "16075150601": [
+   {
+    "key": "3c26865abac0b548eb33954be16d37fc",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / SUPER SHORTY"
+   }
+  ],
+  "70730606737285": [
+   {
+    "key": "15863312f74ffbdea3599f8937782d66",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / THUNDER"
+   }
+  ],
+  "10593486171": [
+   {
+    "key": "3a8d23fd43a7842cc9a3cfa13d30ae66",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / ALIEN"
+   }
+  ],
+  "11330587252": [
+   {
+    "key": "8501b2b46c577f924f7fc1ea17ae0187",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / AUTOMAG III / DEFAULT"
+   }
+  ],
+  "16075133483": [
+   {
+    "key": "a81fbd1f1a670cf1fc94c175e7faba62",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / BOXY BUSTER"
+   }
+  ],
+  "3175583137": [
+   {
+    "key": "ebc85f1f0618aedbf5cc693ca77a0246",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / FIVE SEVEN"
+   }
+  ],
+  "72326188551563": [
+   {
+    "key": "2a961e83769e35b763ffb917caab87df",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / G1"
+   }
+  ],
+  "16271566010": [
+   {
+    "key": "d55c11bb1efab661a23d03d113a86fed",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / G21"
+   }
+  ],
+  "16075156134": [
+   {
+    "key": "cb2b886615bb6107eca3ff30e04136c4",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / G23"
+   }
+  ],
+  "16075155927": [
+   {
+    "key": "9c62f14372970b2a84b7c6a3afa4b229",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / G40"
+   }
+  ],
+  "16075156353": [
+   {
+    "key": "d9d35f5e1ec1497eafd0ad2cdaaac002",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / G50"
+   }
+  ],
+  "16075156481": [
+   {
+    "key": "0fc8e0184f588ef0af6f1b3e6f441485",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GB-22 / DEFAULT"
+   }
+  ],
+  "16075156234": [
+   {
+    "key": "fca5db0da7a5cebe5376589964ce47a2",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GI M1 + Sounds / SECONDARY / PISTOLS / HARDBALLER"
+   }
+  ],
+  "18238800579": [
+   {
+    "key": "97c095b312bd165b51d7630b405742a2",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GOLDEN GUN"
+   }
+  ],
+  "16075155553": [
+   {
+    "key": "766f6b492873c263cd58dd86761d5c15",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GRIZZLY"
+   }
+  ],
+  "113781865798446": [
+   {
+    "key": "87ea09cec982b78264714557bba5a589",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GSH-18"
+   }
+  ],
+  "16075156593": [
+   {
+    "key": "b31413391dd1b5f311d9e405e0e9a24b",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GSP"
+   }
+  ],
+  "10384252483": [
+   {
+    "key": "167e9d4117c93a5b45acbbe7360a53a0",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / IZHEVSK PB"
+   }
+  ],
+  "82429815921541": [
+   {
+    "key": "9387ad3587016227cf05a4f64945b7e3",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / KG-99"
+   }
+  ],
+  "16075156054": [
+   {
+    "key": "75c0eeaca564fb00135f74a994a17150",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / LA RATA"
+   }
+  ],
+  "16075155285": [
+   {
+    "key": "752b7dd3abb5d206c22f96c45f9d6706",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / M2011 + Sounds / SECONDARY / PISTOLS / M45A1"
+   }
+  ],
+  "6253270429": [
+   {
+    "key": "1b19bf457d52687ab1f83da4ec0cf17f",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / MAKAROV PM"
+   }
+  ],
+  "16075155685": [
+   {
+    "key": "19b5984c9e48eb711546a64182ee7794",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / RAVEN L5"
+   }
+  ],
+  "16079935327": [
+   {
+    "key": "2b8b9673133521efa4a6aa75bc44038b",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / RAVEN XIX"
+   }
+  ],
+  "16075142308": [
+   {
+    "key": "30248a2e913962ae93e6add985dcde71",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / TOY M1911"
+   }
+  ],
+  "111139013075317": [
+   {
+    "key": "5ed75352c3fb003c2933b8afb00060c2",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / U-527/22 / DEFAULT"
+   }
+  ],
+  "2323962833": [
+   {
+    "key": "8b3913cecb147a71be3a95f1a2f809a3",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / EXECUTIONER"
+   }
+  ],
+  "11302551320": [
+   {
+    "key": "58e1b6a81e7c7aa287d4ebe34951be9c",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / GOLDHAWK / DEFAULT"
+   }
+  ],
+  "2379068310": [
+   {
+    "key": "ad3dc3aa0089b076d9de4117ab0d5b00",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / MATEBA 6 / DEFAULT"
+   }
+  ],
+  "16075156708": [
+   {
+    "key": "005dc087e65b4c1b3a41ac5152b683d1",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / MP412 REX / DEFAULT"
+   }
+  ],
+  "17353530387": [
+   {
+    "key": "b12872e8c3c13ab10a63f2c1029f2220",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / RH-44"
+   }
+  ],
+  "873196488": [
+   {
+    "key": "bafb0a520b31a10085666b35104f1c8d",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragClose"
+   }
+  ],
+  "873196525": [
+   {
+    "key": "6589213d923aaadb5bf8dea9794aabdf",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragClose"
+   }
+  ],
+  "9057422459": [
+   {
+    "key": "8e1138da77270d580234443750dce402",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragClose"
+   }
+  ],
+  "873196633": [
+   {
+    "key": "caad8a92b5041dd43c60dfc9f93b72d1",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragClose"
+   }
+  ],
+  "873196678": [
+   {
+    "key": "1b85d354a3a401ac60e3dc86b7c8c5c7",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragClose"
+   }
+  ],
+  "873196719": [
+   {
+    "key": "9c9de6291e25a38134b98b25578a2706",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196759": [
+   {
+    "key": "31a96cd907f340d3fed228c02698cf74",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196789": [
+   {
+    "key": "4307c5fb2df7d3b1f0e3e2cdc9af076f",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196821": [
+   {
+    "key": "c459552ac546d5cdba43fdfc586a506c",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196855": [
+   {
+    "key": "a6ae3e4b13ad7c0bf61934d2ef8e84fd",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196883": [
+   {
+    "key": "df44e55f2e5dd368a8b59172b9e8a2de",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196918": [
+   {
+    "key": "cba99b6f9d5177793ad88f2de6723150",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196944": [
+   {
+    "key": "1f26dff162c0c1b103c43d9a4250ac94",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragMed"
+   }
+  ],
+  "873196972": [
+   {
+    "key": "734d17daab86c0f8570ae08f0f263d03",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragFar"
+   }
+  ],
+  "873196997": [
+   {
+    "key": "77179c5c9aed28f58a56206f1fa67c4a",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragFar"
+   }
+  ],
+  "873197013": [
+   {
+    "key": "989e6dd11779cfa03e5d135f1848d76f",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragFar"
+   }
+  ],
+  "873197044": [
+   {
+    "key": "652e1b1beb76d3e208cf785e493189ba",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragFar"
+   }
+  ],
+  "873197083": [
+   {
+    "key": "94a3cab57a6d4827d889e99301833876",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragFar"
+   }
+  ],
+  "873197117": [
+   {
+    "key": "93327f14db32fd321347e162f2e0cfa8",
+    "kind": ".ogg",
+    "name": "Sounds / GRENADE / fragFar"
+   }
+  ],
+  "9057212926": [
+   {
+    "key": "f1fffaa1e3cb93c3995f51e722b8b0bd",
+    "kind": ".ogg",
+    "name": "Sounds / fallsound"
+   }
+  ],
+  "2201625166": [
+   {
+    "key": "b0dd4b5c66a0da5e4e8dbacb8be7bee2",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_begin"
+   }
+  ],
+  "2201638398": [
+   {
+    "key": "e7a936592f74f698b324cb0c2543b0f8",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_blink"
+   }
+  ],
+  "2201628272": [
+   {
+    "key": "199cfe8c604d33537cf74140d1c273d9",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_blink"
+   }
+  ],
+  "2201638578": [
+   {
+    "key": "83d73609bb204a2d4e5bcb574b9750f6",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_blink"
+   }
+  ],
+  "2201645683": [
+   {
+    "key": "7b0a1aa2844c9218af9de46d801ef55c",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_blink"
+   }
+  ],
+  "2201638926": [
+   {
+    "key": "3896a822a0a318da8385a4eb6604b0ed",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_blink"
+   }
+  ],
+  "2201628742": [
+   {
+    "key": "dd795fdff3b9c15a5fde26de9c791d35",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_blink"
+   }
+  ],
+  "2201650206": [
+   {
+    "key": "f5698125feb49ef651045e5a1fa2f712",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeoutwhoosh (unused)"
+   }
+  ],
+  "2201663791": [
+   {
+    "key": "8e221828e38439708ababf94d6dc305a",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeout"
+   }
+  ],
+  "2201663994": [
+   {
+    "key": "2b4504cbf6299f391b06438fbd534c37",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeout"
+   }
+  ],
+  "2201664220": [
+   {
+    "key": "c8c4e1367cb71e450eab658320a0abf5",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeout"
+   }
+  ],
+  "2201664369": [
+   {
+    "key": "091d162ff876f641564eb684faa244c0",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeout"
+   }
+  ],
+  "2201664545": [
+   {
+    "key": "bf1519c00dd9a2fccbe635b66c930152",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeout"
+   }
+  ],
+  "2201664693": [
+   {
+    "key": "52fa0c810ddde48b12855d3c1d8e8d20",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_typeout"
+   }
+  ],
+  "2201705675": [
+   {
+    "key": "e7a1440fe1f0ca27c83b7664da5b4eef",
+    "kind": ".ogg",
+    "name": "Sounds / UI / ui_smallaward"
+   }
+  ],
+  "2163189692": [
+   {
+    "key": "b0b6ab65571b33e5782364f97d86d854",
+    "kind": ".ktx2",
+    "name": "Textures / sleeves"
+   }
+  ],
+  "91589255843429": [
+   {
+    "key": "902a8aae9f1860620049f24496929b1f",
+    "kind": ".png",
+    "name": "Textures / hitmarker"
+   }
+  ],
+  "2659030505": [
+   {
+    "key": "ca5db3cb19448c1e39ed29c6d59bea66",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / dot"
+   }
+  ],
+  "7605604580": [
+   {
+    "key": "be012b39ba9c102f00943761547d0acd",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / kousaku oled / ring"
+   }
+  ],
+  "1805072489": [
+   {
+    "key": "73558497eb0263b3b69ce3d1b56db9e9",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / glass hack border"
+   }
+  ],
+  "574572022": [
+   {
+    "key": "201b830210765466de1c227dd243b55f",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / DR / Hypomatic*"
+   },
+   {
+    "key": "33212a164b09ec78845d2c4420076b15",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 2 / DR / Hypomatic*"
+   }
+  ],
+  "874019822": [
+   {
+    "key": "148f93e107a41376a1f16649177dc0be",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 2 / Fauna / Tabuu Tsubasa*"
+   },
+   {
+    "key": "400119e6a9627ddedc828c745161be67",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / Fauna / Tabuu Tsubasa*"
+   }
+  ],
+  "851302585": [
+   {
+    "key": "9e013ddfe18012670b7a3c3c1236a059",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Japan* / Dragons 1*"
+   },
+   {
+    "key": "1ddc7f896ce99f0c7090d8250deff575",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Japan* / Dragons 1*"
+   }
+  ],
+  "7471704409": [
+   {
+    "key": "7b73cd44bf03666c77d9aa7817abc26e",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Pacific / High Tide + Textures / Skins / Tier 3 / Pacific / High Tide*"
+   },
+   {
+    "key": "51890cad18944dc2973fd06b0c21db58",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Pacific / High Tide + Textures / Skins / Tier 3 / Pacific / High Tide*"
+   }
+  ],
+  "7471563666": [
+   {
+    "key": "a871e69bda23449df2566d0dafc50aa5",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Pacific / Vintage Chintz + Textures / Skins / Tier 3 / Pacific / Vintage Chintz*"
+   },
+   {
+    "key": "0801bd8870b2799d034761a77a73ea2d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Pacific / Vintage Chintz + Textures / Skins / Tier 3 / Pacific / Vintage Chintz*"
+   }
+  ],
+  "7472002512": [
+   {
+    "key": "de4ab1361391c2cd0febe894f8c70da5",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Pacific / Enter the Dragon + Textures / Skins / Tier 3 / Pacific / Enter the Dragon*"
+   },
+   {
+    "key": "eb03570044884a20786fbe92fc3cf2bf",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Pacific / Enter the Dragon + Textures / Skins / Tier 3 / Pacific / Enter the Dragon*"
+   }
+  ],
+  "1260278707": [
+   {
+    "key": "b0b6ab65571b33e5782364f97d86d854",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Ghost / URB-DARK"
+   }
+  ],
+  "1175620390": [
+   {
+    "key": "c5a180626a4439b29da93506164f7b9f",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Christmas / Jingle Bones*"
+   },
+   {
+    "key": "f19e9b121edb90ee8653772cda5380d3",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Christmas / Jingle Bones*"
+   }
+  ],
+  "1143802877": [
+   {
+    "key": "3663e911d21af3b52e485154b25f4d86",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Monster / Very Bad Dream"
+   },
+   {
+    "key": "3193a83f4e97df2a675b63f98b96e28e",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Monster / Very Bad Dream"
+   }
+  ],
+  "6037936966": [
+   {
+    "key": "9c240dccbbe847312b072c180cb023a5",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Xmas Night 3"
+   },
+   {
+    "key": "71af9b115dee0f9bb415bf5ba360a0d9",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Xmas Night 3"
+   }
+  ],
+  "18837478844": [
+   {
+    "key": "63f77b2f8505ae9e1020f6a7709ca41b",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Northern Lights"
+   },
+   {
+    "key": "9e6d83af7efdcd7dce39d1b43521a705",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Northern Lights"
+   }
+  ],
+  "6223386854": [
+   {
+    "key": "45ebcbd188b619b565b653e85bde7443",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Andro General*"
+   },
+   {
+    "key": "198062856bf0a8ee0d744ab1c2245b6e",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Andro General*"
+   }
+  ],
+  "6244956941": [
+   {
+    "key": "de1f575a3067b5ab78052932bb4d8e9c",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Fluidity*"
+   },
+   {
+    "key": "4e2a3b3973e379d2f7b792fd0ea93c2a",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Fluidity*"
+   }
+  ],
+  "6664168081": [
+   {
+    "key": "77b0f5add3af21ecf9d3f9ee5208095e",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Bi-Modernize*"
+   },
+   {
+    "key": "fdd6433365c5f30f3a86be9699a0f2b4",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Bi-Modernize*"
+   }
+  ],
+  "6658758511": [
+   {
+    "key": "f1508517a79a83f7dbb429fa35ad085f",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Pride-apples*"
+   },
+   {
+    "key": "2dd0a97bd537efd4bf26caac9648533d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Pride-apples*"
+   }
+  ],
+  "7472253792": [
+   {
+    "key": "ebca5de1418721b57328dbc4a294fa5f",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Topograph / Crimson Tissue*"
+   },
+   {
+    "key": "fe273a8f2d2ee5760fe0f2fcee42778b",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Topograph / Crimson Tissue*"
+   }
+  ],
+  "7508502045": [
+   {
+    "key": "7209da4b3b5bcfd805ba0e9ff94a1fc9",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Topograph / Amigara Fault*"
+   },
+   {
+    "key": "dbf98eb664f27ca54c818fa9c9dbd1eb",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Topograph / Amigara Fault*"
+   }
+  ],
+  "815517345": [
+   {
+    "key": "9c6d19f0621ce76cc4f7639eba05bbe0",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Uniform* / UCP*"
+   },
+   {
+    "key": "6f413ec0d02d75fb4e8cbdb5ba556386",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Uniform* / UCP*"
+   }
+  ],
+  "2257418841": [
+   {
+    "key": "1fcf6152c7746502ae6a174a1a8120ab",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Retrometric"
+   },
+   {
+    "key": "052c464549992e052143f0fb4a9d4a14",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Retrometric"
+   }
+  ],
+  "2257541173": [
+   {
+    "key": "49acf85ad26624d38813da7179528161",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Drab Wallpaper"
+   },
+   {
+    "key": "e18066a516f39564e5635773f3d5f548",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Drab Wallpaper"
+   }
+  ],
+  "2257913337": [
+   {
+    "key": "24d199d1daf49910745b83731f8c96a8",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Pretty in Pink"
+   },
+   {
+    "key": "b83b63d5fec7e6e6f66856764bbe4652",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Pretty in Pink"
+   }
+  ],
+  "2257333512": [
+   {
+    "key": "f7453128da8c35d2db92917fa8bd7ab3",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Points and Halftones"
+   },
+   {
+    "key": "f460ecfd08898add86c91011606a497d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Points and Halftones"
+   }
+  ],
+  "2257882115": [
+   {
+    "key": "98059245bc23591442f2a9cfb0e006dc",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Late Night Movie"
+   },
+   {
+    "key": "690ba722806d3bd956862443e765c1eb",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Late Night Movie"
+   }
+  ],
+  "2257214383": [
+   {
+    "key": "9ee96685c055951ee70403fd4b314387",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Neon Nights"
+   },
+   {
+    "key": "c880e9325b07763bd6342323e35d8706",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Neon Nights"
+   }
+  ],
+  "2257530119": [
+   {
+    "key": "1125ac05187b116b0deb6b034e929a05",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Rush Hour"
+   },
+   {
+    "key": "0e87301b310fa786ecb24c5865a5794a",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Rush Hour"
+   }
+  ],
+  "1419976426": [
+   {
+    "key": "0659c17b8be761f38d801a848a566b54",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Goth Phase"
+   },
+   {
+    "key": "5ba524f0c2a483fad5a494fc7ec5cc74",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Goth Phase"
+   }
+  ],
+  "1419898449": [
+   {
+    "key": "af39048dc7426b0ff79c466ac69bcc3d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Roses in Bloom"
+   },
+   {
+    "key": "e18c3a1a69ca816ec32dbd3f05e4b6f5",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Roses in Bloom"
+   }
+  ],
+  "1420069178": [
+   {
+    "key": "f290f6fc9d91a8ff207a3ed95898ab8d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Graffiti Tender"
+   },
+   {
+    "key": "0f7dcb23ebbd136e96c6d84536d31d9c",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Graffiti Tender"
+   }
+  ],
+  "8505956632": [
+   {
+    "key": "24916ccbf3202745aaffccd54b3fca75",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Season 2 (SCL)*"
+   },
+   {
+    "key": "985f6beb4c6d957914f357a4cc827f57",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / Season 2 (SCL)*"
+   }
+  ],
+  "11138618047": [
+   {
+    "key": "a0bf2437f4d90be80cbe8896686bdfce",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / ID (SCL)*"
+   },
+   {
+    "key": "7a630db6e5626e65c4a8c1ae75daf7f1",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / ID (SCL)*"
+   }
+  ],
+  "7225125487": [
+   {
+    "key": "bfa47196c7d8a37ecced3b04b8d6ba67",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / YGGC (SCL)*"
+   },
+   {
+    "key": "5d9b47198a9d0b0a4c4a69afb7bbc29a",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / YGGC (SCL)*"
+   }
+  ],
+  "6527614013": [
+   {
+    "key": "515e1a27c19d0b86bb675beea57070bd",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / CHAOS (SCL)*"
+   },
+   {
+    "key": "73c2b2ec9d22625f4068aba217b48110",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / CHAOS (SCL)*"
+   }
+  ],
+  "8506375084": [
+   {
+    "key": "9ea1bcef0f92825534e0923d05203e08",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / AzoN (SCL)*"
+   },
+   {
+    "key": "ab67406d14ae59606abaa749cee05a2d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / AzoN (SCL)*"
+   }
+  ],
+  "11257121807": [
+   {
+    "key": "1d7758b1a57b0498b28e0d1e119acf5b",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / DRAIN GANG (SCL)*"
+   },
+   {
+    "key": "ec6854d004aa1189528c03ea2c229e40",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / DRAIN GANG (SCL)*"
+   }
+  ],
+  "10276125327": [
+   {
+    "key": "91b3ed3727a63b8388839e8932b8c1ea",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / CBA (SCL)*"
+   },
+   {
+    "key": "c7830e72daf14b4be742a50d6663c546",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / CBA (SCL)*"
+   }
+  ],
+  "10424561626": [
+   {
+    "key": "723ff8e3901841cf3a0f01bc7296628d",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Drastic (SCL)*"
+   },
+   {
+    "key": "26d0d0da62da366ccf5e6de6afaaba42",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / Drastic (SCL)*"
+   }
+  ],
+  "13465391096": [
+   {
+    "key": "8c2de400568faa97c268e519dbff50c9",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Malicious Intent (SCL)*"
+   },
+   {
+    "key": "df36ce04bb386781be7f673f6bee48d5",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / Malicious Intent (SCL)*"
+   }
+  ],
+  "13465391272": [
+   {
+    "key": "c896c9afea90889272ffc6249fe39c96",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / Space Monkeys (SCL)*"
+   },
+   {
+    "key": "a57fbae2dcddb6142d0e0aac8c2bc6e9",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Space Monkeys (SCL)*"
+   }
+  ],
+  "13471542942": [
+   {
+    "key": "5f433bf7b17782e5fb574082e1bfa252",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / Fastbreak Fraggers (SCL)*"
+   },
+   {
+    "key": "543cf1b20ea04a9d618b9369be2c6998",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Fastbreak Fraggers (SCL)*"
+   }
+  ],
+  "13540416047": [
+   {
+    "key": "ae333c774a3b8f932f173bfbea4b30df",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / YGGC 3 (SCL)"
+   },
+   {
+    "key": "d9a6091f706314f4fe730c4c4484ac6a",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / YGGC 3 (SCL)"
+   }
+  ],
+  "102562608513616": [
+   {
+    "key": "7ebe331e5ce926c4ad52e840a1f7d7a9",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / AutoTronic (SCL)"
+   },
+   {
+    "key": "b6566a6aff837fd17b130d2cdc6cf5e3",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / AutoTronic (SCL)"
+   }
+  ],
+  "1355286486": [
+   {
+    "key": "23e9265e7ab3d7ef9986898ba46402a5",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Plague Bringer"
+   },
+   {
+    "key": "888cac613b2f199db685fc992a4ce883",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Plague Bringer"
+   }
+  ],
+  "1842194212": [
+   {
+    "key": "b3df3ac3bf169db1d46a544129890668",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Cargo Hold"
+   },
+   {
+    "key": "76474c876f1268fac42cc01de54a0d54",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Cargo Hold"
+   }
+  ],
+  "1367310744": [
+   {
+    "key": "c7c0e55a674a1843c17ae115addc6899",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Microboard"
+   },
+   {
+    "key": "2b86914784995264f1ce72a93c9fca25",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Microboard"
+   }
+  ],
+  "1464030757": [
+   {
+    "key": "ece37669e9db1ffda3e7b3830f9e4595",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Halftone / Anime/Manga"
+   },
+   {
+    "key": "55f8f55faf2219c0bd5ddf7291c168d3",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Halftone / Anime/Manga"
+   }
+  ],
+  "1464106152": [
+   {
+    "key": "047719f454c1df34736febdd882a6595",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Halftone / Yo Dawg"
+   },
+   {
+    "key": "fb7693dd5513a4580fd8b8d96c195abf",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Halftone / Yo Dawg"
+   }
+  ],
+  "6187724366": [
+   {
+    "key": "8374e4b4240abb33472cc9508e9995bf",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Creator / HereticLive 1"
+   },
+   {
+    "key": "5dd07aca720b7c94012c95d5349fad61",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Creator / HereticLive 1"
+   }
+  ],
+  "14442514433": [
+   {
+    "key": "9ae0959c9d8469b3db6a0554be4a4a54",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Creator / Oscar 1"
+   },
+   {
+    "key": "c237ecc7cf65cb2e1f06ed2e97a6149b",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Creator / Oscar 1"
+   }
+  ],
+  "14442515955": [
+   {
+    "key": "482e34c5f63a6519114025ec65f67b10",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Creator / Oscar 2"
+   },
+   {
+    "key": "5ac49eb911ae57bc0fcbcab8439beca0",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Creator / Oscar 2"
+   }
+  ],
+  "111469752773794": [
+   {
+    "key": "0facd480346b3e3a0ae0432f0ec1b367",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Basic - Tall"
+   },
+   {
+    "key": "0f82dd303e7f8e59e6cd43578f799096",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Basic - Tall"
+   }
+  ],
+  "121390104901541": [
+   {
+    "key": "849db886ea04250640b2b51dbfe54056",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Basic - Slope"
+   },
+   {
+    "key": "38eef25e0954f5c64ca4348637e92ba4",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Basic - Slope"
+   }
+  ],
+  "111487009678440": [
+   {
+    "key": "a65e946b4b4bfc8d6867bb994194b86d",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Triad - Tall"
+   },
+   {
+    "key": "a3721ea5c83fd159ad55b38f0d001014",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Triad - Tall"
+   }
+  ],
+  "70605972945467": [
+   {
+    "key": "f0633bb5fbdce18180b126a63da3547a",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Splatter - Tall"
+   },
+   {
+    "key": "0db48965f5bce62712f9f22f9baedaa2",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Splatter - Tall"
+   }
+  ],
+  "84306939693250": [
+   {
+    "key": "b4759a91720d867adc539edcc726cdd5",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Re:Access"
+   },
+   {
+    "key": "0aab5a354931ba9292ed8484ef669afb",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Re:Access"
+   }
+  ],
+  "122121331044288": [
+   {
+    "key": "b602c093b16766dd9bc20e4cec38660c",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Particle"
+   },
+   {
+    "key": "4e2c111e14fcd49ba83715b21d6aa46e",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Particle"
+   }
+  ],
+  "5099350829": [
+   {
+    "key": "c12511726205c4f48650331681e3fc1a",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Bazaar / SkyboxBk + Textures / Skyboxes / Bazaar / SkyboxFt + Textures / Skyboxes / Bazaar / SkyboxLf + Textures / Skyboxes / Bazaar / SkyboxRt"
+   }
+  ],
+  "600830446": [
+   {
+    "key": "5e4881337e011f1e52c3c17cc1b4633e",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Dust Bowl / SkyboxBk"
+   }
+  ],
+  "150335574": [
+   {
+    "key": "99c372cf2e81d0e3700f6557d8ce6ac8",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Villa / SkyboxBk"
+   }
+  ],
+  "5099350794": [
+   {
+    "key": "80f0378a9e82971bcc7169c81eec74fd",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Bazaar / SkyboxDn"
+   }
+  ],
+  "600831635": [
+   {
+    "key": "cc38b67c0e36102c92fac735d7e9ba63",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Dust Bowl / SkyboxDn"
+   }
+  ],
+  "150335585": [
+   {
+    "key": "a3a10d4b60702a1ad91fb3016aa9e599",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Villa / SkyboxDn"
+   }
+  ],
+  "600832720": [
+   {
+    "key": "ec0ca839f0aba726b9730b1ceeb04a11",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Dust Bowl / SkyboxFt"
+   }
+  ],
+  "150335628": [
+   {
+    "key": "2d4386accaae6f04a96d6fabb6e63d68",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Villa / SkyboxFt"
+   }
+  ],
+  "600886090": [
+   {
+    "key": "0bde9ec86d80225c85a39591298dedd0",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Dust Bowl / SkyboxLf"
+   }
+  ],
+  "150335620": [
+   {
+    "key": "4f3123f416893391c24999c831db1d6d",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Villa / SkyboxLf"
+   }
+  ],
+  "600833862": [
+   {
+    "key": "cbedf10b7f7aaf80620b30cd686b1eb6",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Dust Bowl / SkyboxRt"
+   }
+  ],
+  "150335610": [
+   {
+    "key": "c6dd9e11f9d53249abdc7cf71b97029a",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Villa / SkyboxRt"
+   }
+  ],
+  "5099350793": [
+   {
+    "key": "8d33a328b5443ababc952a645aa9da93",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Bazaar / SkyboxUp"
+   }
+  ],
+  "600835177": [
+   {
+    "key": "b66282a7e86d24efc35e922a5aa30a1b",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Dust Bowl / SkyboxUp"
+   }
+  ],
+  "150335642": [
+   {
+    "key": "6ada6a1556482d0106ea84f36e2a74d1",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Villa / SkyboxUp"
+   }
+  ],
+  "1478401124": [
+   {
+    "key": "1efc1e28b45d423eb0c40862f61cee62",
+    "kind": ".png",
+    "name": "Textures / blood arc"
+   }
+  ],
+  "163692077": [
+   {
+    "key": "17283d372f3024d52e88a22e94451232",
+    "kind": ".png",
+    "name": "Textures / killfeed headshot"
+   }
+  ],
+  "2925606552": [
+   {
+    "key": "9f1a7be63e8a5c6d1beeaa275d9738a2",
+    "kind": ".png",
+    "name": "Textures / radar objective circle"
+   }
+  ],
+  "2911984939": [
+   {
+    "key": "6349bb67ee65a827013a3b1b9e72f4bc",
+    "kind": ".png",
+    "name": "Textures / ImageArrowSolid"
+   }
+  ],
+  "1004259128": [
+   {
+    "key": "3111b6884dccac531c135421343ca4d0",
+    "kind": ".png",
+    "name": "Textures / ammohud / ImageGrenade"
+   }
+  ],
+  "2650195052": [
+   {
+    "key": "925fdf40096d19869175f882b837f216",
+    "kind": ".ktx2",
+    "name": "Textures / bullet beam"
+   }
+  ],
+  "110770977399083": [
+   {
+    "key": "439acc0d6931964fc8b8be21d0302095",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Arm Band"
+   }
+  ],
+  "97227571258312": [
+   {
+    "key": "7e5ef2964bdf651c01ca280f64057be8",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "113984862329608": [
+   {
+    "key": "3accc07beab5f45e2d3988ea5a935a1f",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "87609398036047": [
+   {
+    "key": "eca93883362d1f10aa187be40070d39a",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "81315314410608": [
+   {
+    "key": "dc2eed481471cd8f4ec466cf222bfed7",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "87931377896090": [
+   {
+    "key": "f751b5a8a4519b19deb19002689ea846",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "135951047174912": [
+   {
+    "key": "aca90dcffdb1f6383dd410c8d59ca5e2",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "117817582853198": [
+   {
+    "key": "d0093cfe1283099397f7fdc5219c431a",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "108016769059044": [
+   {
+    "key": "090964e2dc35fc8d62845046a45ddb18",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "95195898102733": [
+   {
+    "key": "f295bd7584534e69f87b24d419d12687",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "95189694288960": [
+   {
+    "key": "993c0f96579822c768cc417e401e1f72",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Watch"
+   }
+  ],
+  "106591579144429": [
+   {
+    "key": "5237276ec93ef533ee960375419abd01",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Glove"
+   }
+  ],
+  "116639919259887": [
+   {
+    "key": "97840ccb60e83ed6bb8e657c4108d078",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Glove"
+   }
+  ],
+  "110858584893851": [
+   {
+    "key": "8852eccd49a0f958e953370f4954f1a4",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Glove"
+   }
+  ],
+  "124584494443746": [
+   {
+    "key": "6cbcb378122c2b0a02ac875ce9cebc54",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Glove"
+   }
+  ],
+  "77077880424722": [
+   {
+    "key": "cedc730b8dbaede9fd472261f629adf7",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Glove"
+   }
+  ],
+  "108301009265498": [
+   {
+    "key": "a8209eecd4f092298332d1dc8f2ff6e3",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Glove"
+   }
+  ],
+  "83033169369113": [
+   {
+    "key": "49aa219b32185040d87d434f868d151f",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Sleeve"
+   }
+  ],
+  "111525819308010": [
+   {
+    "key": "8727e11b9cff009f49505e61c92290ed",
+    "kind": ".mesh",
+    "name": "Models / Arms / Left Arm / Arm"
+   }
+  ],
+  "124601434644304": [
+   {
+    "key": "2f860b917f8d1bf7ce9d2f6a25b71437",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Glove"
+   }
+  ],
+  "134502110888591": [
+   {
+    "key": "c497cb0c25b4e61a2eb22015c75e13b4",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Glove"
+   }
+  ],
+  "126061859441384": [
+   {
+    "key": "6dc8cac3198c2bd747743b4a20a40578",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Glove"
+   }
+  ],
+  "131346006514353": [
+   {
+    "key": "9a880e24cd3a1660f53dbc05a1e95897",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Glove"
+   }
+  ],
+  "78459158577279": [
+   {
+    "key": "f303333d02d3794985bd3a656347f303",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Glove"
+   }
+  ],
+  "108128334741270": [
+   {
+    "key": "db121bf963af8f70ef07ead3bc563a7b",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Sleeve"
+   }
+  ],
+  "140242362964055": [
+   {
+    "key": "13c38bb49bf0824e8ea17738b471fba4",
+    "kind": ".mesh",
+    "name": "Models / Arms / Right Arm / Arm"
+   }
+  ],
+  "71893498872142": [
+   {
+    "key": "40fdd4b5a22fa9d10922a9d6ec1665d0",
+    "kind": ".mesh",
+    "name": "Models / Optics / Kousaku Oled / Base"
+   }
+  ],
+  "105810456108218": [
+   {
+    "key": "6191e3aed1ec7375a03db8704d146507",
+    "kind": ".mesh",
+    "name": "Models / Optics / Kousaku Oled / Frame"
+   }
+  ],
+  "134865285262497": [
+   {
+    "key": "91d45ac0e740d16b35d33b85fb749f3a",
+    "kind": ".mesh",
+    "name": "Models / Optics / Kousaku Oled / Glass"
+   }
+  ],
+  "127070586716872": [
+   {
+    "key": "01427cfd8ea26f612ffadc407611a4b6",
+    "kind": ".mesh",
+    "name": "Models / Optics / Kousaku Oled / Name"
+   }
+  ],
+  "116160383448511": [
+   {
+    "key": "247adae324beaa03ddc9074407af50ab",
+    "kind": ".mesh",
+    "name": "Models / Optics / Kousaku Oled / Bolts"
+   }
+  ],
+  "111780159275954": [
+   {
+    "key": "c59543fa1bd345ecc7f92f063ac8412c",
+    "kind": ".mesh",
+    "name": "Models / Optics / Kousaku Oled / Block"
+   }
+  ],
+  "115486373217832": [
+   {
+    "key": "16eaf17a9aebefa1d54961756e4bfdad",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M67 FRAG / Body"
+   }
+  ],
+  "98597609295747": [
+   {
+    "key": "8559af306e54e6319b7b0ae237580218",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M67 FRAG / Handle"
+   }
+  ],
+  "90081070586257": [
+   {
+    "key": "91f1dd49058de532a73057cf756c6ce9",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M67 FRAG / Pin"
+   }
+  ],
+  "9268964203": [
+   {
+    "key": "faba18ec14ac5298c060e9bf1ca48e00",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / M67 FRAG / Texture"
+   }
+  ],
+  "213222519": [
+   {
+    "key": "fff98e44ae53115dbb4daf5ef6819094",
+    "kind": ".ktx2",
+    "name": "Textures / smoke"
+   }
+  ],
+  "319079187": [
+   {
+    "key": "7f6e7bb0bc5f2500fa6fdcf5cffe7761",
+    "kind": ".png",
+    "name": "Textures / Grenade Glow / Friendly"
+   }
+  ],
+  "319082682": [
+   {
+    "key": "8d5cb4aa47390c7e7a6c4f82d8a0e228",
+    "kind": ".png",
+    "name": "Textures / Grenade Glow / Enemy"
+   }
+  ],
+  "2695037123": [
+   {
+    "key": "af8e737b8cf05df7a328e280bf2d3137",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / delta"
+   }
+  ],
+  "2656844494": [
+   {
+    "key": "639950fb2b912a99c5a2d09e9fee3a40",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / 558 Holo"
+   }
+  ],
+  "2667135640": [
+   {
+    "key": "2e31ecd9d7d561c0621a7efbbfb72123",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / pka-s"
+   }
+  ],
+  "2693380899": [
+   {
+    "key": "7be1e0f4b374a7f6c4d61a8dc87c4636",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / barska electro"
+   }
+  ],
+  "2693097870": [
+   {
+    "key": "119387897ad4d3266b0f51d25b2c295c",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / ddhb"
+   }
+  ],
+  "7605603475": [
+   {
+    "key": "382dccf6cb36db76e6c937e1e42e1cc3",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / kousaku oled / overlay"
+   }
+  ],
+  "4775329036": [
+   {
+    "key": "404db71645402b045249aabe2cffaec9",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / pso-1 + Textures / Optics / Scopes / pso-12.7"
+   }
+  ],
+  "5093852378": [
+   {
+    "key": "7625e83c33a33afd6b893aaaaef0886d",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / vcog 6x"
+   }
+  ],
+  "3607960678": [
+   {
+    "key": "3598580b0a1204eaf49bcb7fcfcff912",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / ta33 acog"
+   }
+  ],
+  "2651593993": [
+   {
+    "key": "df6617c7d9b36164f45a61c557aec589",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 1 / Starter 3 / Diamond*"
+   }
+  ],
+  "2646029621": [
+   {
+    "key": "097e41991fbaa6776dda535e5e76c63d",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 1 / Tribal / Kindred"
+   }
+  ],
+  "1442090001": [
+   {
+    "key": "c0efbfa42d932d7504456f3fd24d5260",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / Fauna 2 / Shark"
+   }
+  ],
+  "570911846": [
+   {
+    "key": "6d6a74c49f7d1fe750c765ad097f3412",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / DR / MENACE"
+   }
+  ],
+  "851332885": [
+   {
+    "key": "77d455a047f288de508f1a1ef8fdc6f4",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Japan* / Tigers*"
+   }
+  ],
+  "815184789": [
+   {
+    "key": "b972ce71b0bd44df1ae83de765e68727",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / Uniform / Cookie Dough"
+   }
+  ],
+  "1303816952": [
+   {
+    "key": "233a69366c280ddf63c47b490a0cc7bb",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Phantom / GCP-Forest"
+   }
+  ],
+  "1300685901": [
+   {
+    "key": "0de3715a6f0e2f0516e76d11982a6e4c",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Phantom / ATC-Naval"
+   }
+  ],
+  "1195240338": [
+   {
+    "key": "46621ca884eee884b66f8c925473457e",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / COR5 / Grey Stone*"
+   }
+  ],
+  "686648531": [
+   {
+    "key": "2608accc9ef28b4100ea9d0871878546",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Halloween / Undead Rise"
+   }
+  ],
+  "6041633456": [
+   {
+    "key": "a52e72795287abc44092a8a8ca5e93fd",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Ice Touch 3"
+   },
+   {
+    "key": "644d6e6e42467053a8a16af49db30c85",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Ice Touch 3"
+   }
+  ],
+  "6342721066": [
+   {
+    "key": "bc418d344810786a1cf7e0fe71fed546",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Rainbow / Pridelic*"
+   }
+  ],
+  "7576232761": [
+   {
+    "key": "c08996cf2ebeb97b5ecc06380d7ed160",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / War Paint / Arsovision*"
+   }
+  ],
+  "7057714510": [
+   {
+    "key": "aa18cb1117485440a5e718e370d0331a",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Topograph / Gilded Contractor"
+   }
+  ],
+  "7524900983": [
+   {
+    "key": "946c172ff4dea753a4adcf66be70c20a",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Sinus / Dissonance + Textures / Skins / Tier 4 / Sinus / Dissonance*"
+   }
+  ],
+  "782994167": [
+   {
+    "key": "1501ec5436060f197a9b5d314433906d",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / MLG / Fade"
+   }
+  ],
+  "2257361249": [
+   {
+    "key": "e031c1c6238aa0954318bd26c0a5598b",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Master System"
+   }
+  ],
+  "7788855971": [
+   {
+    "key": "f358ec89c2532dea7e7f9c4a58938727",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Season 1 (SCL)*"
+   }
+  ],
+  "8506457923": [
+   {
+    "key": "982f7d2ceb653e1dbfdc874059224149",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Phantom Rangers (SCL)*"
+   }
+  ],
+  "80686404240587": [
+   {
+    "key": "1372e2328a99c2082ffdc42452e9e629",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Wireframe / Ornate Offices"
+   }
+  ],
+  "846818694": [
+   {
+    "key": "a8ae2781fd8d2d6ddb9a7e510f03c841",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Pattern / Zig Zag"
+   },
+   {
+    "key": "6f3e1bd9c3e786671be9f06df13dc922",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Pattern / Zig Zag"
+   }
+  ],
+  "93769680455379": [
+   {
+    "key": "4293d184e305ae87f62f973460969394",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Basic - Flat"
+   }
+  ],
+  "323494035": [
+   {
+    "key": "0e529fcc81a5ebd6fb0b867b4e2d6d3e",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Containers O' Fun / SkyboxBk"
+   }
+  ],
+  "323494368": [
+   {
+    "key": "c74ecf6705d60121deb9c1395d7ee68f",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Containers O' Fun / SkyboxDn"
+   }
+  ],
+  "9070055745": [
+   {
+    "key": "283f5dc4b867706652852e4149da24d4",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Containers O' Fun / SkyboxFt"
+   }
+  ],
+  "9070056786": [
+   {
+    "key": "89d2573e9c2e9179faaeed9db4da55d8",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Containers O' Fun / SkyboxLf"
+   }
+  ],
+  "323494067": [
+   {
+    "key": "15fdf86c806825792bc0a1f31a51841c",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Containers O' Fun / SkyboxRt"
+   }
+  ],
+  "323493360": [
+   {
+    "key": "1c4e9821bc68c9902ae0d20ffdd7b08e",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Containers O' Fun / SkyboxUp"
+   }
+  ],
+  "34854607": [
+   {
+    "key": "2b52a2d9e25273a06a8b444661a11bc4",
+    "kind": ".png",
+    "name": "Textures / bloodscreen"
+   }
+  ],
+  "2911984609": [
+   {
+    "key": "554738cd26b57c78dcd86c3dd8393464",
+    "kind": ".png",
+    "name": "Textures / ImageArrowHollow"
+   }
+  ],
+  "3116912054": [
+   {
+    "key": "4344e688508476b3f4a80fbb49d40280",
+    "kind": ".png",
+    "name": "Textures / ImageDeadCross"
+   }
+  ],
+  "75352201928166": [
+   {
+    "key": "652b6ef12e3ff7cd8d67dd3842968c03",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M26 FRAG / Body"
+   }
+  ],
+  "9285361509": [
+   {
+    "key": "e027635a3cae32038377a6307ba30c6b",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / M26 FRAG / Texture"
+   }
+  ],
+  "130375815890697": [
+   {
+    "key": "97132328f1fb6c4d7d6721064b6bf98d",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M560 MINI / Body"
+   }
+  ],
+  "9285346256": [
+   {
+    "key": "5bcb0f8e78d998336655d9cdfceeedcb",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / M560 MINI / Texture"
+   }
+  ],
+  "9320480184": [
+   {
+    "key": "493bf355df62429785476ebfc07214c0",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE3 / Texture"
+   }
+  ],
+  "80065411824420": [
+   {
+    "key": "e7ebc8e842365b27350002e88234ccc9",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE3 / Body"
+   }
+  ],
+  "118140965706714": [
+   {
+    "key": "c7bc923c333e487036ad0ab003abc313",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / SEMTEX / Body"
+   }
+  ],
+  "9839913431": [
+   {
+    "key": "463b2c977f62fe6bba55053e5174ae7d",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / SEMTEX / Texture"
+   }
+  ],
+  "9083204012": [
+   {
+    "key": "5e33d1ddb65ee8071eb65531511d30be",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / SEMTEX / Flash"
+   }
+  ],
+  "106895349174087": [
+   {
+    "key": "8be6bb2f2361ea6c1406bd500ee33133",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / T-13 IMPACT / Body"
+   }
+  ],
+  "103349694964362": [
+   {
+    "key": "8f608f3bb67da96e66e76eee78d11561",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / T-13 IMPACT / Pin"
+   }
+  ],
+  "9361719337": [
+   {
+    "key": "6b34b4ff1fbb22dc6360b151f40f4736",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / IMPACT / T-13 IMPACT / Texture"
+   }
+  ],
+  "94354683957648": [
+   {
+    "key": "824d778d5f8fd6b6d3995a492f9b92a8",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / RSH-12 / RSH 12 Gauge"
+   }
+  ],
+  "330274138": [
+   {
+    "key": "f9924e171e0faaf0ef359f176dae0bff",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / COILGUN / e Shotgun Penny Conversion"
+   }
+  ],
+  "17286167554": [
+   {
+    "key": "4c4aa65e2c3b7d2a10f7ec4679a6a3f4",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / OTHER / SAIGA-12U / SAIGA-50U"
+   }
+  ],
+  "16281996111": [
+   {
+    "key": "e37f0db5ac3c829fbcc662e149692e7d",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / AUTOMAG III / AUTOMAG V"
+   }
+  ],
+  "16076219461": [
+   {
+    "key": "f28fe94d4d43038c9f810fe67d71af9c",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GB-22 / GB-10"
+   }
+  ],
+  "16076220214": [
+   {
+    "key": "ed1db6e0d486dfb27289fd05132fb6a0",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GB-22 / GB-12"
+   }
+  ],
+  "16076220436": [
+   {
+    "key": "42be520f67d8da1413ca05f5dea1ddf3",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / GB-22 / GB-50"
+   }
+  ],
+  "10658576113": [
+   {
+    "key": "12bed369e3b9fa75b7f694f11eb366d6",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / M9 / Osprey Suppressor"
+   }
+  ],
+  "130327948202358": [
+   {
+    "key": "2f611a7c7ae090ec47687ee11fa29e7a",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / PISTOLS / U-527/22 / Integral U416"
+   }
+  ],
+  "16359101420": [
+   {
+    "key": "256cbc9cb1c1d8e762c1962081e2b2fe",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / MATEBA 6 / Mateba 6 .454 Casull"
+   }
+  ],
+  "17439816200": [
+   {
+    "key": "c7303e5fd14ee1f95fdbccb0a10ae877",
+    "kind": ".ogg",
+    "name": "Sounds / SECONDARY / REVOLVERS / MP412 REX / MONARCH"
+   }
+  ],
+  "851332837": [
+   {
+    "key": "000ba77d8dbe9a523dfd7bdd113ce78b",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Japan* / Flowers 1*"
+   },
+   {
+    "key": "89a11999e65043306f10961be3333bed",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Japan* / Flowers 1*"
+   }
+  ],
+  "7472300200": [
+   {
+    "key": "4bca133e859e4449571728faeb84e9bf",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Pacific / Carpin' Crazy + Textures / Skins / Tier 3 / Pacific / Carpin' Crazy*"
+   },
+   {
+    "key": "27bb2d491c85920494de1f854dc91d42",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Pacific / Carpin' Crazy + Textures / Skins / Tier 3 / Pacific / Carpin' Crazy*"
+   }
+  ],
+  "151165214": [
+   {
+    "key": "9174e41a1e39932fbd89fa2e488c2677",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Crane Site / SkyboxBk"
+   }
+  ],
+  "159005370": [
+   {
+    "key": "4181104f4a1fd390da108c29b842c5ed",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Desert Storm / SkyboxBk + Textures / Skyboxes / Desert Storm / SkyboxFt + Textures / Skyboxes / Desert Storm / SkyboxLf + Textures / Skyboxes / Desert Storm / SkyboxRt"
+   }
+  ],
+  "591058823": [
+   {
+    "key": "0fbc797949c5600fccd3ada2bd9e6888",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Derrick / SkyboxBk"
+   }
+  ],
+  "6444884337": [
+   {
+    "key": "16cc540aff3319742f644a08bb82b3ab",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Warehouse / SkyboxBk + Textures / Skyboxes / Warehouse / SkyboxFt + Textures / Skyboxes / Warehouse / SkyboxLf + Textures / Skyboxes / Warehouse / SkyboxRt"
+   }
+  ],
+  "153695414": [
+   {
+    "key": "445273870ffd09e375b593511ba0934b",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Metro 2025 / SkyboxBk"
+   }
+  ],
+  "151165197": [
+   {
+    "key": "3d6d92423e8f492f9b90569a6d54c318",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Crane Site / SkyboxDn"
+   }
+  ],
+  "858422412": [
+   {
+    "key": "b9624a2cc50adf000e5a30aabcb6e9c0",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Desert Storm / SkyboxDn"
+   }
+  ],
+  "591059876": [
+   {
+    "key": "5bb7985b2e7924ec51db0f7694ad0d38",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Derrick / SkyboxDn"
+   }
+  ],
+  "6444884785": [
+   {
+    "key": "62f2515c03e8a94546ef33dfc7ea5c28",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Warehouse / SkyboxDn"
+   }
+  ],
+  "153695352": [
+   {
+    "key": "f30c1b17e44be02b443855cdb0d9f877",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Metro 2025 / SkyboxDn"
+   }
+  ],
+  "151165224": [
+   {
+    "key": "c1adaf9e6ddb477c6ca20105c43a2aad",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Crane Site / SkyboxFt"
+   }
+  ],
+  "591058104": [
+   {
+    "key": "af687324811c6c85aa97bfb4807c9dc5",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Derrick / SkyboxFt"
+   }
+  ],
+  "153695452": [
+   {
+    "key": "30838f8462c0a4a7574bc268ea57d5a6",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Metro 2025 / SkyboxFt"
+   }
+  ],
+  "151165191": [
+   {
+    "key": "6be9c9d965227f4546fcec8959ce7105",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Crane Site / SkyboxLf"
+   }
+  ],
+  "591057861": [
+   {
+    "key": "95484b83771a92300b74892b098fd16f",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Derrick / SkyboxLf"
+   }
+  ],
+  "153695320": [
+   {
+    "key": "822f80f8ad2614133d6dfc572033a091",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Metro 2025 / SkyboxLf"
+   }
+  ],
+  "151165206": [
+   {
+    "key": "dd5ae72b4a99cd499b974242a7ce0550",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Crane Site / SkyboxRt"
+   }
+  ],
+  "591057625": [
+   {
+    "key": "e063b1996b5b434f251fcfd846cdb9b7",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Derrick / SkyboxRt"
+   }
+  ],
+  "153695383": [
+   {
+    "key": "fb2046ab46389af628ff5e2f0e9234ed",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Metro 2025 / SkyboxRt"
+   }
+  ],
+  "151165227": [
+   {
+    "key": "df54277fa8b9ba3c08c863b120bdcdd3",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Crane Site / SkyboxUp"
+   }
+  ],
+  "159006363": [
+   {
+    "key": "e245dced103dd6eb2e8e37a8aa9deacf",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Desert Storm / SkyboxUp"
+   }
+  ],
+  "591059642": [
+   {
+    "key": "6e5990699db52f01a9762250e3604415",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Derrick / SkyboxUp"
+   }
+  ],
+  "6412503613": [
+   {
+    "key": "3b2882a19b6fd8b12c29230467f42aec",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Warehouse / SkyboxUp"
+   }
+  ],
+  "153695471": [
+   {
+    "key": "0bdc2aea4c2c3b4de0402eda687de18a",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Metro 2025 / SkyboxUp"
+   }
+  ],
+  "130715368011981": [
+   {
+    "key": "0a1ef3e1f78628916395bf49fae1ea88",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / MK 2 FRAG / Body"
+   }
+  ],
+  "85387397879040": [
+   {
+    "key": "6af40ee61b22c831b6e7d572c8908fba",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / MK 2 FRAG / Handle"
+   }
+  ],
+  "112912009018482": [
+   {
+    "key": "119f2d6703cff89ced10708466ff6dec",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / MK 2 FRAG / Pin"
+   }
+  ],
+  "9285361230": [
+   {
+    "key": "f19332dc7235e9d2c1ca803abfda01ea",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / MK 2 FRAG / Texture"
+   }
+  ],
+  "117031955489991": [
+   {
+    "key": "41133e598449811c013aa2d19983b1f9",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M24 STICK / Body"
+   }
+  ],
+  "122862527086006": [
+   {
+    "key": "a532c6bd3296fda80073d337e874b101",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M24 STICK / Handle"
+   }
+  ],
+  "114703294212559": [
+   {
+    "key": "57b142345ac50db36e9c6ba53702bce4",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M24 STICK / Pin"
+   }
+  ],
+  "9300096292": [
+   {
+    "key": "850f78676bfcf7ac497e6fa4ffad977d",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / M24 STICK / Texture"
+   }
+  ],
+  "94212549207416": [
+   {
+    "key": "d1e93b766ea35776964f92a5453012f9",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M26 FRAG / Handle"
+   }
+  ],
+  "103126124487904": [
+   {
+    "key": "7c2ceeab6a6c7f1aa218ef2f13b24899",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M26 FRAG / Pin"
+   }
+  ],
+  "84584519745719": [
+   {
+    "key": "0523e091fcfe94b82e318a3610ff1b30",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M560 MINI / Handle"
+   }
+  ],
+  "90915844232138": [
+   {
+    "key": "44698a2774fe01f5403e83ba64fbd9a0",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / M560 MINI / Pin"
+   }
+  ],
+  "138740231502592": [
+   {
+    "key": "a82e4742656009d9e74061aad0c9b204",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / V40 MINI / Body"
+   }
+  ],
+  "108131623901311": [
+   {
+    "key": "d7288be3f1b889020045a32ccdc35db7",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / V40 MINI / Handle"
+   }
+  ],
+  "112615471662369": [
+   {
+    "key": "af76000a6b08651d5d42ad303696099c",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / V40 MINI / Pin"
+   }
+  ],
+  "9285347259": [
+   {
+    "key": "ba2ce5b620089d6693b396ec67783d66",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / V40 MINI / Texture1"
+   }
+  ],
+  "9285347503": [
+   {
+    "key": "46dfa10bb6577e78879b69ef828216c6",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / V40 MINI / Texture2"
+   }
+  ],
+  "126781349308699": [
+   {
+    "key": "4f7358cd65dbcac4966e5de80dd282f7",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / ROLY HG / Body"
+   }
+  ],
+  "105324295370731": [
+   {
+    "key": "dbe1bfecbf41b12d1f94f7468ad85313",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / ROLY HG / Handle"
+   }
+  ],
+  "109933806899452": [
+   {
+    "key": "798e8ab4535dce40f3bb5424d3529a1b",
+    "kind": ".mesh",
+    "name": "Models / Grenades / FRAGMENTATION / ROLY HG / Pin"
+   }
+  ],
+  "9303271368": [
+   {
+    "key": "0b8e9d1ad07cd83136944f0696114f9c",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / ROLY HG / Texture1"
+   }
+  ],
+  "9303414203": [
+   {
+    "key": "ec150aaac095a7b43685c09cf0e4da06",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / ROLY HG / Texture2"
+   }
+  ],
+  "1454292685": [
+   {
+    "key": "ab277d0eb457c3d80f014e1730ebc3df",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / FRAGMENTATION / ROLY HG / Sparkle"
+   }
+  ],
+  "110699405244834": [
+   {
+    "key": "7b12035bba83e06544ccbdf9e6675ef0",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE / Body"
+   }
+  ],
+  "132309895170726": [
+   {
+    "key": "f34909460d8c4a5f5da7b11cec4b2287",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE3 / Lighter"
+   }
+  ],
+  "311395391": [
+   {
+    "key": "7e572eaab7a5eaf80a6a6d00bfceb7a6",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE3 / Sparks1"
+   }
+  ],
+  "4911290852": [
+   {
+    "key": "7406726db4bccbd41c2a3e223c0c3dcc",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE3 / Sparks2"
+   }
+  ],
+  "6892212425": [
+   {
+    "key": "010b98860b81dd72d99b32cd3999e48d",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / DYNAMITE3 / Flame"
+   }
+  ],
+  "9285322629": [
+   {
+    "key": "a9b4ce21fd66b48b80175dfb67298794",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / RGD-5 HE / Body"
+   }
+  ],
+  "9285322623": [
+   {
+    "key": "1a9039c21a182aa6f18bb81d22ac7415",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / RGD-5 HE / Handle"
+   }
+  ],
+  "9285367710": [
+   {
+    "key": "fed8dcd0a03a89f487956ed27f94b545",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / RGD-5 HE / Texture"
+   }
+  ],
+  "80701002967430": [
+   {
+    "key": "0ca1aca0afb0dda242102721bdf3a0b4",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / SEMTEX / Pin"
+   }
+  ],
+  "136737867397437": [
+   {
+    "key": "07ab3ee07644b37281a2ad2c1cfd5988",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / PB GRENADE / Body"
+   }
+  ],
+  "9291340168": [
+   {
+    "key": "b50b35a184f793ddb32ea119e39ca393",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / PB GRENADE / Texture"
+   }
+  ],
+  "123204164966116": [
+   {
+    "key": "76588537b8678928455385e24b25d787",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / BUNDLE CHARGE / Body"
+   }
+  ],
+  "80059217087580": [
+   {
+    "key": "a532c6bd3296fda80073d337e874b101",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / BUNDLE CHARGE / Handle"
+   }
+  ],
+  "102681658582905": [
+   {
+    "key": "57b142345ac50db36e9c6ba53702bce4",
+    "kind": ".mesh",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / BUNDLE CHARGE / Pin"
+   }
+  ],
+  "9300095659": [
+   {
+    "key": "94f65dd8c14cf6f4231e571b6dfc25ad",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / HIGH EXPLOSIVE / BUNDLE CHARGE / Texture"
+   }
+  ],
+  "72386110942315": [
+   {
+    "key": "0b725fef27b8ef16740742330df0e649",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / RGN UDZS / Body"
+   }
+  ],
+  "103051282705264": [
+   {
+    "key": "5c1b2540cad81f912545f5d4b6b37a68",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / RGN UDZS / Handle"
+   }
+  ],
+  "81683685985734": [
+   {
+    "key": "077d741b7d1b51a06562119eb7c2a0a6",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / RGN UDZS / Pin"
+   }
+  ],
+  "9361888208": [
+   {
+    "key": "13bf4876cb71f8dd8c6f4b3522456e4a",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / IMPACT / RGN UDZS / Texture"
+   }
+  ],
+  "103260527147470": [
+   {
+    "key": "c946427ce8b26366e7808ec33493c1ad",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / RGO UDZS / Body"
+   }
+  ],
+  "121742121233091": [
+   {
+    "key": "fc981fe6b76891876634e52bbff77916",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / RGO UDZS / Handle"
+   }
+  ],
+  "112626689161580": [
+   {
+    "key": "4d911e431bc719848dc1a55110adc0e9",
+    "kind": ".mesh",
+    "name": "Models / Grenades / IMPACT / RGO UDZS / Pin"
+   }
+  ],
+  "9362498609": [
+   {
+    "key": "d5964fab10d62dd8422974c821b1084e",
+    "kind": ".ktx2",
+    "name": "Models / Grenades / IMPACT / RGO UDZS / Texture"
+   }
+  ],
+  "17641129066": [
+   {
+    "key": "6ae1a1c0ba8cadd1ea3824b7ed0a0c3f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AK-103 / AK-109"
+   }
+  ],
+  "17641112324": [
+   {
+    "key": "9968028a9ef0835014e5aaa4ac8642ea",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AKM / VPO-209"
+   }
+  ],
+  "129109666886625": [
+   {
+    "key": "219708f4c3c0d19e6d2dff91f5a56ce7",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / AN-94 / AN 7.62x39 Conversion"
+   }
+  ],
+  "18197112195": [
+   {
+    "key": "1cda2baab7e9474270c360fa7ba5df86",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / C7A2 / LSW Barrel"
+   }
+  ],
+  "15685938275": [
+   {
+    "key": "a2ef1ff41dc3c17dab3d0aef20e4288f",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / K1A / MAX-III"
+   }
+  ],
+  "73874264488572": [
+   {
+    "key": "cf3cdd70b9c78734654c9b1a3e16dd41",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / MAC-15 / SD Barrel"
+   }
+  ],
+  "14832923200": [
+   {
+    "key": "fa697e3a3a0da8d96fc8e3f73407f4e9",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / MK16 SOCOM CQB / SCAR PDW 9mm Conversion"
+   }
+  ],
+  "15685936220": [
+   {
+    "key": "e868bf9a1ca0a2bc3b30450aea07cd5c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / TYPE 20 / Integral T20"
+   }
+  ],
+  "17641124317": [
+   {
+    "key": "0e471a2e140a9f866b4902bdf21fd4dc",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / TYPE 88 / TYPE 58"
+   }
+  ],
+  "140353747399822": [
+   {
+    "key": "3f715bc547854c34082b90b0840627c1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / ASSAULT RIFLE / VZ.806 / Bren 2 7.62x39mm"
+   }
+  ],
+  "75767196795578": [
+   {
+    "key": "30694c9be9e9265dabfebfc6ec8a1037",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / M7 NGSW / SLX Suppressor"
+   }
+  ],
+  "81450713164891": [
+   {
+    "key": "b72be42bbf4f99b5d71b598ccea71307",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / MK17 SOCOM / SCAR-H 6.8 SPC Conversion"
+   }
+  ],
+  "124943245574408": [
+   {
+    "key": "3d979deb163a7cc5444b2b886c17f9fc",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / BATTLE RIFLE / STG-59H / STG-59H (45)"
+   }
+  ],
+  "17641126709": [
+   {
+    "key": "8cc5e406b6722d75e136ab06c240c981",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AK-105 / AK-107"
+   }
+  ],
+  "17353528381": [
+   {
+    "key": "3f2ad76adb040133b00896209e890926",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AK-12U / PPK-12"
+   }
+  ],
+  "107069650150224": [
+   {
+    "key": "ea18825772dde2f597b4eb54d3a39072",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / AK-9 / Integral AK9"
+   }
+  ],
+  "17641117932": [
+   {
+    "key": "d0daf0c88aeef50768f519a1524d988e",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / GROZA-1 / GROZA-2"
+   }
+  ],
+  "17641116913": [
+   {
+    "key": "3937716e150365aacdb6977620dd67d2",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / GROZA-1 / GROZA-3"
+   }
+  ],
+  "91977959476473": [
+   {
+    "key": "c08ac15361ee02e8eb31352ea170dd43",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / MINI FIX / SD Barrel + Sounds / PRIMARY / CARBINE / MINI FIX / Trash Panda"
+   }
+  ],
+  "92179874864338": [
+   {
+    "key": "df7a63ad9a9d1af8245ff0947ecf8347",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / MK16 SOCOM SC / SCAR SC 300 Subsonic + Sounds / PRIMARY / CARBINE / MK16 SOCOM SC / SCAR SC Integral"
+   }
+  ],
+  "2745088770": [
+   {
+    "key": "1a93ebd603a6bbf0c7a5ae7ecb23bec1",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / STG-89C / STG-89SD"
+   }
+  ],
+  "77197396401241": [
+   {
+    "key": "e74ab14ea4413f2177b5c5d9df8f1152",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / UAR A3 / 7.62x39mm"
+   }
+  ],
+  "95925030073626": [
+   {
+    "key": "7780a57fb28288f864b69c40293df168",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / CARBINE / VIRTUS / Intergrated Barrel"
+   }
+  ],
+  "17286166835": [
+   {
+    "key": "6551753038653bdc56a97095d92e1bba",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / MK11 / MK11 500 Conversion"
+   }
+  ],
+  "90757301286043": [
+   {
+    "key": "a73bd8a2c7ac139aaecf3da2cf9414bd",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / DMR / SVK-12 / SVK-12/12.7"
+   }
+  ],
+  "93482600213126": [
+   {
+    "key": "dd73226ebb4788d12d486c7711e7ecef",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / LMG / M60E6 / M60 5.56"
+   }
+  ],
+  "17641121691": [
+   {
+    "key": "ec6a16bc8be0e077c9baa783a06d121d",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / AKS-74U / AK-V"
+   }
+  ],
+  "17641120514": [
+   {
+    "key": "c828b8be3db0b77338806ab907199bee",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / AKS-74U / AKMSU"
+   }
+  ],
+  "17286163471": [
+   {
+    "key": "80d406fe080c4b1a0ffc9063107492f6",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / FIVE-0 / AR-9"
+   }
+  ],
+  "17286162785": [
+   {
+    "key": "89fa2c337815955339b810f1607c77c5",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / FIVE-0 / FOUR-T-5"
+   }
+  ],
+  "16076219997": [
+   {
+    "key": "cd65b3afa9a3260ac0a02f17914de077",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / K7 / K7 5.56x45 Conversion"
+   }
+  ],
+  "130142723315559": [
+   {
+    "key": "54eb69d1859e20afb31ef25b93cc1aae",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / LUTY / Integral"
+   }
+  ],
+  "114519806224862": [
+   {
+    "key": "73993bfe3657c170b5da4bc7bf1ccab6",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / M3A1 / OSS Suppressor"
+   }
+  ],
+  "2484694762": [
+   {
+    "key": "72af763a8387a398e4ff94725d92d0dd",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / PDW / X46 / Loudener"
+   }
+  ],
+  "17447183138": [
+   {
+    "key": "a117d9e48fd4bdfb1701875ba48c3447",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SHOTGUN / DT11 / Integral Suppressor"
+   }
+  ],
+  "10224754854": [
+   {
+    "key": "c76ed453a648c055b77bc1777014aa21",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / M1903 / Maxim Silencer"
+   }
+  ],
+  "101780535125811": [
+   {
+    "key": "503602f4b9d6d1618cf3d3d8e8c5c33c",
+    "kind": ".ogg",
+    "name": "Sounds / PRIMARY / SNIPER RIFLE / THE FIX / PORQ Chop + Sounds / PRIMARY / SNIPER RIFLE / THE FIX / Short Chop"
+   }
+  ],
+  "2656896185": [
+   {
+    "key": "443f0ae1b2cea95241659c500b3ae0e3",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / exps3 Holo"
+   }
+  ],
+  "2650370091": [
+   {
+    "key": "4d68305af8eb56da1c867f64462db739",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / kobra"
+   }
+  ],
+  "915635179": [
+   {
+    "key": "adc1f0d226aa3e9fc7b3c824c1bc2ae8",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / kobra ekp"
+   }
+  ],
+  "8989896652": [
+   {
+    "key": "cfc10ece809e765aadacab10ae0fa741",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / eotech m40"
+   }
+  ],
+  "2667135919": [
+   {
+    "key": "87c72756829aa6e424129356d2a5ba54",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / okp-7"
+   }
+  ],
+  "7949761324": [
+   {
+    "key": "b6bd82d89df1e4cb78ff0a51cf51fa65",
+    "kind": ".png",
+    "name": "Textures / Optics / Red Dots / uh-1"
+   }
+  ],
+  "3631856833": [
+   {
+    "key": "e6297c187ced5e6113a15d4dbfe891b6",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / acog"
+   }
+  ],
+  "4586516634": [
+   {
+    "key": "fa0a8a041dc55850c1104e35c2873770",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / c79"
+   }
+  ],
+  "2659589998": [
+   {
+    "key": "c8dd9783a6986c5932332379df3d7feb",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / m145"
+   }
+  ],
+  "5374089980": [
+   {
+    "key": "9a277a56aa6f11e90000009f9bae2174",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / malcolm"
+   }
+  ],
+  "7647550977": [
+   {
+    "key": "3d45ed747fa0cf38eaa0acf4201800f0",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / ta44 acog"
+   }
+  ],
+  "5275581329": [
+   {
+    "key": "c7844bbc40d99ae3b7214e5188f459cc",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / hensoldt"
+   }
+  ],
+  "4608371361": [
+   {
+    "key": "584ff2a42de11ee0cc4d9a613350be61",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / vcog 8x"
+   }
+  ],
+  "5596043100": [
+   {
+    "key": "69c602eb01df5baea2bcf3295f4eda86",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / ta11 acog"
+   }
+  ],
+  "2651642247": [
+   {
+    "key": "4f4796f372a8f9ef3d4391bc8e7c299e",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / pu-1"
+   }
+  ],
+  "941751908": [
+   {
+    "key": "38f84598ca318a2dad744bc6e973a65e",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / pso-1m2"
+   }
+  ],
+  "4584926230": [
+   {
+    "key": "9751ee9b434f00f091eec7db10dabce2",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / ta01"
+   }
+  ],
+  "14175807903": [
+   {
+    "key": "7284935cabe1d9fa7b0abf655547527f",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / electra 1-3x"
+   }
+  ],
+  "4342163574": [
+   {
+    "key": "212d0d1736acb128796541bedbbb922d",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / reflector scope"
+   }
+  ],
+  "98086826572121": [
+   {
+    "key": "cee7e39a64d11ebd0c2a7d94e830ab1b",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / tangomsr1-8"
+   }
+  ],
+  "135505049141434": [
+   {
+    "key": "61661553f4a8bf63ffbc9127b2c4eb99",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / pro 3-9x"
+   }
+  ],
+  "107900735451913": [
+   {
+    "key": "74db12d366186871295695edbd79ea5d",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / susat"
+   }
+  ],
+  "72949583845903": [
+   {
+    "key": "b0b60e87b4d8a2f130cd95a06e7dc0f7",
+    "kind": ".png",
+    "name": "Textures / Optics / Scopes / eotech vudu 1-10"
+   }
+  ],
+  "1451560769": [
+   {
+    "key": "3ab3e590355702c6ffdc88d1d8bd83fb",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 2 / Fauna 2 / Synthetic Scalie*"
+   },
+   {
+    "key": "376e4c8629113fe59cbf846193ddc5ee",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / Fauna 2 / Synthetic Scalie*"
+   }
+  ],
+  "614741754": [
+   {
+    "key": "0a55645924d859ac78edf994da6d5332",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 2 / DR / Access*"
+   },
+   {
+    "key": "9f14eeae9eaa95bed6cad55ce9a1c07a",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 2 / DR / Access*"
+   }
+  ],
+  "852905839": [
+   {
+    "key": "58b6c4b886534ccafc844eead93c7a28",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Japan* / Blossoms*"
+   },
+   {
+    "key": "7709845fbadb51230de1aa36d52daa55",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Japan* / Blossoms*"
+   }
+  ],
+  "851302663": [
+   {
+    "key": "4d05ffb9d7b20605cc394d038e7e941f",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Japan* / Carp*"
+   },
+   {
+    "key": "29349b06fce41e7789d61b957d995d36",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Japan* / Carp*"
+   }
+  ],
+  "852746779": [
+   {
+    "key": "09adc98ed5ee102c0b40aac9388ee6a3",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Japan* / Waves 1*"
+   },
+   {
+    "key": "c065a534b974938f8b2b7d0542a3c84b",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Japan* / Waves 1*"
+   }
+  ],
+  "7472448260": [
+   {
+    "key": "ca41f32dc4f9ba754a75fb544276483a",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Pacific / Dragon's Den + Textures / Skins / Tier 3 / Pacific / Dragon's Den*"
+   },
+   {
+    "key": "ff1469c7d74ffc0af672002bbad905ce",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Pacific / Dragon's Den + Textures / Skins / Tier 3 / Pacific / Dragon's Den*"
+   }
+  ],
+  "2633515513": [
+   {
+    "key": "db631d9cf476f47bfc33fbcdafab94d4",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Phantom / Phantom Morale*"
+   },
+   {
+    "key": "dbeef86efedc514f4d0d937ef9aba2f2",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Phantom / Phantom Morale*"
+   }
+  ],
+  "6028625734": [
+   {
+    "key": "99fb2d95c6bcd30d590e595117b669c9",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Xmas Night 2"
+   },
+   {
+    "key": "1144c3b7c96d4aeab3c299822024ac30",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 3 / Crimbo / Xmas Night 2"
+   }
+  ],
+  "7492954421": [
+   {
+    "key": "2c859207e296c5047b5e226d24fe9caa",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Topograph / Topographic Tiger*"
+   },
+   {
+    "key": "b39d73b0390b419ab4b6a6bc99589364",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Topograph / Topographic Tiger*"
+   }
+  ],
+  "7584021464": [
+   {
+    "key": "d43009aebf2131a07f3bc9c0bc4e878e",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Topograph / Golden Rattlesnake*"
+   },
+   {
+    "key": "705831b00f4883626896fc90d85dcff5",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Topograph / Golden Rattlesnake*"
+   }
+  ],
+  "7493105510": [
+   {
+    "key": "2bcadeeb093d62177b87579036bc9c5c",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Topograph / Toxic Miasma*"
+   },
+   {
+    "key": "6476ac1026424f7435836d5a57fb7117",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Topograph / Toxic Miasma*"
+   }
+  ],
+  "2257214278": [
+   {
+    "key": "d59ab1f32ca25466e44891b3a1466dd6",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Retro / Dreamscape"
+   },
+   {
+    "key": "08099ea93a463697bf72db130ade3c35",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Retro / Dreamscape"
+   }
+  ],
+  "1419995645": [
+   {
+    "key": "7695f5e375a464fa0583a7ceaebe3002",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Love in Grunge"
+   },
+   {
+    "key": "d211808f357f384e335048abdaa3ee63",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / Be Mine / Love in Grunge"
+   }
+  ],
+  "8506503940": [
+   {
+    "key": "677a83b2a760fd47138ffddce4db3da3",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 4 / SCL / Notoriety (SCL)*"
+   },
+   {
+    "key": "c04035c5518da4f0b035b378f3dcf080",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 4 / SCL / Notoriety (SCL)*"
+   }
+  ],
+  "1065167000": [
+   {
+    "key": "a2189b173f6d398553df04e12bff155f",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Pattern 2 / Furline"
+   },
+   {
+    "key": "ae09e75beacb0aa1cd20f4deb074c01b",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Pattern 2 / Furline"
+   }
+  ],
+  "697703444": [
+   {
+    "key": "3ecee847e40037fdd5e9261757c5e03e",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Grunge / Faded Bubbles"
+   },
+   {
+    "key": "22136483a17218c8a100a4c7a8c9d14b",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Grunge / Faded Bubbles"
+   }
+  ],
+  "697667220": [
+   {
+    "key": "0c7baba41e60147ef414d229f34f64d4",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Grunge / Backstreet Writing"
+   },
+   {
+    "key": "8cf5ed045f60d608a7c98c9dfc46acf0",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Grunge / Backstreet Writing"
+   }
+  ],
+  "1401292538": [
+   {
+    "key": "e11cc1c623e9001360e4cb9326aeabb6",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Night Scales"
+   },
+   {
+    "key": "d62ab5c5b71279284992f644709805f9",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Night Scales"
+   }
+  ],
+  "1391458868": [
+   {
+    "key": "85a7b586c03b5cf4a8f43944862132a5",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Circuit Augments"
+   },
+   {
+    "key": "f0df43d4580606a338aaddcad6509fa2",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Circuit Augments"
+   }
+  ],
+  "1352515069": [
+   {
+    "key": "80e2eb494c830c2c6436af6b5ee835bb",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Imperial Standard"
+   },
+   {
+    "key": "eedbd9a42e3057d87c491e2239928388",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Imperial Standard"
+   }
+  ],
+  "1841367693": [
+   {
+    "key": "4651b9646054d7ff61266bc26e9d1658",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Tech / Armour of the Future"
+   },
+   {
+    "key": "2c57c4996b615cc0f0f97a3766538cc4",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Tech / Armour of the Future"
+   }
+  ],
+  "5410364179": [
+   {
+    "key": "fcf14a8198ab90ec2a984b14eb0fee3e",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Creator / Spirals 2"
+   },
+   {
+    "key": "7074d5df125598c07cd8a5e052eeaf4c",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Creator / Spirals 2"
+   }
+  ],
+  "134395587887649": [
+   {
+    "key": "2416eb0d716fa3bc9c71935f29c6ae21",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Pixel - Slope"
+   },
+   {
+    "key": "b862e92773d151271256e16021cc1a18",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Pixel - Slope"
+   }
+  ],
+  "100484315889828": [
+   {
+    "key": "ccb5052e36ab0a4847bec8ccb811f7ac",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Net - Slope"
+   },
+   {
+    "key": "b47c2b806e2cdda0e13d43368eef6c4b",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Net - Slope"
+   }
+  ],
+  "72619178856342": [
+   {
+    "key": "c2739656eb24a26ff704dad831bf4fc2",
+    "kind": ".ktx2",
+    "name": "Textures / Skins / Tier 5 / Fade / Halftone - Slope"
+   },
+   {
+    "key": "dc9ab6566819039d83e13f6113ef509d",
+    "kind": ".png",
+    "name": "Textures / Skins / Tier 5 / Fade / Halftone - Slope"
+   }
+  ],
+  "9544505500": [
+   {
+    "key": "c2418130e6b6354c7e639329643f208e",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Second Storm / SkyboxBk"
+   }
+  ],
+  "2673271663": [
+   {
+    "key": "5e5dc71987e6b0613a6344f472063b98",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Mirage Revamp / SkyboxBk"
+   }
+  ],
+  "91458024": [
+   {
+    "key": "611bbd1f8946fa523a9ffdc2c1f7e28d",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Penthouse / SkyboxBk + Textures / Skyboxes / Penthouse / SkyboxFt + Textures / Skyboxes / Penthouse / SkyboxLf + Textures / Skyboxes / Penthouse / SkyboxRt"
+   }
+  ],
+  "4495864450": [
+   {
+    "key": "6cbd2094757bce8c8b9ff2848d2977b3",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Rig / SkyboxBk"
+   }
+  ],
+  "9544547905": [
+   {
+    "key": "a68a3d10c9df532a008b7a4c960c303f",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Second Storm / SkyboxDn"
+   }
+  ],
+  "2673271148": [
+   {
+    "key": "529083267b3b794dac9187d1689ae42c",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Mirage Revamp / SkyboxDn"
+   }
+  ],
+  "91457980": [
+   {
+    "key": "bf5e1060e81160092f6826fc97477957",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Penthouse / SkyboxDn"
+   }
+  ],
+  "4495864887": [
+   {
+    "key": "334a9e182a71de4cd28f17006c22275b",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Rig / SkyboxDn"
+   }
+  ],
+  "9544504852": [
+   {
+    "key": "9c6ffc39162ef98ec335578b4ebdc4cc",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Second Storm / SkyboxFt"
+   }
+  ],
+  "2673271285": [
+   {
+    "key": "33bb87b6f154fae8e5ca172b44bbb488",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Mirage Revamp / SkyboxFt"
+   }
+  ],
+  "4495865458": [
+   {
+    "key": "0bb68cf31a9ad0315d02cb1b8ae29556",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Rig / SkyboxFt"
+   }
+  ],
+  "9544547694": [
+   {
+    "key": "6e781af7a5cfb7315abf7ecf5dee5ffc",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Second Storm / SkyboxLf"
+   }
+  ],
+  "2673270998": [
+   {
+    "key": "f5f35abfdca9edc88ef1c86f486703a7",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Mirage Revamp / SkyboxLf"
+   }
+  ],
+  "4495866035": [
+   {
+    "key": "4907627a9009ef8e831392f52cd132a8",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Rig / SkyboxLf"
+   }
+  ],
+  "9544547542": [
+   {
+    "key": "73eb76117c8899f375523303492b790e",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Second Storm / SkyboxRt"
+   }
+  ],
+  "2673271813": [
+   {
+    "key": "63beb6208d68fc8578a211879a9d8432",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Mirage Revamp / SkyboxRt"
+   }
+  ],
+  "4495866584": [
+   {
+    "key": "9fa9cde5bea89543758ec57ee96f4f1f",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Rig / SkyboxRt"
+   }
+  ],
+  "9544547398": [
+   {
+    "key": "c27a90721f8c7dbe198e19f286bcbaea",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Second Storm / SkyboxUp"
+   }
+  ],
+  "2673271464": [
+   {
+    "key": "016d9f70afe8960e555a324077da1f78",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Mirage Revamp / SkyboxUp"
+   }
+  ],
+  "91458002": [
+   {
+    "key": "a93cae053ebed344ba19dae0d532afb7",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Penthouse / SkyboxUp"
+   }
+  ],
+  "4495867486": [
+   {
+    "key": "64d5446cf60fbbc1b5967e5502ffb522",
+    "kind": ".png",
+    "name": "Textures / Skyboxes / Rig / SkyboxUp"
+   }
+  ],
+  "339174016": [
+   {
+    "key": "9e874984a5dc259bbca10a9e245c27ff",
+    "kind": ".ktx2",
+    "name": "Textures / Ballistics Tracker / FRONT"
+   }
+  ],
+  "4702707170": [
+   {
+    "key": "881d357bfdce48430ce5ef0131315954",
+    "kind": ".ktx2",
+    "name": "Textures / Ballistics Tracker / BACK"
+   }
+  ]
+ }
+}

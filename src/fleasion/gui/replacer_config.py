@@ -1,0 +1,3439 @@
+"""Replacer config window."""
+
+from ..localization import tr, tr_count
+
+import json
+import re
+import sys
+import time
+from copy import deepcopy
+from pathlib import Path
+from typing import Union
+from urllib.error import URLError
+
+from PyQt6.QtCore import QByteArray, QEvent, QObject, QPropertyAnimation, QRect, QSize, Qt, QTimer, pyqtSignal
+from PyQt6.QtGui import (
+    QBrush,
+    QColor,
+    QFontMetrics,
+    QIcon,
+    QPainter,
+    QPalette,
+    QPen,
+    QPixmap,
+)
+from PyQt6.QtWidgets import (
+    QAbstractItemView,
+    QApplication,
+    QComboBox,
+    QDialog,
+    QFileDialog,
+    QFrame,
+    QGroupBox,
+    QHBoxLayout,
+    QHeaderView,
+    QInputDialog,
+    QLabel,
+    QLineEdit,
+    QMenu,
+    QMessageBox,
+    QPushButton,
+    QScrollArea,
+    QSizePolicy,
+    QStyle,
+    QStyledItemDelegate,
+    QStyleOptionMenuItem,
+    QStyleOptionViewItem,
+    QGraphicsOpacityEffect,
+    QGridLayout,
+    QTabWidget,
+    QTextEdit,
+    QTreeWidget,
+    QTreeWidgetItem,
+    QVBoxLayout,
+    QWidget,
+    QWidgetAction,
+)
+
+from ..utils import (
+    APP_NAME,
+    PREJSONS_DIR,
+    format_count,
+    get_icon_path,
+    log_buffer,
+    open_folder,
+    run_in_thread,
+)
+from ..utils.http import http_head_status
+from ..config.manager import (
+    local_replacement_path_for_storage,
+    resolve_local_replacement_path,
+)
+from .text_fit import ensure_text_width, refit_text_widths
+from .file_drop import FileDropLineEdit, local_file_path_example
+from .json_viewer import JsonTreeViewer
+from .proxy_gate import ProxyGate
+from .highlight_tree import HighlightTree
+
+_ROLE_PATH = Qt.ItemDataRole.UserRole
+_ROLE_KIND = Qt.ItemDataRole.UserRole.value + 1
+_ROLE_SORT_BASE = Qt.ItemDataRole.UserRole.value + 16
+_ROLE_DRAW_GROUP_ICON = Qt.ItemDataRole.UserRole.value + 32
+_ROLE_GROUP_ICON_INDENT = Qt.ItemDataRole.UserRole.value + 33
+_ROLE_GROUP_ANCESTORS = Qt.ItemDataRole.UserRole.value + 34
+_ROLE_GROUP_DEPTH = Qt.ItemDataRole.UserRole.value + 35
+_KIND_PROFILE = 'profile'
+_KIND_GROUP = 'group'
+_MIXED_STATUS = '—'
+_DRAG_GROUP_COLORS = ('#2d6cdf', '#2f9e44', '#f08c00', '#ae3ec9', '#0ca678')
+_TREE_INDENT_PX = 9
+_GROUP_ROW_HEIGHT_PX = 24
+_GROUP_CONTENT_INDENT_SPACES = 5
+_PROFILE_NAME_COLUMN = 1
+_GROUP_FOLDER_ICON_WIDTH_PX = 13
+_GROUP_FOLDER_ICON_HEIGHT_PX = 10
+_GROUP_FOLDER_ICON_GAP_PX = 4
+_GROUP_GUIDE_GUTTER_PX = 2
+_GROUP_GUIDE_STEP_PX = 15
+_CONFIG_MENU_ROW_HEIGHT_PX = 28
+_CONFIG_MENU_SCREEN_MARGIN_PX = 12
+_CONFIG_MENU_OPEN_RELEASE_GRACE_SEC = 0.25
+_CONFIG_MENU_BUTTON_POPUP_EXTRA_WIDTH_PX = 24
+_MIN_WINDOW_SIZE = QSize(1280, 780)
+_ID_SPLIT_RE = re.compile(r'[,\s;]+')
+
+
+_ensure_text_width = ensure_text_width
+_refit_text_widths = refit_text_widths
+
+
+def _replacement_path_tooltip(*, empty_removes: bool = True) -> str:
+    lines = [
+        tr('replacer.path_tooltip.config_files'),
+        tr('replacer.path_tooltip.example'),
+        tr('replacer.path_tooltip.nesting'),
+        tr('replacer.path_tooltip.normal_path', path=local_file_path_example()),
+    ]
+    if empty_removes:
+        lines.append(tr('replacer.path_tooltip.empty_removes'))
+    return '\n'.join(lines)
+
+
+class _HoverDim(QObject):
+    """Keep a widget dimmed until the mouse is over it."""
+
+    def __init__(self, widget: QWidget, idle: float = 0.55):
+        super().__init__(widget)
+        self._idle = idle
+        self._effect = QGraphicsOpacityEffect(widget)
+        self._effect.setOpacity(idle)
+        widget.setGraphicsEffect(self._effect)
+        self._anim = QPropertyAnimation(self._effect, b'opacity', self)
+        self._anim.setDuration(160)
+        widget.installEventFilter(self)
+
+    def eventFilter(self, obj, event):  # noqa: N802
+        if event.type() == QEvent.Type.Enter:
+            self._fade(1.0)
+        elif event.type() == QEvent.Type.Leave:
+            self._fade(self._idle)
+        return False
+
+    def _fade(self, target: float) -> None:
+        self._anim.stop()
+        self._anim.setStartValue(self._effect.opacity())
+        self._anim.setEndValue(target)
+        self._anim.start()
+
+
+class _ElidedLabel(QLabel):
+    """Label that keeps long dynamic text readable without widening the window."""
+
+    def __init__(self, text: str = '', parent: QWidget | None = None):
+        super().__init__(parent)
+        self._full_text = text
+        self.setMinimumWidth(0)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Preferred)
+        self._refresh_text()
+
+    def set_full_text(self, text: str) -> None:
+        self._full_text = text
+        self.setToolTip(text)
+        self._refresh_text()
+
+    def _refresh_text(self) -> None:
+        available_width = max(0, self.contentsRect().width() - 4)
+        display_text = self.fontMetrics().elidedText(
+            self._full_text,
+            Qt.TextElideMode.ElideMiddle,
+            available_width,
+        )
+        if self.text() != display_text:
+            super().setText(display_text)
+        self.setToolTip(self._full_text)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._refresh_text()
+
+
+class UndoManager:
+    """Undo history manager."""
+
+    def __init__(self, max_history: int = 50):
+        self.history: list[list] = []
+        self.future: list[list] = []
+        self.max_history = max_history
+
+    def save_state(self, rules: list, *, copy_state: bool = True):
+        """Save a state to history."""
+        self.history.append(deepcopy(rules) if copy_state else rules)
+        if len(self.history) > self.max_history:
+            self.history.pop(0)
+        self.future.clear()
+
+    def undo(self) -> list | None:
+        """Undo to previous state."""
+        if len(self.history) > 1:
+            self.future.append(self.history.pop())
+            return deepcopy(self.history[-1])
+        if len(self.history) == 1:
+            return deepcopy(self.history[0])
+        return None
+
+    def redo(self) -> list | None:
+        """Redo a previously undone state."""
+        if self.future:
+            state = self.future.pop()
+            self.history.append(state)
+            return deepcopy(state)
+        return None
+
+    def clear(self):
+        """Clear history."""
+        self.history.clear()
+        self.future.clear()
+
+
+class ReplacerTreeItem(QTreeWidgetItem):
+    """Tree item with per-column sort keys for profile and group rows."""
+
+    @staticmethod
+    def _sort_key(value):
+        if value is None:
+            return None
+        if isinstance(value, bool):
+            return (0, int(value))
+        if isinstance(value, (int, float)):
+            return (0, value)
+        if isinstance(value, str):
+            return (1, value.casefold())
+        return (2, str(value).casefold())
+
+    def __lt__(self, other):
+        tree = self.treeWidget()
+        column = tree.sortColumn() if tree is not None else 0
+        left = self._sort_key(self.data(column, _ROLE_SORT_BASE))
+        right = self._sort_key(other.data(column, _ROLE_SORT_BASE))
+        if left is not None and right is not None:
+            return left < right
+        return self.text(column).lower() < other.text(column).lower()
+
+
+class _ProfileNameDelegate(QStyledItemDelegate):
+    """Draw group folder icons without relying on platform emoji fonts."""
+
+    def paint(self, painter, option, index):  # noqa: N802
+        if not index.data(_ROLE_DRAW_GROUP_ICON):
+            super().paint(painter, option, index)
+            return
+
+        item_option = QStyleOptionViewItem(option)
+        self.initStyleOption(item_option, index)
+        label = item_option.text
+        item_option.text = ''
+        item_option.icon = QIcon()
+        widget = item_option.widget
+        style = widget.style() if widget is not None else QApplication.style()
+
+        painter.save()
+        style.drawControl(QStyle.ControlElement.CE_ItemViewItem, item_option, painter, widget)
+
+        content_rect = style.subElementRect(
+            QStyle.SubElement.SE_ItemViewItemText, item_option, widget
+        )
+        content_x = content_rect.x() + (index.data(_ROLE_GROUP_ICON_INDENT) or 0)
+        icon_y = content_rect.y() + max(
+            0, (content_rect.height() - _GROUP_FOLDER_ICON_HEIGHT_PX) // 2
+        )
+        self._draw_folder_icon(
+            painter,
+            QRect(
+                content_x,
+                icon_y,
+                _GROUP_FOLDER_ICON_WIDTH_PX,
+                _GROUP_FOLDER_ICON_HEIGHT_PX,
+            ),
+            item_option,
+        )
+
+        text_rect = QRect(content_rect)
+        text_rect.setX(content_x + _GROUP_FOLDER_ICON_WIDTH_PX + _GROUP_FOLDER_ICON_GAP_PX)
+        painter.setFont(item_option.font)
+        painter.setPen(
+            item_option.palette.color(
+                QPalette.ColorGroup.Active
+                if item_option.state & QStyle.StateFlag.State_Enabled
+                else QPalette.ColorGroup.Disabled,
+                QPalette.ColorRole.HighlightedText
+                if item_option.state & QStyle.StateFlag.State_Selected
+                else QPalette.ColorRole.Text,
+            )
+        )
+        painter.drawText(text_rect, item_option.displayAlignment, label)
+        painter.restore()
+
+    @staticmethod
+    def _draw_folder_icon(painter: QPainter, rect: QRect, option: QStyleOptionViewItem):
+        color = option.palette.color(
+            QPalette.ColorRole.HighlightedText
+            if option.state & QStyle.StateFlag.State_Selected
+            else QPalette.ColorRole.Text
+        )
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+        painter.setBrush(Qt.BrushStyle.NoBrush)
+        painter.setPen(QPen(color, 1))
+        tab_width = max(4, rect.width() // 2)
+        tab_height = 3
+        painter.drawLine(rect.left() + 1, rect.top() + tab_height, rect.left() + 1, rect.top() + 1)
+        painter.drawLine(rect.left() + 1, rect.top() + 1, rect.left() + tab_width, rect.top() + 1)
+        painter.drawLine(
+            rect.left() + tab_width,
+            rect.top() + 1,
+            rect.left() + tab_width + 2,
+            rect.top() + tab_height,
+        )
+        painter.drawLine(
+            rect.left() + tab_width + 2,
+            rect.top() + tab_height,
+            rect.right() - 1,
+            rect.top() + tab_height,
+        )
+        painter.drawRect(
+            rect.left(),
+            rect.top() + tab_height,
+            rect.width() - 1,
+            rect.height() - tab_height - 1,
+        )
+
+
+class ReplacerRulesTree(HighlightTree):
+    """Constrained tree drag/drop for moving profiles and groups."""
+
+    def __init__(self, owner, parent=None):
+        super().__init__(parent)
+        self._owner = owner
+
+    def startDrag(self, supported_actions):  # noqa: N802
+        if not self._owner._selected_movable_paths():
+            return
+        self._owner._set_drag_hint_active(True)
+        try:
+            super().startDrag(supported_actions)
+        finally:
+            self._owner._set_drag_hint_active(False)
+
+    def dragEnterEvent(self, event):  # noqa: N802
+        if self._owner._selected_movable_paths():
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dragMoveEvent(self, event):  # noqa: N802
+        target = self.itemAt(event.position().toPoint())
+        if self._owner._is_valid_item_drop(target, self.dropIndicatorPosition()):
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+
+    def dragLeaveEvent(self, event):  # noqa: N802
+        # Keep target highlights visible while the drag cursor is outside the
+        # window; startDrag/dropEvent clear them when the drag actually ends.
+        super().dragLeaveEvent(event)
+
+    def dropEvent(self, event):  # noqa: N802
+        target = self.itemAt(event.position().toPoint())
+        if self._owner._move_selected_items_to_drop(target, self.dropIndicatorPosition()):
+            event.acceptProposedAction()
+        else:
+            event.ignore()
+        self._owner._set_drag_hint_active(False)
+
+    def paintEvent(self, event):  # noqa: N802
+        super().paintEvent(event)
+        self._owner._paint_group_guides(self.viewport())
+
+
+class _ConfigMenuRow(QWidget):
+    """Full-width row painted with the native QMenu item style."""
+
+    activated = pyqtSignal(str)
+    toggled = pyqtSignal(str, bool)
+
+    def __init__(
+        self,
+        name: str,
+        parent_menu,
+        *,
+        checkable: bool = False,
+        checked: bool = False,
+        icon: QIcon | None = None,
+    ):
+        # QWidget construction may call the Python sizeHint override before
+        # QWidget.__init__ returns, so every field used by sizeHint/style
+        # calculation must exist first.
+        self._name = name
+        self._parent_menu = parent_menu
+        self._checkable = checkable
+        self._checked = checked
+        self._icon = icon or QIcon()
+        self._pressed = False
+        self._hovered = False
+        super().__init__()
+        self.setMouseTracking(True)
+        self.setAttribute(Qt.WidgetAttribute.WA_Hover, True)
+        self.setFixedHeight(_CONFIG_MENU_ROW_HEIGHT_PX)
+        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed)
+
+    def sizeHint(self):  # noqa: N802
+        option = self._style_option()
+        metrics = QFontMetrics(self.font())
+        text_width = metrics.horizontalAdvance(self._name)
+        icon_width = option.maxIconWidth + 12 if option.maxIconWidth else 0
+        check_width = 28 if self._checkable else 0
+        return self.style().sizeFromContents(
+            QStyle.ContentsType.CT_MenuItem,
+            option,
+            QSize(text_width + icon_width + check_width + 36, _CONFIG_MENU_ROW_HEIGHT_PX),
+            self,
+        )
+
+    def isChecked(self) -> bool:  # noqa: N802
+        return self._checked
+
+    def setChecked(self, checked: bool):  # noqa: N802
+        if self._checked == checked:
+            return
+        self._checked = checked
+        self.update()
+
+    def click(self):
+        self._activate()
+
+    def _style_option(self) -> QStyleOptionMenuItem:
+        option = QStyleOptionMenuItem()
+        option.initFrom(self)
+        option.rect = self.rect()
+        option.menuItemType = QStyleOptionMenuItem.MenuItemType.Normal
+        option.checkType = (
+            QStyleOptionMenuItem.CheckType.NonExclusive
+            if self._checkable
+            else QStyleOptionMenuItem.CheckType.NotCheckable
+        )
+        option.checked = self._checked
+        option.menuHasCheckableItems = self._checkable
+        option.text = self._name
+        option.icon = self._icon
+        option.maxIconWidth = (
+            self._icon.actualSize(QSize(16, 16)).width() if not self._icon.isNull() else 0
+        )
+        option.reservedShortcutWidth = 0
+        if self._hovered:
+            option.state |= QStyle.StateFlag.State_Selected
+        else:
+            option.state &= ~QStyle.StateFlag.State_Selected
+        return option
+
+    def paintEvent(self, event):  # noqa: N802
+        painter = QPainter(self)
+        self.style().drawControl(
+            QStyle.ControlElement.CE_MenuItem, self._style_option(), painter, self
+        )
+
+    def enterEvent(self, event):  # noqa: N802
+        self._hovered = True
+        self.update()
+        super().enterEvent(event)
+
+    def leaveEvent(self, event):  # noqa: N802
+        self._hovered = False
+        self._pressed = False
+        self.update()
+        super().leaveEvent(event)
+
+    def mousePressEvent(self, event):  # noqa: N802
+        if event.button() == Qt.MouseButton.LeftButton:
+            self._pressed = True
+            event.accept()
+            return
+        super().mousePressEvent(event)
+
+    def mouseReleaseEvent(self, event):  # noqa: N802
+        if event.button() == Qt.MouseButton.LeftButton and self._pressed:
+            self._pressed = False
+            if self.rect().contains(event.position().toPoint()):
+                self._activate()
+            event.accept()
+            return
+        super().mouseReleaseEvent(event)
+
+    def _activate(self):
+        if self._parent_menu._should_ignore_opening_release():
+            return
+        if self._checkable:
+            self._checked = not self._checked
+            self.update()
+            self.toggled.emit(self._name, self._checked)
+        else:
+            self.activated.emit(self._name)
+
+
+class _ScrollableConfigMenu(QMenu):
+    """Config picker popup that scrolls when the config list exceeds the screen."""
+
+    item_selected = pyqtSignal(str)
+    item_toggled = pyqtSignal(str, bool)
+
+    def __init__(self, parent=None, *, checkable: bool = False):
+        super().__init__(parent)
+        self._checkable = checkable
+        self._minimum_width = 0
+        self._natural_content_size = QSize(0, 0)
+        self._opening_release_deadline = 0.0
+        self.item_widgets: dict[str, QWidget] = {}
+
+        self.scroll_area = QScrollArea()
+        self.scroll_area.setObjectName('ConfigMenuScrollArea')
+        self.scroll_area.setWidgetResizable(True)
+        self.scroll_area.setFrameShape(QFrame.Shape.NoFrame)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.scroll_area.installEventFilter(self)
+        self.scroll_area.viewport().installEventFilter(self)
+
+        self._content_action = QWidgetAction(self)
+        self._content_action.setDefaultWidget(self.scroll_area)
+        self.addAction(self._content_action)
+        self.aboutToShow.connect(self._guard_opening_mouse_release)
+
+    def sizeHint(self):  # noqa: N802
+        """Use the embedded scroll area's size without rebuilding the action."""
+        if self._natural_content_size.isValid() and self.scroll_area.size().isValid():
+            return self.scroll_area.size()
+        return super().sizeHint()
+
+    def set_entries(self, entries: list[dict], *, minimum_width: int = 0):
+        """Replace the displayed config rows."""
+        old_container = self.scroll_area.takeWidget()
+        if old_container is not None:
+            old_container.deleteLater()
+
+        self._minimum_width = max(0, minimum_width)
+        self.item_widgets.clear()
+
+        container = QWidget()
+        container.setObjectName('ConfigMenuContainer')
+        container.installEventFilter(self)
+        layout = QVBoxLayout(container)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(0)
+
+        for entry in entries:
+            name = str(entry.get('name', ''))
+            row = _ConfigMenuRow(
+                name,
+                self,
+                checkable=self._checkable,
+                checked=bool(entry.get('checked', False)),
+                icon=entry.get('icon', QIcon()),
+            )
+            row.activated.connect(self._select_item)
+            row.toggled.connect(self.item_toggled)
+            row.installEventFilter(self)
+            layout.addWidget(row)
+            self.item_widgets[name] = row
+
+        if not entries:
+            row = QLabel(tr('ui.gui.replacer_config.no_configs'))
+            row.setStyleSheet('padding: 5px 8px; color: palette(placeholder-text);')
+            row.setFixedHeight(_CONFIG_MENU_ROW_HEIGHT_PX)
+            row.installEventFilter(self)
+            layout.addWidget(row)
+
+        self.scroll_area.setWidget(container)
+        container.adjustSize()
+        self._natural_content_size = container.sizeHint()
+        self._set_popup_content_size(self._natural_content_size.height())
+        self._reset_action_geometry()
+
+    def constrain_to_button(self, button: QPushButton):
+        """Bound the popup to the screen containing the owning button."""
+        if button is None:
+            return
+        anchor = button.mapToGlobal(button.rect().bottomLeft())
+        screen = button.screen()
+        if screen is None:
+            app = QApplication.instance()
+            if app is not None:
+                screen = app.screenAt(anchor)
+        if screen is None:
+            return
+        self.constrain_to_available_geometry(screen.availableGeometry(), anchor.y())
+
+    def constrain_to_available_geometry(self, available_geometry, anchor_y=None):
+        """Limit height to visible screen space; the scroll bar appears as needed."""
+        if available_geometry is None:
+            return
+
+        if anchor_y is None:
+            available_height = available_geometry.height()
+        else:
+            space_below = available_geometry.bottom() - anchor_y
+            space_above = anchor_y - available_geometry.top()
+            available_height = max(space_below, space_above)
+
+        max_height = max(1, available_height - _CONFIG_MENU_SCREEN_MARGIN_PX)
+        max_width = max(1, available_geometry.width() - _CONFIG_MENU_SCREEN_MARGIN_PX)
+        self._set_popup_content_size(max_height, max_width=max_width)
+        self._reset_action_geometry()
+
+    def _set_popup_content_size(self, max_height: int, *, max_width: int | None = None):
+        natural = self._natural_content_size
+        if natural.height() <= 0:
+            return
+
+        height = min(natural.height(), max(1, max_height))
+        scrollbar_width = self.scroll_area.verticalScrollBar().sizeHint().width()
+        needs_scrollbar = natural.height() > height
+        width = max(natural.width(), self._minimum_width)
+        if needs_scrollbar:
+            width += scrollbar_width
+        if max_width is not None:
+            width = min(width, max_width)
+
+        viewport_width = max(1, width - (scrollbar_width if needs_scrollbar else 0))
+        widget = self.scroll_area.widget()
+        if widget is not None:
+            widget.setMinimumWidth(viewport_width)
+            widget.setFixedWidth(viewport_width)
+        self.scroll_area.setFixedSize(max(1, width), height)
+        self.scroll_area.updateGeometry()
+        self.updateGeometry()
+
+    def _reset_action_geometry(self):
+        """Invalidate QMenu/QWidgetAction cached geometry after row count changes."""
+        self.adjustSize()
+        self.resize(self.sizeHint())
+        self.updateGeometry()
+        self.update()
+
+    def _select_item(self, name: str):
+        self.item_selected.emit(name)
+        self.hide()
+
+    def _guard_opening_mouse_release(self):
+        self._opening_release_deadline = time.monotonic() + _CONFIG_MENU_OPEN_RELEASE_GRACE_SEC
+
+    def _should_ignore_opening_release(self) -> bool:
+        if not self._opening_release_deadline:
+            return False
+        if time.monotonic() <= self._opening_release_deadline:
+            self._opening_release_deadline = 0.0
+            return True
+        self._opening_release_deadline = 0.0
+        return False
+
+    def eventFilter(self, obj, event):
+        from PyQt6.QtCore import QEvent
+
+        if event.type() == QEvent.Type.MouseButtonPress:
+            self._opening_release_deadline = 0.0
+        elif (
+            event.type() == QEvent.Type.MouseButtonRelease and self._should_ignore_opening_release()
+        ):
+            return True
+        return super().eventFilter(obj, event)
+
+    def mouseReleaseEvent(self, event):  # noqa: N802
+        if event is None:
+            return
+        if self._should_ignore_opening_release():
+            return
+        action = self.actionAt(event.pos())
+        if isinstance(action, QWidgetAction) and action.defaultWidget() == self.scroll_area:
+            return
+        super().mouseReleaseEvent(event)
+
+
+class ReplacerConfigWindow(QDialog):
+    """Replacer configuration window with tabs."""
+
+    # Carries a Cache mode ApplyResult from its worker thread to the UI thread
+    _cache_apply_done = pyqtSignal(object)
+    _cache_apply_progress = pyqtSignal(int, int)
+    # (assets imported, of which with a known asset ID) from a Scraper scan
+    _scrape_done = pyqtSignal(int, int)
+    # (assets recorded, named assets, key list path) or an error message
+    _record_done = pyqtSignal(object)
+
+    def __init__(
+        self,
+        config_manager,
+        proxy_master=None,
+        mod_manager=None,
+        roblox_monitor=None,
+        system_tray=None,
+        hotkey_controller=None,
+    ):
+        super().__init__()
+        self.config_manager = config_manager
+        self.proxy_master = proxy_master
+        self._mod_manager = mod_manager
+        self.roblox_monitor = roblox_monitor
+        self._system_tray = system_tray
+        self._hotkey_controller = hotkey_controller
+        self.undo_manager = UndoManager()
+        self.undo_manager.save_state(self.config_manager.replacement_rules, copy_state=False)
+        self.config_enabled_vars = {}
+        self._asset_types_popup_last_closed = 0.0
+        self._dialog_asset_types_popup_last_closed = 0.0
+        self._prejsons_dialog: QDialog | None = None
+        self._proxy_gates: list[ProxyGate] = []
+        self._env_proxy_gates: list[ProxyGate] = []
+
+        self.setWindowTitle(tr('ui.gui.replacer_config.dashboard'))
+        self.resize(_MIN_WINDOW_SIZE)
+        if sys.platform == 'darwin':
+            self.setAttribute(Qt.WidgetAttribute.WA_MacAlwaysShowToolWindow, True)
+
+        # Set window flags to allow minimize/maximize
+        flags = (
+            Qt.WindowType.Window
+            | Qt.WindowType.WindowMinimizeButtonHint
+            | Qt.WindowType.WindowMaximizeButtonHint
+            | Qt.WindowType.WindowCloseButtonHint
+        )
+        # Apply always on top if enabled
+        if self.config_manager.always_on_top:
+            flags |= Qt.WindowType.WindowStaysOnTopHint
+        self.setWindowFlags(flags)
+
+        self._setup_ui()
+        self._set_icon()
+        self._refresh_tree()
+
+        # Restore geometry
+        geometry_hex = self.config_manager.window_geometry
+        if geometry_hex:
+            self.restoreGeometry(QByteArray.fromHex(geometry_hex.encode('utf-8')))
+        # The layout is designed for this size and smaller windows squash it, so the user
+        # cannot go below it (applied after restoring so an old saved size can't undercut it)
+        self._apply_scaled_min_size()
+
+    def closeEvent(self, event):
+        """Save window geometry on close."""
+        self.config_manager.window_geometry = self.saveGeometry().toHex().data().decode('utf-8')
+        self._unregister_module_interceptors()
+        if (
+            self._system_tray is not None
+            and self._system_tray.config_manager.close_to_tray
+            and not self._system_tray._exiting
+        ):
+            try:
+                self._system_tray.notify_dashboard_closed()
+            except Exception:
+                pass
+        super().closeEvent(event)
+
+    def _unregister_module_interceptors(self):
+        if self.proxy_master is None:
+            return
+        for module in getattr(self, '_registered_module_interceptors', ()):
+            try:
+                self.proxy_master.unregister_module_interceptor(module)
+            except Exception as exc:
+                log_buffer.log('Proxy', f'Failed to unregister dashboard interceptor: {exc}')
+        self._registered_module_interceptors = []
+
+    def _set_icon(self):
+        """Set window icon."""
+        if icon_path := get_icon_path():
+            from PyQt6.QtGui import QIcon
+
+            self.setWindowIcon(QIcon(str(icon_path)))
+
+    def _setup_ui(self):
+        """Setup the UI with tabs."""
+        main_layout = QVBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
+
+        # Create tab widget
+        self.tab_widget = QTabWidget()
+
+        # Create Replacer tab
+        replacer_tab = self._create_replacer_tab()
+        self.tab_widget.addTab(replacer_tab, tr('ui.gui.replacer_config.replacer'))
+
+        # Scraper: browse a game's assets straight from Roblox's cache
+        if self.proxy_master is not None and hasattr(self.proxy_master, 'cache_manager'):
+            self.tab_widget.addTab(self._create_scraper_tab(), tr('ui.gui.replacer_config.scraper'))
+            # Cache: Roblox's cache folder as it is now, with what ReCache changed
+            from .cache_files_tab import CacheFilesTab
+
+            self._cache_files_tab = CacheFilesTab(self.proxy_master.cache_manager, self.config_manager)
+            self.tab_widget.addTab(self._cache_files_tab, tr('ui.gui.cache_files.tab'))
+
+        # Create Modifications tab
+        if self._mod_manager is not None:
+            from .modifications_tab import ModificationsTab
+
+            modifications_tab = ModificationsTab(
+                self._mod_manager,
+                self.roblox_monitor,
+                config_manager=self.config_manager,
+                proxy_master=self.proxy_master,
+                hotkey_controller=self._hotkey_controller,
+            )
+            self.tab_widget.addTab(modifications_tab, tr('ui.gui.replacer_config.modifications'))
+
+        # Create Rando Stuff tab
+        from .rando_stuff_tab import RandoStuffTab
+
+        self._rando_stuff_tab = RandoStuffTab(
+            config_manager=self.config_manager,
+            proxy_master=self.proxy_master,
+        )
+        self._registered_module_interceptors = []
+
+        self.tab_widget.addTab(self._rando_stuff_tab, tr('ui.gui.replacer_config.miscellaneous'))
+        if self.proxy_master is not None:
+            self.proxy_master.register_module_interceptor(self._rando_stuff_tab)
+            self._registered_module_interceptors.append(self._rando_stuff_tab)
+
+        # Create Settings tab
+        from .settings_tab import SettingsTab
+
+        self._settings_tab = SettingsTab(self.config_manager, system_tray=self._system_tray)
+        self.tab_widget.addTab(self._settings_tab, tr('ui.gui.replacer_config.settings'))
+
+        self._create_header_corner()
+        # Each tab page fades in when it is switched to
+        from .transitions import fade_in
+
+        self._shown_tab = self.tab_widget.currentWidget()
+
+        def crossfade(index: int) -> None:
+            page = self.tab_widget.widget(index)
+            fade_in(page, self._shown_tab)
+            self._shown_tab = page
+
+        self.tab_widget.currentChanged.connect(crossfade)
+        main_layout.addWidget(self.tab_widget, 1)
+        self._create_footer(main_layout)
+        main_layout.setSpacing(0)
+
+        self.setLayout(main_layout)
+        self.set_proxy_features_enabled(self.config_manager.proxy_features_enabled)
+
+        # Setup keyboard shortcuts
+        from PyQt6.QtGui import QKeySequence, QShortcut
+
+        undo_shortcut = QShortcut(QKeySequence('Ctrl+Z'), self)
+        undo_shortcut.activated.connect(self._do_undo)
+
+        delete_shortcut = QShortcut(QKeySequence('Delete'), self)
+        delete_shortcut.activated.connect(self._delete_selected)
+
+        redo_shortcut = QShortcut(QKeySequence('Ctrl+Y'), self)
+        redo_shortcut.activated.connect(self._do_redo)
+
+        escape_shortcut = QShortcut(QKeySequence('Escape'), self)
+        escape_shortcut.activated.connect(self.close)
+
+    def _create_header_corner(self) -> None:
+        """Brand on the left of the pill navigation, Roblox status on the right."""
+        self.tab_widget.tabBar().setFixedHeight(56)
+        self._tab_bar_dim = _HoverDim(self.tab_widget.tabBar())
+        self._roblox_chip = QLabel()
+        self._roblox_chip.setContentsMargins(24, 0, 24, 0)
+        self._roblox_chip.setFixedHeight(56)
+        self._roblox_chip.setAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignRight)
+        self.tab_widget.setCornerWidget(self._roblox_chip, Qt.Corner.TopRightCorner)
+        # Signed-in account on the left; outside the tab bar, so its hover fade skips it
+        from .profile_chip import ProfileChip
+
+        self._profile_chip = ProfileChip()
+        self._profile_chip.setFixedHeight(56)
+        self._profile_chip.changed.connect(lambda: QTimer.singleShot(0, self._center_tab_bar))
+        self.tab_widget.setCornerWidget(self._profile_chip, Qt.Corner.TopLeftCorner)
+        self._profile_chip.hide()  # setCornerWidget shows it; it appears once a login is found
+        self._roblox_chip_timer = QTimer(self)
+        self._roblox_chip_timer.timeout.connect(self._refresh_roblox_chip)
+        self._roblox_chip_timer.start(3000)
+        self._refresh_roblox_chip()
+        self._center_tab_bar()
+
+    def _apply_scaled_min_size(self) -> None:
+        """Set the smallest window where no label or button is clipped.
+
+        The width comes from the layout's own minimum (every label and button is
+        measured with the real font), never below the designed size.
+        """
+        self.setMinimumSize(0, 0)
+        self._refit_menu_buttons()
+        if hasattr(self, '_edit_group'):
+            group = self._edit_group
+            group.setMinimumWidth(0)
+            group.setMaximumWidth(16777215)
+            group.setFixedWidth(max(380, group.minimumSizeHint().width() + 4))
+        required = self.minimumSizeHint()
+        minimum = QSize(
+            max(required.width() + 8, _MIN_WINDOW_SIZE.width()),
+            max(required.height() + 8, _MIN_WINDOW_SIZE.height()),
+        )
+        screen = self.screen()
+        if screen is not None:
+            minimum = minimum.boundedTo(screen.availableGeometry().size())
+        self.setMinimumSize(minimum)
+        self.resize(self.size().expandedTo(minimum))
+
+    def _refit_menu_buttons(self) -> None:
+        _refit_text_widths()
+        for btn in (self.enabled_menu_btn, self.config_menu_btn):
+            btn.setMinimumWidth(0)
+            btn.setMinimumWidth(btn.sizeHint().width() + 12)
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self._center_tab_bar()
+
+    def _center_tab_bar(self) -> None:
+        """Keep the tab bar evenly spaced between the brand and the Roblox status."""
+        tab_widget = getattr(self, 'tab_widget', None)
+        if tab_widget is None:
+            return
+        left = max(0, (tab_widget.width() - tab_widget.tabBar().sizeHint().width()) // 2)
+        # The tab bar starts after the left corner widget (the profile chip)
+        corner = tab_widget.cornerWidget(Qt.Corner.TopLeftCorner)
+        if corner is not None and corner.isVisible():
+            left = max(0, left - corner.width())
+        if left != getattr(self, '_tab_bar_left', None):
+            self._tab_bar_left = left
+            tab_widget.setStyleSheet(f'QTabWidget::tab-bar {{ left: {left}px; }}')
+
+    def _refresh_roblox_chip(self) -> None:
+        from ..utils import is_roblox_running
+
+        try:
+            running = is_roblox_running()
+        except Exception:
+            running = False
+        dot, label = ('#40c773', tr('ui.gui.replacer_config.roblox_running')) if running else ('#6d6d78', tr('ui.gui.replacer_config.roblox_not_running'))
+        self._roblox_chip.setText(tr('ui.gui.replacer_config.roblox_chip', dot=dot, label=label))
+
+    def _env_proxy_effective_enabled(self) -> bool:
+        return bool(
+            self.config_manager.proxy_features_enabled and self.config_manager.proxy_mode == 'env'
+        )
+
+    def refresh_env_proxy_gate(self):
+        enabled = self._env_proxy_effective_enabled()
+        for gate in self._env_proxy_gates:
+            gate.set_proxy_enabled(enabled)
+        if hasattr(self, '_cache_apply_btn'):
+            self._refresh_cache_apply_button()
+
+    def set_proxy_features_enabled(self, enabled: bool):
+        for gate in self._proxy_gates:
+            gate.set_proxy_enabled(enabled)
+        if hasattr(self, '_cache_viewer_tab') and hasattr(
+            self._cache_viewer_tab, 'set_proxy_features_enabled'
+        ):
+            self._cache_viewer_tab.set_proxy_features_enabled(enabled)
+        if hasattr(self, '_rando_stuff_tab') and hasattr(
+            self._rando_stuff_tab, 'set_proxy_features_enabled'
+        ):
+            self._rando_stuff_tab.set_proxy_features_enabled(enabled)
+        self.refresh_env_proxy_gate()
+
+    def _create_replacer_tab(self):
+        """Create the replacer configuration tab."""
+        replacer_widget = QWidget()
+        replacer_layout = QHBoxLayout()
+        replacer_layout.setContentsMargins(24, 8, 24, 20)
+        replacer_layout.setSpacing(20)
+
+        top_section_widget = QWidget()
+        top_section_layout = QVBoxLayout(top_section_widget)
+        top_section_layout.setContentsMargins(0, 0, 0, 0)
+        top_section_layout.setSpacing(6)
+
+        # Config selector section
+        self._create_config_section(top_section_layout)
+
+        # Rules tree section
+        self._create_tree_section(top_section_layout)
+
+        # Cache mode applies rules without the proxy, so the editor is never gated
+        replacer_layout.addWidget(top_section_widget, 1)
+
+        # Edit section
+        self._create_edit_section(replacer_layout)
+
+        replacer_widget.setLayout(replacer_layout)
+        return replacer_widget
+
+    def _create_scraper_tab(self) -> QWidget:
+        """Scraper = scan bar over Fleasion's cache viewer, filled from Roblox's cache."""
+        page = QWidget()
+        layout = QVBoxLayout(page)
+        layout.setContentsMargins(24, 12, 24, 16)
+        layout.setSpacing(12)
+        bar = QHBoxLayout()
+        bar.setSpacing(10)
+        hint = QLabel(tr('ui.gui.replacer_config.scrape_hint'))
+        hint.setWordWrap(True)
+        hint.setStyleSheet('color: palette(placeholder-text);')
+        bar.addWidget(hint, 1)
+        self._scrape_status = QLabel()
+        bar.addWidget(self._scrape_status)
+        clear_btn = QPushButton(tr('ui.gui.replacer_config.clear_roblox_cache'))
+        clear_btn.clicked.connect(self._clear_roblox_cache)
+        bar.addWidget(clear_btn)
+        self._record_btn = QPushButton(tr('ui.gui.replacer_config.record_key_list'))
+        self._record_btn.setToolTip(tr('ui.gui.replacer_config.record_key_list_tooltip'))
+        self._record_btn.clicked.connect(self._record_key_list)
+        self._record_done.connect(self._on_record_done)
+        bar.addWidget(self._record_btn)
+        self._scan_btn = QPushButton(tr('ui.gui.replacer_config.scan_roblox_cache'))
+        self._scan_btn.setObjectName('primaryButton')
+        self._scan_btn.clicked.connect(self._scan_roblox_cache)
+        self._scrape_done.connect(self._on_scrape_done)
+        bar.addWidget(self._scan_btn)
+        layout.addLayout(bar)
+        layout.addWidget(self._create_cache_tab())
+        return page
+
+    def _scan_roblox_cache(self) -> None:
+        from ..cache.roblox_cache_writer import import_roblox_cache
+
+        self._scan_btn.setEnabled(False)
+        self._scrape_status.setText(tr('ui.gui.replacer_config.scanning'))
+        cache_manager = self.proxy_master.cache_manager
+        run_in_thread(lambda: self._scrape_done.emit(*import_roblox_cache(cache_manager)))()
+
+    def _record_key_list(self) -> None:
+        """Pick a scraped game, then save its cache keys as a key list others can import."""
+        from ..cache.roblox_cache_writer import record_key_list
+        from ..utils.roblox_auth import get_roblosecurity
+
+        sources = {
+            path.stem: path
+            for folder in ('originals', 'custom_dumps')
+            for path in sorted((PREJSONS_DIR / folder).glob('*.json'))
+        }
+        if not sources:
+            QMessageBox.information(
+                self,
+                tr('ui.gui.replacer_config.record_key_list'),
+                tr(
+                    'ui.gui.replacer_config.record_no_games',
+                    button=tr('ui.gui.replacer_config.scraped_games'),
+                ),
+            )
+            return
+        game, ok = QInputDialog.getItem(
+            self,
+            tr('ui.gui.replacer_config.record_key_list'),
+            tr('ui.gui.replacer_config.record_pick_game'),
+            list(sources),
+            0,
+            False,
+        )
+        if not ok or game not in sources:
+            return
+        self._record_btn.setEnabled(False)
+        self._scrape_status.setText(tr('ui.gui.replacer_config.recording'))
+
+        def work() -> None:
+            try:
+                self._record_done.emit(record_key_list(sources[game], get_roblosecurity()))
+            except Exception as exc:
+                self._record_done.emit(f'{type(exc).__name__}: {exc}')
+
+        run_in_thread(work)()
+
+    def _on_record_done(self, result) -> None:
+        from ..cache.roblox_cache_writer import available_games
+
+        self._record_btn.setEnabled(True)
+        self._scrape_status.setText('')
+        if isinstance(result, str):
+            QMessageBox.warning(
+                self,
+                tr('ui.gui.replacer_config.record_key_list'),
+                tr('ui.gui.replacer_config.record_failed', error=result),
+            )
+            return
+        learned, total, path = result
+        # The recorded game shows up in the Replacer's game import right away
+        current = self._game_combo.currentData()
+        self._game_combo.blockSignals(True)
+        self._game_combo.clear()
+        for name, display in available_games():
+            self._game_combo.addItem(display, name)
+        self._game_combo.setCurrentIndex(max(0, self._game_combo.findData(current)))
+        self._game_combo.blockSignals(False)
+        self._refresh_game_import_button()
+        box = QMessageBox(self)
+        box.setWindowTitle(tr('ui.gui.replacer_config.record_key_list'))
+        box.setText(
+            tr(
+                'ui.gui.replacer_config.record_done',
+                learned=learned,
+                total=total,
+                file=path.name,
+            )
+        )
+        open_btn = box.addButton(
+            tr('ui.gui.replacer_config.record_open_folder'), QMessageBox.ButtonRole.ActionRole
+        )
+        box.addButton(QMessageBox.StandardButton.Ok)
+        box.exec()
+        if box.clickedButton() is open_btn:
+            open_folder(path.parent)
+
+    def _on_scrape_done(self, imported: int, with_id: int) -> None:
+        self._scan_btn.setEnabled(True)
+        self._scrape_status.setText(
+            tr('ui.gui.replacer_config.scan_result', count=imported, with_id=with_id)
+        )
+        self._cache_viewer_tab._refresh_assets()
+
+    def _create_cache_tab(self):
+        """Create the cache viewer tab."""
+        from ..cache import CacheViewerTab
+
+        cache_scraper = getattr(self.proxy_master, 'cache_scraper', None)
+        tab = CacheViewerTab(
+            self.proxy_master.cache_manager,
+            cache_scraper,
+            self,
+            config_manager=self.config_manager,
+        )
+        # Store direct reference so Send-to-Replacer can find the entry fields
+        # regardless of how Qt re-parents the widget when added to QTabWidget.
+        tab._replacer_window_ref = self
+        self._cache_viewer_tab = tab
+        return tab
+
+    def _create_config_section(self, parent_layout):
+        """Create the configuration selector section."""
+        config_group = QGroupBox()
+        config_group.setObjectName('flatGroup')
+        config_layout = QVBoxLayout()
+
+        # Row 1: Configuration controls
+        row1 = QHBoxLayout()
+        editing_label = QLabel(tr('ui.gui.replacer_config.editing'))
+        _ensure_text_width(editing_label, 50)
+        row1.addWidget(editing_label)
+
+        # Use button with menu (same style as enabled configs)
+        # Prepend a single space plus a tiny hair-space to give a subtle gap
+        self.config_menu_btn = QPushButton(
+            tr('ui.gui.replacer_config.value', value0=self.config_manager.last_config)
+        )
+        self.config_menu = _ScrollableConfigMenu(self.config_menu_btn)
+        self.config_menu.aboutToShow.connect(self._rebuild_editing_menu)
+        self.config_menu.item_selected.connect(self._on_config_select)
+        self.config_menu_btn.setMenu(self.config_menu)
+        row1.addWidget(self.config_menu_btn)
+
+        self._rebuild_editing_menu()
+
+        row1.addSpacing(12)
+
+        enabled_label = QLabel(tr('ui.gui.replacer_config.enabled'))
+        _ensure_text_width(enabled_label, 54)
+        row1.addWidget(enabled_label)
+
+        self.enabled_menu_btn = QPushButton(tr('ui.gui.replacer_config.select'))
+        self.enabled_menu = _ScrollableConfigMenu(self.enabled_menu_btn, checkable=True)
+        self.enabled_menu.aboutToShow.connect(self._rebuild_enabled_menu)
+        self.enabled_menu.item_toggled.connect(self._on_config_toggle)
+        self.enabled_menu_btn.setMenu(self.enabled_menu)
+        row1.addWidget(self.enabled_menu_btn)
+
+        self._rebuild_enabled_menu()
+
+        row1.addSpacing(8)
+
+        separator = QLabel(tr('ui.gui.replacer_config.text'))
+        separator.setStyleSheet('padding-bottom: 6px;')
+        row1.addWidget(separator)
+
+        row1.addSpacing(8)
+
+        for text, action in [
+            (tr('replacer.config.new'), 'new'),
+            (tr('replacer.config.duplicate'), 'dup'),
+            (tr('replacer.config.rename'), 'rename'),
+            (tr('replacer.config.delete'), 'delete'),
+        ]:
+            btn = QPushButton(text)
+            btn.clicked.connect(lambda checked, a=action: self._config_action(a))
+            row1.addWidget(btn)
+
+        # Removed: No Textures checkbox
+
+        row1.addStretch()
+        config_layout.addLayout(row1)
+
+        config_group.setLayout(config_layout)
+        parent_layout.addWidget(config_group)
+
+    def _create_tree_section(self, parent_layout):
+        """Create the rules tree section."""
+        # Label
+        label_layout = QHBoxLayout()
+        title_label = QLabel(tr('ui.gui.replacer_config.replacement_profiles'))
+        title_label.setStyleSheet('font-weight: bold; padding-left: 5px;')
+        label_layout.addWidget(title_label)
+
+        label_layout.addStretch()
+        parent_layout.addLayout(label_layout)
+
+        # Tree
+        self.tree = ReplacerRulesTree(self)
+        self.tree.setHeaderLabels(
+            [
+                tr('ui.gui.replacer_config.status'),
+                tr('ui.gui.replacer_config.profile_name'),
+                tr('ui.gui.replacer_config.mode'),
+                tr('ui.gui.replacer_config.asset_ids'),
+                tr('ui.gui.replacer_config.replacement'),
+            ]
+        )
+        self.tree.setSelectionMode(QTreeWidget.SelectionMode.ExtendedSelection)
+        self.tree.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.tree.customContextMenuRequested.connect(self._show_context_menu)
+        self.tree.itemExpanded.connect(lambda item: self._set_group_expanded(item, True))
+        self.tree.itemCollapsed.connect(lambda item: self._set_group_expanded(item, False))
+        self.tree.itemSelectionChanged.connect(self.tree.viewport().update)
+        self.tree.setDragDropMode(QAbstractItemView.DragDropMode.DragDrop)
+        self.tree.setDefaultDropAction(Qt.DropAction.MoveAction)
+        self.tree.setDropIndicatorShown(True)
+        self.tree.setSortingEnabled(True)
+        self.tree.setIndentation(_TREE_INDENT_PX)
+        self.tree.setItemDelegateForColumn(_PROFILE_NAME_COLUMN, _ProfileNameDelegate(self.tree))
+
+        header = self.tree.header()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.ResizeToContents)
+
+        parent_layout.addWidget(self.tree)
+
+    def _create_edit_section(self, parent_layout):
+        """Create the add/edit profile section."""
+        edit_group = QGroupBox(tr('ui.gui.replacer_config.add_edit_profile'))
+        edit_layout = QVBoxLayout()
+        edit_layout.setSpacing(14)
+
+        field_labels = [
+            QLabel(tr('ui.gui.replacer_config.profile_name_2')),
+            QLabel(tr('ui.gui.replacer_config.asset_ids_2')),
+            QLabel(tr('ui.gui.replacer_config.replace_with')),
+        ]
+        for field_label in field_labels:
+            field_label.setStyleSheet('color: palette(placeholder-text); font-weight: 600;')
+        name_label, asset_ids_label, replacement_label = field_labels
+
+        # Profile name
+        name_layout = QVBoxLayout()
+        name_layout.setSpacing(5)
+        name_layout.addWidget(name_label)
+        self.name_entry = QLineEdit()
+        self.name_entry.setPlaceholderText(tr('ui.gui.replacer_config.optional_profile_name'))
+        name_layout.addWidget(self.name_entry)
+        edit_layout.addLayout(name_layout)
+
+        # Asset IDs
+        ids_layout = QVBoxLayout()
+        ids_layout.setSpacing(5)
+        ids_layout.addWidget(asset_ids_label)
+        ids_row = QHBoxLayout()
+        ids_row.setSpacing(6)
+        ids_layout.addLayout(ids_row)
+        self.replace_entry = QLineEdit()
+        self.replace_entry.setPlaceholderText(
+            tr('ui.gui.replacer_config.ids_or_assettypes_separated_by_commas_spaces')
+        )
+        ids_row.addWidget(self.replace_entry)
+
+        # Add Asset Types filter button
+        self.asset_types_btn = QPushButton(tr('ui.gui.replacer_config.asset_types'))
+        _ensure_text_width(self.asset_types_btn, 80)
+        self.asset_types_btn.clicked.connect(self._show_asset_types_popup)
+        from ..cache.asset_type_filter import CategoryFilterPopup
+
+        self.asset_types_popup = CategoryFilterPopup(parent=self)
+        self.asset_types_popup.filters_changed.connect(self._on_asset_types_changed)
+        self.asset_types_popup.aboutToHide.connect(self._mark_asset_types_popup_closed)
+        ids_row.addWidget(self.asset_types_btn)
+
+        edit_layout.addLayout(ids_layout)
+
+        # Replacement field (auto-detects mode)
+        replace_layout = QVBoxLayout()
+        replace_layout.setSpacing(5)
+        replace_layout.addWidget(replacement_label)
+        replace_row = QHBoxLayout()
+        replace_row.setSpacing(6)
+        replace_layout.addLayout(replace_row)
+        self.replacement_entry = FileDropLineEdit()
+        self.replacement_entry.setPlaceholderText(
+            tr('ui.gui.replacer_config.id_url_file_path_or_exampleobj_example')
+        )
+        self.replacement_entry.setToolTip(_replacement_path_tooltip())
+        self.replacement_entry.fileDropped.connect(self._store_dropped_replacement_path)
+        replacement_label.setToolTip(_replacement_path_tooltip())
+        replace_row.addWidget(self.replacement_entry)
+        browse_btn = QPushButton(tr('ui.gui.replacer_config.browse'))
+        browse_btn.clicked.connect(self._browse_local_file)
+        _ensure_text_width(browse_btn, 80)
+        replace_row.addWidget(browse_btn)
+        edit_layout.addLayout(replace_layout)
+
+        # Buttons
+        btn_layout = QGridLayout()
+        btn_layout.setSpacing(8)
+        for i, (text, callback) in enumerate([
+            (tr('replacer.rules.add_new'), self._add_rule),
+            (tr('replacer.rules.load_selected'), self._load_selected),
+            (tr('replacer.rules.update_selected'), self._update_selected),
+        ]):
+            btn = QPushButton(text)
+            btn.clicked.connect(callback)
+            btn_layout.addWidget(btn, i // 2, i % 2)
+        edit_layout.addLayout(btn_layout)
+
+        # Write a game's config straight into the cache, no need to join Roblox first
+        from ..cache.roblox_cache_writer import available_games
+
+        game_label = QLabel(tr('ui.gui.replacer_config.game_cache_label'))
+        game_label.setWordWrap(True)
+        game_label.setStyleSheet('color: palette(placeholder-text); font-weight: 600;')
+        edit_layout.addWidget(game_label)
+        game_row = QHBoxLayout()
+        game_row.setSpacing(8)
+        self._game_combo = QComboBox()
+        for name, display in available_games():
+            self._game_combo.addItem(display, name)
+        game_row.addWidget(self._game_combo, 1)
+        self._game_apply_btn = QPushButton(tr('ui.gui.replacer_config.game_cache_apply'))
+        self._game_apply_btn.setObjectName('primaryButton')
+        self._game_apply_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._game_apply_btn.setEnabled(self._game_combo.count() > 0)
+        self._game_apply_btn.clicked.connect(self._import_game_cache)
+        self._game_combo.currentIndexChanged.connect(self._refresh_game_import_button)
+        game_row.addWidget(self._game_apply_btn)
+        edit_layout.addLayout(game_row)
+        self._refresh_game_import_button()
+        edit_layout.addStretch()
+        # Centred at the bottom of the panel, no background so it blends in
+        import_btn = QPushButton(tr('ui.gui.replacer_config.scraped_games'))
+        import_btn.setObjectName('linkButton')
+        import_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        _ensure_text_width(import_btn, 170)
+        import_btn.clicked.connect(self._open_prejsons_browser)
+        edit_layout.addWidget(import_btn, 0, Qt.AlignmentFlag.AlignHCenter)
+
+        edit_group.setLayout(edit_layout)
+        # Prevent edit group from expanding vertically
+        edit_group.setFixedWidth(380)
+        self._edit_group = edit_group
+        parent_layout.addWidget(edit_group)
+
+    def _create_footer(self, parent_layout):
+        """Create the footer section with buttons snapped to the right."""
+        footer_widget = QWidget()
+        footer_widget.setObjectName('commandBar')
+        footer_widget.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        footer_widget.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
+        footer_layout = QHBoxLayout(footer_widget)
+        footer_layout.setContentsMargins(24, 14, 24, 14)
+        footer_layout.setSpacing(8)
+
+        self._configs_path_label = _ElidedLabel(
+            tr('ui.gui.replacer_config.configs_value', value0=self.config_manager.configs_folder)
+        )
+        self._configs_path_label.hide()
+
+        # Left: what the last Apply did; click it for the by-name details
+        self._cache_apply_status = QPushButton()
+        self._cache_apply_status.setObjectName('statusChip')
+        self._cache_apply_status.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._cache_apply_status.clicked.connect(self._show_cache_apply_details)
+        self._cache_apply_result = None
+        self._cache_apply_status.hide()
+        footer_layout.addWidget(self._cache_apply_status)
+        footer_layout.addStretch()
+
+        def ghost(text: str, callback) -> QPushButton:
+            btn = QPushButton(text)
+            btn.setObjectName('ghostButton')
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            btn.clicked.connect(callback)
+            return btn
+
+        footer_layout.addWidget(ghost(tr('ui.gui.replacer_config.open_configs'), self._open_configs_folder))
+        footer_layout.addWidget(ghost(tr('ui.gui.replacer_config.undo_ctrl_z'), self._do_undo))
+        help_btn = ghost(tr('ui.gui.replacer_config.text_2'), self._show_keybinds_help)
+        help_btn.setToolTip(tr('ui.gui.replacer_config.view_keybinds'))
+        footer_layout.addWidget(help_btn)
+
+        clear_cache_btn = QPushButton(tr('ui.gui.replacer_config.clear_cache'))
+        clear_cache_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        clear_cache_btn.clicked.connect(self._clear_roblox_cache)
+        footer_layout.addWidget(clear_cache_btn)
+
+        clear_data_btn = QPushButton(tr('ui.gui.replacer_config.clear_recache_data'))
+        clear_data_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        clear_data_btn.setToolTip(tr('ui.gui.replacer_config.clear_recache_data_tooltip'))
+        clear_data_btn.clicked.connect(self._clear_recache_data)
+        footer_layout.addWidget(clear_data_btn)
+
+        # The one action that writes the enabled configs into Roblox's cache
+        self._cache_apply_btn = QPushButton(tr('ui.gui.replacer_config.apply_to_roblox'))
+        self._cache_apply_btn.setObjectName('applyButton')
+        self._cache_apply_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._cache_apply_btn.setToolTip(tr('ui.gui.replacer_config.apply_to_roblox_tooltip'))
+        self._cache_apply_btn.clicked.connect(self._apply_to_roblox_cache)
+        self._cache_apply_done.connect(self._on_cache_apply_done)
+        footer_layout.addWidget(self._cache_apply_btn)
+        # Every apply (this button or the in-game catch-up) updates the result text
+        from .. import app as app_module
+
+        app_module.cache_apply_listeners.append(self._cache_apply_done.emit)
+        self._cache_apply_progress.connect(self._on_cache_apply_progress)
+        app_module.cache_progress_listeners.append(self._cache_apply_progress.emit)
+        if app_module.latest_cache_apply is not None:
+            self._on_cache_apply_done(app_module.latest_cache_apply)
+        self._refresh_cache_apply_button()
+
+        parent_layout.addWidget(footer_widget)
+
+    def _open_configs_folder(self):
+        """Open the same config folder used by this window's ConfigManager."""
+        configs_folder = self.config_manager.configs_folder
+        self._configs_path_label.set_full_text(
+            tr('ui.gui.replacer_config.configs_value', value0=configs_folder)
+        )
+        open_folder(configs_folder)
+
+    def _refresh_cache_apply_button(self) -> None:
+        """Recache always runs in Cache mode, so Apply is always shown."""
+        self._cache_apply_btn.setVisible(True)
+        self._cache_apply_status.setVisible(bool(self._cache_apply_status.text()))
+
+    def _refresh_game_import_button(self) -> None:
+        """Show Imported (disabled) for a game that is already imported."""
+        game = self._game_combo.currentData()
+        done = game in self.config_manager.imported_games
+        self._game_apply_btn.setText(
+            tr('ui.gui.replacer_config.game_cache_done')
+            if done
+            else tr('ui.gui.replacer_config.game_cache_apply')
+        )
+        self._game_apply_btn.setEnabled(bool(game) and not done)
+
+    def _import_game_cache(self) -> None:
+        """Load the game's recorded cache into ReCache. Nothing is written to the Roblox cache."""
+        from ..cache.roblox_cache_writer import ApplyResult, key_list_asset_count
+
+        game = self._game_combo.currentData()
+        if not game:
+            return
+        self.config_manager.imported_games = [*self.config_manager.imported_games, game]
+        summary = tr(
+            'ui.gui.replacer_config.game_cache_imported',
+            value0=self._game_combo.currentText(),
+            value1=key_list_asset_count(game),
+        )
+        self._on_cache_apply_done(ApplyResult(summary, summary, ok=True))
+        self._refresh_game_import_button()
+
+    def _apply_to_roblox_cache(self) -> None:
+        from ..app import _apply_cache_mode_and_log
+
+        self._cache_apply_btn.setEnabled(False)
+        self._cache_apply_btn.setText(tr('ui.gui.replacer_config.applying'))
+        self._cache_apply_status.setText('')
+        self._cache_apply_status.hide()
+        # The result arrives through cache_apply_listeners
+        run_in_thread(_apply_cache_mode_and_log)(self.config_manager)
+
+    def _on_cache_apply_progress(self, done: int, total: int) -> None:
+        """Live "Currently Applying n/total" in the status chip; the final result replaces it."""
+        self._cache_apply_status.setText(
+            tr('ui.gui.replacer_config.applying_progress', value0=min(done + 1, total), value1=total)
+        )
+        self._cache_apply_status.setStyleSheet(
+            'QPushButton#statusChip { color: palette(highlight); background: palette(alternate-base);'
+            ' font-weight: 700; }'
+        )
+        self._cache_apply_status.setToolTip('')
+        self._cache_apply_status.show()
+
+    def _on_cache_apply_done(self, result) -> None:
+        self._cache_apply_result = result
+        self._cache_apply_btn.setEnabled(True)
+        self._cache_apply_btn.setText(tr('ui.gui.replacer_config.apply_to_roblox'))
+        self._cache_apply_status.setText(tr('ui.gui.replacer_config.apply_status', value0=result.short))
+        self._cache_apply_status.setToolTip(tr('ui.gui.replacer_config.apply_details_tooltip'))
+        color, bg = ('#40c773', 'rgba(64, 199, 115, 0.16)') if result.ok else ('#ff6b6b', 'rgba(255, 107, 107, 0.16)')
+        self._cache_apply_status.setStyleSheet(
+            f'QPushButton#statusChip {{ color: {color}; background: {bg}; font-weight: 700; }}'
+        )
+        self._cache_apply_status.show()
+        # The Cache tab shows what was just written
+        cache_files_tab = getattr(self, '_cache_files_tab', None)
+        if cache_files_tab is not None and cache_files_tab.isVisible():
+            cache_files_tab.refresh()
+
+    def _show_cache_apply_details(self) -> None:
+        """List, by rule name, what the last apply could not do."""
+        from html import escape
+
+        from PyQt6.QtWidgets import QDialogButtonBox, QTextBrowser
+
+        result = self._cache_apply_result
+        if result is None:
+            return
+        parts = [f'<p><b>{escape(result.short)}</b></p>']
+        for heading, names in result.details or (
+            (tr('ui.gui.replacer_config.apply_details_all_applied'), ()),
+        ):
+            parts.append(
+                f'<h4>{escape(heading)} ({len(names)})</h4>'
+                if names
+                else f'<p>{escape(heading)}</p>'
+            )
+            if names:
+                parts.append('<ul>' + ''.join(f'<li>{escape(n)}</li>' for n in names) + '</ul>')
+        dialog = QDialog(self)
+        dialog.setWindowTitle(tr('ui.gui.replacer_config.apply_details_title'))
+        dialog.resize(520, 440)
+        layout = QVBoxLayout(dialog)
+        browser = QTextBrowser()
+        browser.setHtml(''.join(parts))
+        layout.addWidget(browser)
+        buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        buttons.rejected.connect(dialog.reject)
+        layout.addWidget(buttons)
+        dialog.exec()
+
+    def _clear_roblox_cache(self):
+        from .delete_cache import DeleteCacheWindow
+
+        window = DeleteCacheWindow()
+        window.show()
+
+    def _clear_recache_data(self) -> None:
+        """Undo ReCache's cache entries and imports so games can be imported again."""
+        from ..cache.roblox_cache_writer import ApplyResult, clear_recache_data
+
+        answer = QMessageBox.question(
+            self,
+            tr('ui.gui.replacer_config.clear_recache_data_title'),
+            tr('ui.gui.replacer_config.clear_recache_data_confirm'),
+        )
+        if answer != QMessageBox.StandardButton.Yes:
+            return
+        restored = clear_recache_data()
+        self.config_manager.imported_games = []
+        self._refresh_game_import_button()
+        summary = tr('ui.gui.replacer_config.clear_recache_data_done', count=restored)
+        self._on_cache_apply_done(ApplyResult(summary, summary, ok=True))
+
+    def _show_keybinds_help(self):
+        from PyQt6.QtWidgets import QMessageBox
+
+        msg = QMessageBox(self)
+        msg.setWindowTitle(tr('ui.gui.replacer_config.keybinds'))
+        msg.setTextFormat(Qt.TextFormat.RichText)
+        msg.setText(tr('ui.gui.replacer_config.b_all_keybinds_b_br_ctrl_z'))
+        msg.exec()
+
+    def _open_prejsons_browser(self):
+        """Open the PreJsons browser dialog."""
+        from .prejsons_dialog import PreJsonsDialog
+
+        try:
+            if self._prejsons_dialog is not None:
+                self._prejsons_dialog.show()
+                self._prejsons_dialog.raise_()
+                self._prejsons_dialog.activateWindow()
+                return
+        except RuntimeError:
+            self._prejsons_dialog = None
+
+        dialog = PreJsonsDialog(self)
+        dialog.destroyed.connect(lambda *_: setattr(self, '_prejsons_dialog', None))
+        self._prejsons_dialog = dialog
+        dialog.show()
+        dialog.raise_()
+        dialog.activateWindow()
+
+    def _rebuild_enabled_menu(self, *, sync_from_disk: bool = True):
+        """Rebuild the enabled configs menu."""
+        if sync_from_disk:
+            self._sync_config_state_from_disk(update_enabled_menu=False)
+
+        self.config_enabled_vars.clear()
+
+        # Clean up enabled configs that no longer exist on disk
+        current_configs = self.config_manager.config_names
+        enabled = self.config_manager.enabled_configs
+        enabled_set = set(enabled)
+        for name in enabled[:]:  # Copy list to allow modification
+            if name not in current_configs:
+                self.config_manager.set_config_enabled(name, False)
+
+        self.enabled_menu.set_entries(
+            [
+                {
+                    'name': name,
+                    'checked': name in enabled_set,
+                }
+                for name in current_configs
+            ],
+            minimum_width=(
+                self.enabled_menu_btn.width() + _CONFIG_MENU_BUTTON_POPUP_EXTRA_WIDTH_PX
+                if hasattr(self, 'enabled_menu_btn')
+                else 0
+            ),
+        )
+        self.config_enabled_vars.update(self.enabled_menu.item_widgets)
+
+        self._update_enabled_menu_text()
+        self.enabled_menu.constrain_to_button(self.enabled_menu_btn)
+
+    def _update_enabled_menu_text(self):
+        """Update the enabled menu button text."""
+        enabled = self.config_manager.enabled_configs
+        if not enabled:
+            self.enabled_menu_btn.setText(tr('ui.gui.replacer_config.no_configs_enabled'))
+        elif len(enabled) == 1:
+            self.enabled_menu_btn.setText(enabled[0])
+        else:
+            self.enabled_menu_btn.setText(
+                tr('ui.gui.replacer_config.value_configs_enabled', value0=len(enabled))
+            )
+        # Never clip the label: size the button to its text (bold, with the menu arrow)
+        self.enabled_menu_btn.setMinimumWidth(self.enabled_menu_btn.sizeHint().width() + 12)
+        # Keep the Editing button styled to reflect whether the currently
+        # selected editing profile is enabled or not.
+        try:
+            self._update_editing_button_style()
+        except Exception:
+            pass
+
+    def _on_config_toggle(self, name: str, checked: bool):
+        """Handle config toggle."""
+        self.config_manager.set_config_enabled(name, checked)
+        self._update_enabled_menu_text()
+        status = 'Enabled' if checked else 'Disabled'
+        log_buffer.log('Config', f'{status}: {name}')
+        try:
+            self._update_editing_button_style()
+        except Exception:
+            pass
+
+    @staticmethod
+    def _is_group(entry: dict) -> bool:
+        return isinstance(entry, dict) and entry.get('type') == _KIND_GROUP
+
+    @staticmethod
+    def _is_profile(entry: dict) -> bool:
+        return isinstance(entry, dict) and entry.get('type') != _KIND_GROUP
+
+    def _iter_profiles(self, entries: list):
+        for entry in entries:
+            if self._is_group(entry):
+                yield from self._iter_profiles(entry.get('children', []))
+            elif self._is_profile(entry):
+                yield entry
+
+    def _config_has_groups(self, entries: list | None = None) -> bool:
+        if entries is None:
+            entries = self.config_manager.replacement_rules
+        for entry in entries:
+            if self._is_group(entry):
+                return True
+            if isinstance(entry, dict) and self._config_has_groups(entry.get('children', [])):
+                return True
+        return False
+
+    def _entry_at_path(self, entries: list, path: tuple[int, ...]) -> dict | None:
+        current_entries = entries
+        entry = None
+        for index in path:
+            if index < 0 or index >= len(current_entries):
+                return None
+            entry = current_entries[index]
+            current_entries = entry.get('children', []) if self._is_group(entry) else []
+        return entry
+
+    def _entries_at_parent_path(self, entries: list, parent_path: tuple[int, ...]) -> list | None:
+        if not parent_path:
+            return entries
+        parent = self._entry_at_path(entries, parent_path)
+        if not self._is_group(parent):
+            return None
+        return parent.setdefault('children', [])
+
+    def _set_entry_at_path(self, entries: list, path: tuple[int, ...], entry: dict) -> bool:
+        parent_entries = self._entries_at_parent_path(entries, path[:-1])
+        if parent_entries is None or not path or path[-1] >= len(parent_entries):
+            return False
+        parent_entries[path[-1]] = entry
+        return True
+
+    def _remove_paths(
+        self, entries: list, paths: set[tuple[int, ...]], prefix: tuple[int, ...] = ()
+    ) -> list:
+        kept = []
+        for index, entry in enumerate(entries):
+            path = prefix + (index,)
+            if path in paths:
+                continue
+            if self._is_group(entry):
+                entry = deepcopy(entry)
+                entry['children'] = self._remove_paths(entry.get('children', []), paths, path)
+            kept.append(entry)
+        return kept
+
+    def _prune_descendant_paths(self, paths: list[tuple[int, ...]]) -> list[tuple[int, ...]]:
+        result: list[tuple[int, ...]] = []
+        for path in sorted(paths, key=lambda p: (len(p), p)):
+            if not any(
+                len(path) > len(parent) and path[: len(parent)] == parent for parent in result
+            ):
+                result.append(path)
+        return result
+
+    def _profile_count(self) -> int:
+        return sum(1 for _ in self._iter_profiles(self.config_manager.replacement_rules))
+
+    def _group_summary(self, group: dict) -> tuple[int, int, str, int]:
+        profile_count, id_count, enabled_count = self._summarize_entries(group.get('children', []))
+        if profile_count == 0 or 0 < enabled_count < profile_count:
+            status = _MIXED_STATUS
+        elif enabled_count == profile_count:
+            status = 'On'
+        else:
+            status = 'Off'
+        sort_enabled = 1 if profile_count > 0 and enabled_count == profile_count else 0
+        return profile_count, id_count, status, sort_enabled
+
+    def _summarize_entries(self, entries: list) -> tuple[int, int, int]:
+        profile_count = 0
+        id_count = 0
+        enabled_count = 0
+        for entry in entries:
+            if self._is_group(entry):
+                child_profiles, child_ids, child_enabled = self._summarize_entries(
+                    entry.get('children', [])
+                )
+                profile_count += child_profiles
+                id_count += child_ids
+                enabled_count += child_enabled
+            elif self._is_profile(entry):
+                profile_count += 1
+                id_count += len(entry.get('replace_ids', []))
+                if entry.get('enabled', True):
+                    enabled_count += 1
+        return profile_count, id_count, enabled_count
+
+    @staticmethod
+    def _status_from_summary(profile_count: int, enabled_count: int) -> tuple[str, int]:
+        if profile_count == 0 or 0 < enabled_count < profile_count:
+            return _MIXED_STATUS, 0
+        if enabled_count == profile_count:
+            return tr('replacer.status.on'), 1 if profile_count > 0 else 0
+        return tr('replacer.status.off'), 0
+
+    def _profile_display(
+        self,
+        rule: dict,
+        fallback_index: int,
+        path: tuple[int, ...],
+        group_depth: int | None = None,
+    ) -> tuple[list[str], list]:
+        name = rule.get('name') or tr('replacer.profile.default_name', index=fallback_index + 1)
+        enabled = rule.get('enabled', True)
+        mode = rule.get('mode', 'id')
+        if 'remove' in rule and 'mode' not in rule:
+            mode = 'remove' if rule.get('remove') else 'id'
+
+        if mode == 'id':
+            with_id = rule.get('with_id')
+            if with_id is not None:
+                action = tr('replacer.action.id')
+                replace_with = str(with_id)
+            else:
+                action = tr('replacer.action.remove')
+                replace_with = '-'
+        elif mode == 'cdn':
+            action = tr('replacer.action.cdn')
+            cdn_url = rule.get('cdn_url', '')
+            replace_with = cdn_url[:40] + '...' if len(cdn_url) > 40 else cdn_url
+        elif mode == 'local':
+            action = tr('replacer.action.local')
+            local_path = rule.get('local_path', '')
+            replace_with = Path(local_path).name if local_path else ''
+        elif mode == 'remove':
+            action = tr('replacer.action.remove')
+            replace_with = '-'
+        else:
+            action = mode.upper()
+            replace_with = '-'
+
+        id_count = len(rule.get('replace_ids', []))
+        if group_depth is None:
+            group_depth = self._group_depth(path[:-1])
+        values = [
+            tr('replacer.status.on') if enabled else tr('replacer.status.off'),
+            self._entry_display_name(name, group_depth),
+            action,
+            tr_count(id_count, 'count.id.one', 'count.id.other'),
+            replace_with,
+        ]
+        sort_values = [
+            1 if enabled else 0,
+            name.lower(),
+            mode,
+            id_count,
+            replace_with.lower(),
+        ]
+        return values, sort_values
+
+    def _make_tree_item(self, entry: dict, path: tuple[int, ...]) -> ReplacerTreeItem:
+        item, _summary = self._make_tree_item_with_summary(entry, path)
+        return item
+
+    def _make_tree_item_with_summary(
+        self,
+        entry: dict,
+        path: tuple[int, ...],
+        group_depth: int = 0,
+        group_ancestors: tuple[tuple[int, ...], ...] = (),
+    ) -> tuple[ReplacerTreeItem, tuple[int, int, int]]:
+        if self._is_group(entry):
+            child_items: list[ReplacerTreeItem] = []
+            profile_count = 0
+            id_count = 0
+            enabled_count = 0
+            current_group_depth = group_depth + 1
+            child_ancestors = group_ancestors + (path,)
+            if hasattr(self, '_group_depth_by_path'):
+                self._group_depth_by_path[path] = current_group_depth
+            for child_index, child in enumerate(entry.get('children', [])):
+                child_item, child_summary = self._make_tree_item_with_summary(
+                    child,
+                    path + (child_index,),
+                    current_group_depth,
+                    child_ancestors,
+                )
+                child_items.append(child_item)
+                child_profiles, child_ids, child_enabled = child_summary
+                profile_count += child_profiles
+                id_count += child_ids
+                enabled_count += child_enabled
+            status, sort_enabled = self._status_from_summary(profile_count, enabled_count)
+            name = entry.get('name') or tr('replacer.group.label')
+            item = ReplacerTreeItem(
+                [
+                    status,
+                    self._group_display_name(name, path),
+                    tr('replacer.group.label'),
+                    tr_count(id_count, 'count.id.one', 'count.id.other'),
+                    tr_count(
+                        profile_count,
+                        'count.profile.one',
+                        'count.profile.other',
+                    ),
+                ]
+            )
+            item.setData(0, _ROLE_KIND, _KIND_GROUP)
+            item.setData(_PROFILE_NAME_COLUMN, _ROLE_DRAW_GROUP_ICON, True)
+            item.setData(
+                _PROFILE_NAME_COLUMN,
+                _ROLE_GROUP_ICON_INDENT,
+                _GROUP_GUIDE_STEP_PX * max(0, current_group_depth - 1),
+            )
+            sort_values = [sort_enabled, name.lower(), 'group', id_count, profile_count]
+            flags = item.flags() | Qt.ItemFlag.ItemIsDragEnabled | Qt.ItemFlag.ItemIsDropEnabled
+            item.setFlags(flags)
+            item.setChildIndicatorPolicy(QTreeWidgetItem.ChildIndicatorPolicy.ShowIndicator)
+            font = item.font(1)
+            font.setBold(True)
+            item.setFont(1, font)
+            # Tall enough for the bold name plus the theme's 6px row padding
+            row_height = max(_GROUP_ROW_HEIGHT_PX, QFontMetrics(font).height() + 14)
+            for column in range(5):
+                item.setSizeHint(column, QSize(0, row_height))
+            for child_item in child_items:
+                item.addChild(child_item)
+            summary = (profile_count, id_count, enabled_count)
+        else:
+            values, sort_values = self._profile_display(
+                entry, path[-1] if path else 0, path, group_depth
+            )
+            item = ReplacerTreeItem(values)
+            item.setData(0, _ROLE_KIND, _KIND_PROFILE)
+            flags = item.flags() | Qt.ItemFlag.ItemIsDragEnabled
+            flags &= ~Qt.ItemFlag.ItemIsDropEnabled
+            item.setFlags(flags)
+            summary = (
+                1,
+                len(entry.get('replace_ids', [])),
+                1 if entry.get('enabled', True) else 0,
+            )
+
+        item.setData(0, _ROLE_PATH, path)
+        item.setData(0, _ROLE_GROUP_ANCESTORS, group_ancestors)
+        item.setData(
+            0,
+            _ROLE_GROUP_DEPTH,
+            group_depth + 1 if self._is_group(entry) else group_depth,
+        )
+        for column, sort_value in enumerate(sort_values):
+            item.setData(column, _ROLE_SORT_BASE, sort_value)
+        return item, summary
+
+    def _restore_expanded_states(self, rules: list):
+        def walk(item: QTreeWidgetItem):
+            path = item.data(0, _ROLE_PATH)
+            if item.data(0, _ROLE_KIND) == _KIND_GROUP and isinstance(path, tuple):
+                group = self._entry_at_path(rules, path)
+                item.setExpanded(
+                    bool(group.get('expanded', True)) if self._is_group(group) else True
+                )
+            for child_index in range(item.childCount()):
+                walk(item.child(child_index))
+
+        for top_index in range(self.tree.topLevelItemCount()):
+            walk(self.tree.topLevelItem(top_index))
+
+    def _set_group_expanded(self, item: QTreeWidgetItem, expanded: bool):
+        if getattr(self, '_refreshing_tree', False) or item.data(0, _ROLE_KIND) != _KIND_GROUP:
+            return
+        path = item.data(0, _ROLE_PATH)
+        if not isinstance(path, tuple):
+            return
+        rules = deepcopy(self.config_manager.replacement_rules)
+        group = self._entry_at_path(rules, path)
+        if not self._is_group(group) or group.get('expanded') == expanded:
+            return
+        group['expanded'] = expanded
+        self.config_manager.replacement_rules = rules
+
+    def _refresh_tree(self):
+        """Refresh the tree view."""
+        sort_column = self.tree.sortColumn()
+        sort_order = self.tree.header().sortIndicatorOrder()
+        rules = self.config_manager.replacement_rules
+
+        self._refreshing_tree = True
+        try:
+            self.tree.setSortingEnabled(False)
+            self.tree.clear()
+            self._group_depth_by_path: dict[tuple[int, ...], int] = {}
+            has_groups = False
+            for index, entry in enumerate(rules):
+                item, _summary = self._make_tree_item_with_summary(entry, (index,))
+                self.tree.addTopLevelItem(item)
+                if self._is_group(entry):
+                    has_groups = True
+            self._restore_expanded_states(rules)
+            self.tree.setSortingEnabled(True)
+            self.tree.sortItems(sort_column, sort_order)
+        finally:
+            self._refreshing_tree = False
+        self._tree_config_name = self.config_manager.last_config
+        has_groups = has_groups or self._config_has_groups(rules)
+        self.tree.setDragEnabled(has_groups)
+        self.tree.setAcceptDrops(has_groups)
+        self.tree.viewport().setAcceptDrops(has_groups)
+
+    def _refresh_combo(self):
+        """Refresh config controls from the current files on disk."""
+        self._sync_config_state_from_disk()
+
+    def refresh_configs_from_disk(self):
+        """Refresh config controls after an external config-folder change."""
+        self._sync_config_state_from_disk()
+
+    def _sync_config_state_from_disk(self, *, update_enabled_menu: bool = True) -> bool:
+        """Refresh config settings from disk and update dependent UI."""
+        previous_config = self.config_manager.settings.get('last_config', 'Default')
+        previous_tree_config = getattr(self, '_tree_config_name', previous_config)
+        changed = self.config_manager.reconcile_configs()
+        current_config = self.config_manager.last_config
+        selected_config_changed = previous_config != current_config
+        tree_config_changed = previous_tree_config != current_config
+
+        self.config_menu_btn.setText(tr('ui.gui.replacer_config.value', value0=current_config))
+        self.config_menu_btn.setMinimumWidth(self.config_menu_btn.sizeHint().width() + 12)
+        if update_enabled_menu and hasattr(self, 'enabled_menu'):
+            self._rebuild_enabled_menu(sync_from_disk=False)
+        if (changed or selected_config_changed or tree_config_changed) and hasattr(self, 'tree'):
+            self.undo_manager.clear()
+            self.undo_manager.save_state(self.config_manager.replacement_rules, copy_state=False)
+            self._refresh_tree()
+            if selected_config_changed or tree_config_changed:
+                self.tree.clearSelection()
+                if hasattr(self, 'name_entry'):
+                    self._clear_entries()
+        try:
+            self._update_editing_button_style()
+        except Exception:
+            pass
+        return changed or selected_config_changed or tree_config_changed
+
+    def _rebuild_editing_menu(self):
+        """Rebuild the editing config menu."""
+        self._sync_config_state_from_disk()
+        current_configs = self.config_manager.config_names
+        enabled = set(self.config_manager.enabled_configs)
+
+        entries = []
+        for name in current_configs:
+            # Add a small subtle red dot icon for profiles that are not enabled.
+            try:
+                if name not in enabled:
+                    icon = self._make_status_icon('#cc5555')
+                else:
+                    # Mark enabled profiles with a subtle green dot
+                    icon = self._make_status_icon('#55cc66')
+            except Exception:
+                # If querying config state fails, leave icon empty
+                icon = QIcon()
+            entries.append({'name': name, 'icon': icon})
+
+        self.config_menu.set_entries(
+            entries,
+            minimum_width=(
+                self.config_menu_btn.width() + _CONFIG_MENU_BUTTON_POPUP_EXTRA_WIDTH_PX
+                if hasattr(self, 'config_menu_btn')
+                else 0
+            ),
+        )
+        # Ensure the Editing button reflects the enabled state after rebuild
+        try:
+            self._update_editing_button_style()
+        except Exception:
+            pass
+        self.config_menu.constrain_to_button(self.config_menu_btn)
+
+    def _on_config_select(self, name: str):
+        """Handle config selection from menu."""
+        self._sync_config_state_from_disk()
+        if name not in self.config_manager.config_names:
+            return
+        if name != self.config_manager.last_config:
+            self.config_manager.last_config = name
+            # Keep a single space plus a hair-space between icon and text
+            self.config_menu_btn.setText(tr('ui.gui.replacer_config.value', value0=name))
+            self.config_menu_btn.setMinimumWidth(self.config_menu_btn.sizeHint().width() + 12)
+            self.undo_manager.clear()
+            self.undo_manager.save_state(self.config_manager.replacement_rules, copy_state=False)
+            self._refresh_tree()
+
+        """Handle strip textures change."""
+        try:
+            self._update_editing_button_style()
+        except Exception:
+            pass
+
+    def _update_editing_button_style(self):
+        """Color the Editing button text red if the currently edited profile
+        is not enabled in the Enabled: menu.
+        """
+        # Guard if UI not yet created
+        if not hasattr(self, 'config_menu_btn') or not hasattr(self, 'config_manager'):
+            return
+
+        name = self.config_manager.last_config
+        try:
+            enabled = self.config_manager.is_config_enabled(name)
+        except Exception:
+            enabled = False
+
+        # Set the same small colored dot icon on the parent dropdown button
+        try:
+            color = '#55cc66' if enabled else '#cc5555'
+            self.config_menu_btn.setIcon(self._make_status_icon(color))
+        except Exception:
+            try:
+                self.config_menu_btn.setIcon(QIcon())
+            except Exception:
+                pass
+        # Ensure button text color isn't used for state; the dot represents state now.
+        self.config_menu_btn.setStyleSheet('')
+
+    def _make_status_icon(self, color: str = '#cc5555', size: int = 12) -> QIcon:
+        """Create a small circular QIcon of given color for menu actions.
+
+        This uses native Qt QIcon/QPixmap drawing and avoids custom widget
+        widgets so menu entries remain simple QActions.
+        """
+        try:
+            pix = QPixmap(size, size)
+            pix.fill(QColor(0, 0, 0, 0))
+            p = QPainter(pix)
+            p.setRenderHint(QPainter.RenderHint.Antialiasing)
+            p.setBrush(QColor(color))
+            p.setPen(QColor(0, 0, 0, 0))
+            margin = 2
+            p.drawEllipse(margin, margin, size - margin * 2, size - margin * 2)
+            p.end()
+            return QIcon(pix)
+        except Exception:
+            return QIcon()
+
+    def _browse_local_file(self):
+        """Open file browser for local file selection."""
+        current_val = self.replacement_entry.text().strip(' \t"\'')
+        initial_dir = ''
+        if current_val:
+            path = resolve_local_replacement_path(current_val)
+            if path.parent.exists():
+                initial_dir = str(path.parent)
+
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            tr('ui.gui.replacer_config.select_local_file'),
+            initial_dir,
+            tr('ui.gui.replacer_config.all_files'),
+        )
+        if file_path:
+            self.replacement_entry.setText(local_replacement_path_for_storage(file_path))
+
+    def _store_dropped_replacement_path(self, file_path: str) -> None:
+        """Make dropped Configs assets portable while preserving external paths."""
+        self.replacement_entry.setText(local_replacement_path_for_storage(file_path))
+
+    def _config_action(self, action: str):
+        """Handle config management actions."""
+        current = self.config_manager.last_config
+
+        if action == 'new':
+            name, ok = QInputDialog.getText(
+                self, tr('ui.gui.replacer_config.new_config'), tr('ui.gui.replacer_config.name')
+            )
+            if ok and name:
+                name = name.strip()
+                if not self.config_manager.is_valid_config_name(name):
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.invalid_name'),
+                        tr('ui.gui.replacer_config.config_names_cannot_contain'),
+                    )
+                elif not self.config_manager.create_config(name):
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.invalid_name'),
+                        tr(
+                            'ui.gui.replacer_config.a_config_named_value_already_exists',
+                            value0=name,
+                        ),
+                    )
+                else:
+                    self.config_manager.last_config = name
+                    self.undo_manager.clear()
+                    self.undo_manager.save_state(
+                        self.config_manager.replacement_rules, copy_state=False
+                    )
+                    self._refresh_combo()
+                    self._refresh_tree()
+
+        elif action == 'dup':
+            name, ok = QInputDialog.getText(
+                self,
+                tr('ui.gui.replacer_config.duplicate'),
+                tr('ui.gui.replacer_config.copy_of_value', value0=current),
+            )
+            if ok and name:
+                name = name.strip()
+                if not self.config_manager.is_valid_config_name(name):
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.invalid_name'),
+                        tr('ui.gui.replacer_config.config_names_cannot_contain'),
+                    )
+                elif not self.config_manager.duplicate_config(current, name):
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.invalid_name'),
+                        tr(
+                            'ui.gui.replacer_config.a_config_named_value_already_exists',
+                            value0=name,
+                        ),
+                    )
+                else:
+                    self.config_manager.last_config = name
+                    self.undo_manager.clear()
+                    self.undo_manager.save_state(
+                        self.config_manager.replacement_rules, copy_state=False
+                    )
+                    self._refresh_combo()
+                    self._refresh_tree()
+
+        elif action == 'rename':
+            name, ok = QInputDialog.getText(
+                self,
+                tr('ui.gui.replacer_config.rename'),
+                tr('ui.gui.replacer_config.new_name'),
+                text=current,
+            )
+            if ok and name:
+                name = name.strip()
+                if not self.config_manager.is_valid_config_name(name):
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.invalid_name'),
+                        tr('ui.gui.replacer_config.config_names_cannot_contain'),
+                    )
+                elif name != current and not self.config_manager.rename_config(current, name):
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.invalid_name'),
+                        tr(
+                            'ui.gui.replacer_config.a_config_named_value_already_exists',
+                            value0=name,
+                        ),
+                    )
+                elif name != current:
+                    self._refresh_combo()
+
+        elif action == 'delete':
+            if len(self.config_manager.config_names) <= 1:
+                QMessageBox.critical(
+                    self,
+                    tr('ui.gui.replacer_config.error'),
+                    tr('ui.gui.replacer_config.cannot_delete_last_config'),
+                )
+            else:
+                reply = QMessageBox.question(
+                    self,
+                    tr('ui.gui.replacer_config.delete'),
+                    tr('ui.gui.replacer_config.delete_value', value0=current),
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                    QMessageBox.StandardButton.Yes,
+                )
+                if reply == QMessageBox.StandardButton.Yes:
+                    self.config_manager.delete_config(current)
+                    self.undo_manager.clear()
+                    self.undo_manager.save_state(
+                        self.config_manager.replacement_rules, copy_state=False
+                    )
+                    self._refresh_combo()
+                    self._refresh_tree()
+
+    def _save_with_undo(self, rules: list):
+        """Save rules with undo tracking."""
+        self.undo_manager.save_state(rules, copy_state=False)
+        self.config_manager.replacement_rules = rules
+
+    def _do_undo(self):
+        """Perform undo."""
+        if prev := self.undo_manager.undo():
+            self.config_manager.replacement_rules = prev
+            self._refresh_tree()
+            log_buffer.log('Config', 'Undo performed')
+
+    def _do_redo(self):
+        """Perform redo."""
+        if next_state := self.undo_manager.redo():
+            self.config_manager.replacement_rules = next_state
+            self._refresh_tree()
+            log_buffer.log('Config', 'Redo performed')
+
+    def _show_context_menu(self, pos):
+        """Show context menu for tree item."""
+        item = self.tree.itemAt(pos)
+        if not item:
+            return
+        if not item.isSelected():
+            self.tree.clearSelection()
+            item.setSelected(True)
+
+        selected_items = self.tree.selectedItems()
+        selected_profile_paths = self._selected_profile_paths()
+
+        menu = QMenu(self)
+
+        # Multi-select operations (available when multiple items selected)
+        if len(selected_items) > 1:
+            if selected_profile_paths:
+                menu.addAction(tr('ui.gui.replacer_config.enable_selected'), self._enable_selected)
+                menu.addAction(
+                    tr('ui.gui.replacer_config.disable_selected'), self._disable_selected
+                )
+                if len(selected_profile_paths) == len(selected_items) and self._paths_share_parent(
+                    selected_profile_paths
+                ):
+                    menu.addSeparator()
+                    menu.addAction(
+                        tr('ui.gui.replacer_config.create_group'), self._create_group_from_selected
+                    )
+            menu.addSeparator()
+            menu.addAction(tr('ui.gui.replacer_config.delete_selected'), self._delete_selected)
+        else:
+            # Single item operations
+            path = item.data(0, _ROLE_PATH)
+            if not isinstance(path, tuple):
+                return
+            entry = self._entry_at_path(self.config_manager.replacement_rules, path)
+            if self._is_group(entry):
+                menu.addAction(
+                    tr('ui.gui.replacer_config.enable_group'),
+                    lambda: self._set_group_profiles_enabled(path, True),
+                )
+                menu.addAction(
+                    tr('ui.gui.replacer_config.disable_group'),
+                    lambda: self._set_group_profiles_enabled(path, False),
+                )
+                menu.addSeparator()
+                menu.addAction(
+                    tr('ui.gui.replacer_config.rename_group'), lambda: self._rename_group(path)
+                )
+                menu.addSeparator()
+                menu.addAction(
+                    tr('ui.gui.replacer_config.delete_group'), lambda: self._delete_selected()
+                )
+            elif self._is_profile(entry):
+                enabled = entry.get('enabled', True)
+                text = tr('replacer.profile.disable') if enabled else tr('replacer.profile.enable')
+                menu.addAction(text, lambda: self._toggle_profile(path))
+                menu.addAction(
+                    tr('ui.gui.replacer_config.rename_profile'), lambda: self._rename_profile(path)
+                )
+                menu.addAction(
+                    tr('ui.gui.replacer_config.edit_asset_ids'), lambda: self._edit_asset_ids(path)
+                )
+                menu.addAction(
+                    tr('ui.gui.replacer_config.edit_replacement'),
+                    lambda: self._edit_replacement(path),
+                )
+                menu.addSeparator()
+                menu.addAction(
+                    tr('ui.gui.replacer_config.create_group'), self._create_group_from_selected
+                )
+                menu.addSeparator()
+                menu.addAction(
+                    tr('ui.gui.replacer_config.delete_profile'), lambda: self._delete_selected()
+                )
+
+        if menu.actions():
+            menu.exec(self.tree.mapToGlobal(pos))
+
+    def _selected_entry_paths(self) -> list[tuple[int, ...]]:
+        paths: list[tuple[int, ...]] = []
+        for item in self.tree.selectedItems():
+            path = item.data(0, _ROLE_PATH)
+            if isinstance(path, tuple):
+                paths.append(path)
+        return paths
+
+    def _selected_profile_paths(self) -> list[tuple[int, ...]]:
+        profile_paths = []
+        for path in self._selected_entry_paths():
+            entry = self._entry_at_path(self.config_manager.replacement_rules, path)
+            if self._is_profile(entry):
+                profile_paths.append(path)
+        return sorted(profile_paths)
+
+    def _selected_movable_paths(self) -> list[tuple[int, ...]]:
+        paths = []
+        for path in self._selected_entry_paths():
+            entry = self._entry_at_path(self.config_manager.replacement_rules, path)
+            if self._is_profile(entry) or self._is_group(entry):
+                paths.append(path)
+        return self._prune_descendant_paths(paths)
+
+    @staticmethod
+    def _paths_share_parent(paths: list[tuple[int, ...]]) -> bool:
+        return bool(paths) and len({path[:-1] for path in paths}) == 1
+
+    def _toggle_profile(self, path: tuple[int, ...]):
+        """Toggle profile enabled state."""
+        rules = deepcopy(self.config_manager.replacement_rules)
+        rule = self._entry_at_path(rules, path)
+        if self._is_profile(rule):
+            rule['enabled'] = not rule.get('enabled', True)
+            self._save_with_undo(rules)
+            self._refresh_tree()
+
+    def _rename_profile(self, path: tuple[int, ...]):
+        """Rename a profile."""
+        rules = self.config_manager.replacement_rules
+        rule = self._entry_at_path(rules, path)
+        if not self._is_profile(rule):
+            return
+        old_name = rule.get('name', f'Profile {path[-1] + 1}')
+        name, ok = QInputDialog.getText(
+            self,
+            tr('ui.gui.replacer_config.rename'),
+            tr('ui.gui.replacer_config.new_name'),
+            text=old_name,
+        )
+        if ok and name and name.strip():
+            rules_copy = deepcopy(rules)
+            rule_copy = self._entry_at_path(rules_copy, path)
+            if not self._is_profile(rule_copy):
+                return
+            rule_copy['name'] = name.strip()
+            self._save_with_undo(rules_copy)
+            self._refresh_tree()
+
+    def _rename_group(self, path: tuple[int, ...]):
+        """Rename a group."""
+        rules = self.config_manager.replacement_rules
+        group = self._entry_at_path(rules, path)
+        if not self._is_group(group):
+            return
+        old_name = group.get('name', 'Group')
+        name, ok = QInputDialog.getText(
+            self,
+            tr('ui.gui.replacer_config.rename'),
+            tr('ui.gui.replacer_config.new_name'),
+            text=old_name,
+        )
+        if ok and name and name.strip():
+            rules_copy = deepcopy(rules)
+            group_copy = self._entry_at_path(rules_copy, path)
+            if not self._is_group(group_copy):
+                return
+            group_copy['name'] = name.strip()
+            self._save_with_undo(rules_copy)
+            self._refresh_tree()
+
+    def _set_group_profiles_enabled(self, path: tuple[int, ...], enabled: bool):
+        """Set every descendant profile in a group to the same enabled state."""
+        rules = deepcopy(self.config_manager.replacement_rules)
+        group = self._entry_at_path(rules, path)
+        if not self._is_group(group):
+            return
+
+        changed = 0
+        for profile in self._iter_profiles(group.get('children', [])):
+            if profile.get('enabled', True) != enabled:
+                profile['enabled'] = enabled
+                changed += 1
+
+        if changed:
+            self._save_with_undo(rules)
+            self._refresh_tree()
+            action = 'Enabled' if enabled else 'Disabled'
+            log_buffer.log(
+                'Config',
+                f'{action} {format_count(changed, "profile")} in group: {group.get("name", "Group")}',
+            )
+
+    def _create_group_from_selected(self):
+        """Create a group from the currently selected profile rows."""
+        paths = self._selected_profile_paths()
+        if not paths:
+            return
+        if len(paths) != len(self.tree.selectedItems()):
+            QMessageBox.information(
+                self,
+                tr('ui.gui.replacer_config.create_group'),
+                tr('ui.gui.replacer_config.select_only_profiles_to_create_a_group'),
+            )
+            return
+        if not self._paths_share_parent(paths):
+            QMessageBox.information(
+                self,
+                tr('ui.gui.replacer_config.create_group'),
+                tr('ui.gui.replacer_config.select_profiles_in_the_same_group_or'),
+            )
+            return
+
+        name, ok = QInputDialog.getText(
+            self,
+            tr('ui.gui.replacer_config.rename'),
+            tr('ui.gui.replacer_config.new_name'),
+            text=tr('replacer.group.new_default_name'),
+        )
+        if not ok or not name or not name.strip():
+            return
+
+        rules = deepcopy(self.config_manager.replacement_rules)
+        parent_path = paths[0][:-1]
+        parent_entries = self._entries_at_parent_path(rules, parent_path)
+        if parent_entries is None:
+            return
+
+        selected_indices = sorted(path[-1] for path in paths)
+        children = [
+            deepcopy(parent_entries[index])
+            for index in selected_indices
+            if index < len(parent_entries)
+        ]
+        if not children:
+            return
+
+        for index in reversed(selected_indices):
+            if index < len(parent_entries):
+                parent_entries.pop(index)
+        insert_at = selected_indices[0]
+        parent_entries.insert(
+            insert_at,
+            {
+                'type': _KIND_GROUP,
+                'name': name.strip(),
+                'expanded': True,
+                'children': children,
+            },
+        )
+
+        self._save_with_undo(rules)
+        self._refresh_tree()
+        log_buffer.log(
+            'Config',
+            f'Created group: {name.strip()} ({format_count(children, "profile")})',
+        )
+
+    def _edit_asset_ids(self, path: tuple[int, ...]):
+        """Edit asset IDs for a profile."""
+        rules = self.config_manager.replacement_rules
+        rule = self._entry_at_path(rules, path)
+        if not self._is_profile(rule):
+            return
+
+        name = rule.get('name') or tr('replacer.profile.default_name', index=path[-1] + 1)
+        ids = rule.get('replace_ids', [])
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle(tr('ui.gui.replacer_config.asset_ids_value', value0=name))
+        dialog.resize(400, 350)
+        if icon_path := get_icon_path():
+            from PyQt6.QtGui import QIcon
+
+            dialog.setWindowIcon(QIcon(str(icon_path)))
+
+        layout = QVBoxLayout()
+
+        title = QLabel(tr('ui.gui.replacer_config.profile_value', value0=name))
+        title.setStyleSheet('font-weight: bold;')
+        layout.addWidget(title)
+
+        count_label = QLabel(
+            tr(
+                'ui.gui.replacer_config.total_value',
+                value0=tr_count(ids, 'count.asset_id.one', 'count.asset_id.other'),
+            )
+        )
+        layout.addWidget(count_label)
+
+        text_edit = QTextEdit()
+        text_edit.setAcceptRichText(False)
+        text_edit.setPlainText('\n'.join(str(i) for i in ids))
+        layout.addWidget(text_edit)
+
+        def save_ids():
+            content = text_edit.toPlainText().strip()
+            # Use robust ID parser to avoid deleting valid string-based asset types
+            new_ids = self._parse_ids(content.replace('\n', ','))
+            rules_copy = deepcopy(self.config_manager.replacement_rules)
+            rule_copy = self._entry_at_path(rules_copy, path)
+            if not self._is_profile(rule_copy):
+                return
+            rule_copy['replace_ids'] = new_ids
+            self._save_with_undo(rules_copy)
+            self._refresh_tree()
+            count_label.setText(
+                tr(
+                    'ui.gui.replacer_config.total_value',
+                    value0=tr_count(
+                        new_ids,
+                        'count.asset_id.one',
+                        'count.asset_id.other',
+                    ),
+                )
+            )
+
+        def copy_all():
+            from PyQt6.QtWidgets import QApplication
+
+            QApplication.clipboard().setText(', '.join(str(i) for i in ids))
+
+        btn_layout = QHBoxLayout()
+        copy_btn = QPushButton(tr('ui.gui.replacer_config.copy_all'))
+        copy_btn.clicked.connect(copy_all)
+        btn_layout.addWidget(copy_btn)
+
+        save_btn = QPushButton(tr('ui.gui.replacer_config.save_and_close'))
+        save_btn.clicked.connect(lambda: (save_ids(), dialog.accept()))
+        btn_layout.addWidget(save_btn)
+
+        # Add Asset Types menu to Edit Asset IDs
+        types_btn = QPushButton(tr('ui.gui.replacer_config.asset_types'))
+
+        def show_dialog_types_popup():
+            def on_filters_changed(filters):
+                from ..cache.cache_manager import CacheManager
+
+                curr_content = text_edit.toPlainText().strip()
+                curr_ids = self._parse_ids(curr_content.replace('\n', ','))
+                new_ids = []
+                for item in curr_ids:
+                    if isinstance(item, int):
+                        new_ids.append(item)
+                    elif isinstance(item, str):
+                        is_mapped = False
+                        if item in _VIRTUAL_ANIM_TYPES:
+                            is_mapped = True
+                        else:
+                            for tid, name in CacheManager.ASSET_TYPES.items():
+                                if name.lower() == item.lower():
+                                    is_mapped = True
+                                    break
+                        if not is_mapped:
+                            new_ids.append(item)
+                for tid in filters:
+                    if tid in _VIRTUAL_ANIM_TYPES:
+                        new_ids.append(tid)
+                    elif tid in CacheManager.ASSET_TYPES:
+                        new_ids.append(CacheManager.ASSET_TYPES[tid])
+
+                if new_ids:
+                    text_edit.setPlainText('\n'.join(str(i) for i in new_ids))
+                else:
+                    text_edit.setPlainText('')
+
+            import time as _time
+
+            from PyQt6.QtCore import QPoint
+            from PyQt6.QtWidgets import QApplication
+
+            from ..cache.asset_type_filter import CategoryFilterPopup
+            from ..cache.cache_manager import CacheManager
+
+            if _time.monotonic() - self._dialog_asset_types_popup_last_closed < 0.25:
+                return
+
+            _VIRTUAL_ANIM_TYPES = {'R6Animation', 'R15Animation', 'NonPlayerAnimation'}
+
+            content = text_edit.toPlainText().strip()
+            current_ids = self._parse_ids(content.replace('\n', ','))
+
+            active_filters = set()
+            for item in current_ids:
+                if isinstance(item, str):
+                    if item in _VIRTUAL_ANIM_TYPES:
+                        active_filters.add(item)
+                        continue
+                    for tid, name in CacheManager.ASSET_TYPES.items():
+                        if name.lower() == item.lower():
+                            active_filters.add(tid)
+                            break
+
+            popup = getattr(self, '_dialog_asset_types_popup', None)
+            if popup is not None:
+                try:
+                    if popup.isVisible():
+                        popup.close()
+                        self._dialog_asset_types_popup_last_closed = _time.monotonic()
+                        return
+                except RuntimeError:
+                    popup = None
+
+            if popup is None:
+                popup = CategoryFilterPopup(parent=dialog, active_filters=active_filters)
+                popup.filters_changed.connect(on_filters_changed)
+                popup.aboutToHide.connect(self._mark_dialog_asset_types_popup_closed)
+                self._dialog_asset_types_popup = popup
+            else:
+                popup.set_active_filters(active_filters)
+
+            # Line up TOP LEFT of our popup menu with TOP LEFT of the Asset Types button
+            pos = types_btn.mapToGlobal(types_btn.rect().topLeft())
+            screen = QApplication.screenAt(pos) or QApplication.primaryScreen()
+            if screen is not None:
+                popup.constrain_to_available_geometry(screen.availableGeometry(), pos.y())
+            popup.popup(pos)
+
+        types_btn.clicked.connect(show_dialog_types_popup)
+        btn_layout.addWidget(types_btn)
+
+        cancel_btn = QPushButton(tr('ui.gui.replacer_config.cancel'))
+        cancel_btn.clicked.connect(dialog.reject)
+        btn_layout.addWidget(cancel_btn)
+
+        layout.addLayout(btn_layout)
+        dialog.setLayout(layout)
+        dialog.show()
+
+    def _edit_replacement(self, path: tuple[int, ...]):
+        """Edit replacement value for a profile."""
+        rules = self.config_manager.replacement_rules
+        rule = self._entry_at_path(rules, path)
+        if not self._is_profile(rule):
+            return
+
+        mode = rule.get('mode', 'id')
+
+        # Get current value based on mode
+        if mode == 'cdn':
+            old_value = rule.get('cdn_url', '')
+        elif mode == 'local':
+            old_value = rule.get('local_path', '')
+        else:
+            old_value = str(rule.get('with_id', '')) if rule.get('with_id') is not None else ''
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle(tr('ui.gui.replacer_config.edit_replacement'))
+        dialog.resize(400, 100)
+        if icon_path := get_icon_path():
+            from PyQt6.QtGui import QIcon
+
+            dialog.setWindowIcon(QIcon(str(icon_path)))
+
+        layout = QVBoxLayout()
+        label = QLabel(tr('ui.gui.replacer_config.replacement_id_url_file_path_or_empty'))
+        layout.addWidget(label)
+
+        line_edit = FileDropLineEdit()
+        line_edit.setText(old_value)
+        line_edit.setToolTip(_replacement_path_tooltip())
+
+        def _store_dropped_path(file_path: str) -> None:
+            line_edit.setText(local_replacement_path_for_storage(file_path))
+
+        line_edit.fileDropped.connect(_store_dropped_path)
+        layout.addWidget(line_edit)
+
+        btn_layout = QHBoxLayout()
+
+        browse_btn = QPushButton(tr('ui.gui.replacer_config.browse'))
+        _ensure_text_width(browse_btn, 80)
+        browse_btn.setAutoDefault(False)
+
+        def _on_browse():
+            current_val = line_edit.text().strip(' \t"\'')
+            initial_dir = ''
+            if current_val:
+                path = resolve_local_replacement_path(current_val)
+                if path.parent.exists():
+                    initial_dir = str(path.parent)
+
+            path, _ = QFileDialog.getOpenFileName(
+                dialog,
+                tr('ui.gui.replacer_config.select_local_file'),
+                initial_dir,
+                tr('ui.gui.replacer_config.all_files'),
+            )
+            if path:
+                line_edit.setText(local_replacement_path_for_storage(path))
+                dialog.accept()
+
+        browse_btn.clicked.connect(_on_browse)
+        btn_layout.addWidget(browse_btn)
+
+        btn_layout.addStretch()
+
+        ok_btn = QPushButton(tr('ui.gui.replacer_config.ok'))
+        _ensure_text_width(ok_btn, 80)
+        ok_btn.setDefault(True)
+        ok_btn.clicked.connect(dialog.accept)
+        btn_layout.addWidget(ok_btn)
+
+        cancel_btn = QPushButton(tr('ui.gui.replacer_config.cancel'))
+        _ensure_text_width(cancel_btn, 80)
+        cancel_btn.clicked.connect(dialog.reject)
+        btn_layout.addWidget(cancel_btn)
+
+        layout.addLayout(btn_layout)
+        dialog.setLayout(layout)
+
+        if not dialog.exec():
+            return
+
+        new_value = line_edit.text().strip(' \t"\'')
+        new_mode, extra = self._detect_mode(new_value)
+
+        if '_raw' in extra:
+            QMessageBox.critical(
+                self,
+                tr('ui.gui.replacer_config.error'),
+                tr('ui.gui.replacer_config.invalid_replacement_value', value0=extra['_raw']),
+            )
+            return
+
+        if new_mode == 'local' and 'local_path' in extra:
+            if not resolve_local_replacement_path(extra['local_path']).is_file():
+                QMessageBox.critical(
+                    self,
+                    tr('ui.gui.replacer_config.error'),
+                    tr('ui.gui.replacer_config.file_not_found_value', value0=extra['local_path']),
+                )
+                return
+
+        rules_copy = deepcopy(rules)
+        rule_copy = self._entry_at_path(rules_copy, path)
+        if not self._is_profile(rule_copy):
+            return
+        # Clear old mode fields
+        rule_copy.pop('with_id', None)
+        rule_copy.pop('cdn_url', None)
+        rule_copy.pop('local_path', None)
+        # Set new mode and value
+        rule_copy['mode'] = new_mode
+        rule_copy.update(extra)
+        self._save_with_undo(rules_copy)
+        self._refresh_tree()
+
+    def _parse_ids(self, text: str) -> list[Union[int, str]]:
+        """Parse IDs from text."""
+        ids: list[Union[int, str]] = []
+        for part in _ID_SPLIT_RE.split(text):
+            part = part.strip()
+            if not part:
+                continue
+            # "parentId:mapIndex" or "TexturePack:N" — keep as-is
+            if ':' in part:
+                left, right = part.split(':', 1)
+                if right.isdigit() and (left.isdigit() or left == 'TexturePack'):
+                    ids.append(part)
+                    continue
+            try:
+                ids.append(int(part))
+            except ValueError:
+                ids.append(part)
+        return ids
+
+    def _show_asset_types_popup(self):
+        """Show the asset types popup menu."""
+        from PyQt6.QtCore import QPoint
+        from PyQt6.QtWidgets import QApplication
+
+        from ..cache.cache_manager import CacheManager
+
+        if time.monotonic() - self._asset_types_popup_last_closed < 0.25:
+            return
+
+        popup = self.asset_types_popup
+        if popup.isVisible():
+            popup.close()
+            self._asset_types_popup_last_closed = time.monotonic()
+            return
+
+        _VIRTUAL_ANIM_TYPES = {'R6Animation', 'R15Animation', 'NonPlayerAnimation'}
+
+        # Parse current text to update active filters
+        current_text = self.replace_entry.text()
+        current_ids = self._parse_ids(current_text)
+
+        active_filters = set()
+        for item in current_ids:
+            if isinstance(item, str):
+                if item in _VIRTUAL_ANIM_TYPES:
+                    active_filters.add(item)
+                    continue
+                # Reverse lookup the asset type integer from name
+                for tid, name in CacheManager.ASSET_TYPES.items():
+                    if name.lower() == item.lower():
+                        active_filters.add(tid)
+                        break
+
+        # Reuse the existing popup instance and update its current selection.
+        popup = self.asset_types_popup
+        popup.set_active_filters(active_filters)
+
+        global_top_right = self.asset_types_btn.mapToGlobal(self.asset_types_btn.rect().topRight())
+        screen = QApplication.screenAt(global_top_right) or QApplication.primaryScreen()
+        if screen is None:
+            popup.popup(global_top_right)
+            return
+        avail = screen.availableGeometry()
+        popup.constrain_to_available_geometry(avail, global_top_right.y())
+        popup_size = popup.sizeHint()
+
+        # Ideal: bottom-right of popup aligns with top-right of button
+        ideal_x = global_top_right.x() - popup_size.width()
+        ideal_y = global_top_right.y() - popup_size.height()
+
+        # Clamp to the screen the button is on so it never teleports to another monitor
+        x = max(avail.left(), min(ideal_x, avail.right() - popup_size.width()))
+        y = max(avail.top(), min(ideal_y, avail.bottom() - popup_size.height()))
+
+        popup.popup(QPoint(x, y))
+
+    def _mark_asset_types_popup_closed(self):
+        """Remember that the Asset Types popup just closed to debounce reopen clicks."""
+        self._asset_types_popup_last_closed = time.monotonic()
+
+    def _mark_dialog_asset_types_popup_closed(self):
+        """Remember that the edit dialog Asset Types popup just closed."""
+        self._dialog_asset_types_popup_last_closed = time.monotonic()
+
+    def _on_asset_types_changed(self, filters):
+        """Handle asset types selection change."""
+        from ..cache.cache_manager import CacheManager
+
+        _VIRTUAL_ANIM_TYPES = {'R6Animation', 'R15Animation', 'NonPlayerAnimation'}
+
+        current_text = self.replace_entry.text().strip()
+        current_ids = self._parse_ids(current_text)
+
+        new_ids = []
+        for item in current_ids:
+            if isinstance(item, int):
+                new_ids.append(item)
+            elif isinstance(item, str):
+                is_mapped = False
+                for tid, name in CacheManager.ASSET_TYPES.items():
+                    if name.lower() == item.lower():
+                        is_mapped = True
+                        break
+                # Also treat virtual anim type strings as mapped (so they get removed/re-added cleanly)
+                if item in _VIRTUAL_ANIM_TYPES:
+                    is_mapped = True
+                if not is_mapped:
+                    new_ids.append(item)
+
+        # Add the string representations of the selected filters
+        for tid in filters:
+            if tid in _VIRTUAL_ANIM_TYPES:
+                new_ids.append(tid)
+            elif tid in CacheManager.ASSET_TYPES:
+                new_ids.append(CacheManager.ASSET_TYPES[tid])
+
+        if new_ids:
+            self.replace_entry.setText(', '.join(str(i) for i in new_ids).strip(', '))
+        else:
+            self.replace_entry.setText('')
+
+    def _clear_entries(self):
+        """Clear input fields."""
+        self.name_entry.clear()
+        self.replace_entry.clear()
+        self.replacement_entry.clear()
+
+    def _detect_mode(self, value: str) -> tuple[str, dict]:
+        """Auto-detect mode from replacement value.
+
+        Returns tuple of (mode, extra_fields).
+        """
+        value = value.strip().strip('"\'')
+
+        if not value:
+            # Empty = remove
+            return 'id', {}
+
+        if value.startswith(('http://', 'https://')):
+            # URL = CDN mode
+            return 'cdn', {'cdn_url': value}
+
+        # Check if it's a file path (contains path separators or drive letter)
+        if '\\' in value or '/' in value or (len(value) > 2 and value[1] == ':'):
+            return 'local', {'local_path': value}
+
+        # Try to parse as integer (asset ID)
+        try:
+            return 'id', {'with_id': int(value)}
+        except ValueError:
+            pass
+
+        # Could be a relative file path without separators
+        if Path(value).exists():
+            return 'local', {'local_path': str(Path(value).resolve())}
+
+        # Default to treating as potential asset ID (will fail validation)
+        return 'id', {'_raw': value}
+
+    def _get_rule_from_entries(self) -> dict | None:
+        """Get rule from input fields."""
+        ids = self._parse_ids(self.replace_entry.text())
+        if not ids:
+            QMessageBox.critical(
+                self,
+                tr('ui.gui.replacer_config.error'),
+                tr('ui.gui.replacer_config.enter_at_least_one_asset_id'),
+            )
+            return None
+
+        replacement = self.replacement_entry.text().strip()
+        mode, extra = self._detect_mode(replacement)
+
+        rule = {
+            'name': self.name_entry.text().strip() or f'Profile {self._profile_count() + 1}',
+            'replace_ids': ids,
+            'mode': mode,
+            'enabled': True,
+        }
+
+        if mode == 'id':
+            if 'with_id' in extra:
+                rule['with_id'] = extra['with_id']
+            elif '_raw' in extra:
+                # Failed to parse as ID
+                QMessageBox.critical(
+                    self,
+                    tr('ui.gui.replacer_config.error'),
+                    tr(
+                        'ui.gui.replacer_config.invalid_replacement_value_must_be_an_asset',
+                        value0=extra['_raw'],
+                    ),
+                )
+                return None
+            # Empty = remove (no with_id)
+        elif mode == 'cdn':
+            cdn_url = extra['cdn_url']
+            # Validate URL is accessible
+            try:
+                status = http_head_status(cdn_url, timeout=5, headers={'User-Agent': 'Mozilla/5.0'})
+                if status >= 400:
+                    QMessageBox.warning(
+                        self,
+                        tr('ui.gui.replacer_config.warning'),
+                        tr(
+                            'ui.gui.replacer_config.cdn_url_returned_status_value_adding_anyway',
+                            value0=status,
+                        ),
+                    )
+            except URLError as e:
+                reply = QMessageBox.question(
+                    self,
+                    tr('ui.gui.replacer_config.url_check_failed'),
+                    tr('ui.gui.replacer_config.could_not_verify_cdn_url_value_add', value0=e),
+                    QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                    QMessageBox.StandardButton.Yes,
+                )
+                if reply != QMessageBox.StandardButton.Yes:
+                    return None
+            except Exception:
+                pass  # Ignore other errors, allow adding
+            rule['cdn_url'] = cdn_url
+        elif mode == 'local':
+            local_path = extra['local_path']
+            if not resolve_local_replacement_path(local_path).is_file():
+                QMessageBox.critical(
+                    self,
+                    tr('ui.gui.replacer_config.error'),
+                    tr('ui.gui.replacer_config.file_not_found_value', value0=local_path),
+                )
+                return None
+            rule['local_path'] = local_path
+
+        return rule
+
+    def _add_rule(self):
+        """Add a new rule."""
+        if rule := self._get_rule_from_entries():
+            rules = deepcopy(self.config_manager.replacement_rules)
+            rules.append(rule)
+            self._save_with_undo(rules)
+            self._refresh_tree()
+            self._clear_entries()
+            mode = rule.get('mode', 'id').upper()
+            log_buffer.log('Config', f'Added profile: {rule["name"]} ({mode})')
+
+    def _load_selected(self):
+        """Load selected rule into input fields."""
+        items = self.tree.selectedItems()
+        if not items:
+            return
+
+        path = items[0].data(0, _ROLE_PATH)
+        rule = (
+            self._entry_at_path(self.config_manager.replacement_rules, path)
+            if isinstance(path, tuple)
+            else None
+        )
+        if not self._is_profile(rule):
+            return
+
+        self._clear_entries()
+        self.name_entry.setText(rule.get('name', ''))
+        self.replace_entry.setText(', '.join(str(x) for x in rule.get('replace_ids', [])))
+
+        # Determine mode and set replacement field
+        mode = rule.get('mode', 'id')
+        # Legacy support
+        if 'remove' in rule and 'mode' not in rule:
+            if rule.get('remove'):
+                # For legacy remove, leave replacement empty
+                return
+            mode = 'id'
+
+        if mode == 'id':
+            if (with_id := rule.get('with_id')) is not None:
+                self.replacement_entry.setText(str(with_id))
+        elif mode == 'cdn':
+            self.replacement_entry.setText(rule.get('cdn_url', ''))
+        elif mode == 'local':
+            self.replacement_entry.setText(rule.get('local_path', ''))
+
+    def _update_selected(self):
+        """Update selected rule."""
+        items = self.tree.selectedItems()
+        if not items:
+            return
+
+        if rule := self._get_rule_from_entries():
+            path = items[0].data(0, _ROLE_PATH)
+            if not isinstance(path, tuple):
+                return
+            rules = deepcopy(self.config_manager.replacement_rules)
+            current_rule = self._entry_at_path(rules, path)
+            if not self._is_profile(current_rule):
+                return
+            rule['enabled'] = current_rule.get('enabled', True)
+            self._set_entry_at_path(rules, path, rule)
+            self._save_with_undo(rules)
+            self._refresh_tree()
+            self._clear_entries()
+
+    def _delete_selected(self):
+        """Delete selected profiles or groups."""
+        paths = self._prune_descendant_paths(self._selected_entry_paths())
+        if not paths:
+            return
+
+        current_rules = self.config_manager.replacement_rules
+        has_group = any(self._is_group(self._entry_at_path(current_rules, path)) for path in paths)
+        if has_group:
+            reply = QMessageBox.question(
+                self,
+                tr('ui.gui.replacer_config.delete_group'),
+                tr('ui.gui.replacer_config.delete_selected_groups_and_all_nested_contents'),
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
+                QMessageBox.StandardButton.Yes,
+            )
+            if reply != QMessageBox.StandardButton.Yes:
+                return
+
+        deleted_names = []
+        for path in paths:
+            entry = self._entry_at_path(current_rules, path)
+            if isinstance(entry, dict):
+                deleted_names.append(
+                    entry.get(
+                        'name',
+                        'Group' if self._is_group(entry) else f'Profile {path[-1] + 1}',
+                    )
+                )
+
+        rules = self._remove_paths(deepcopy(current_rules), set(paths))
+
+        if deleted_names:
+            self._save_with_undo(rules)
+            self._refresh_tree()
+            log_buffer.log(
+                'Config',
+                f'Deleted {format_count(deleted_names, "item")}: {", ".join(deleted_names)}',
+            )
+
+    def _enable_selected(self):
+        """Enable selected rules."""
+        paths = self._selected_profile_paths()
+        if not paths:
+            return
+
+        rules = deepcopy(self.config_manager.replacement_rules)
+        enabled_count = 0
+        for path in paths:
+            rule = self._entry_at_path(rules, path)
+            if self._is_profile(rule) and not rule.get('enabled', True):
+                rule['enabled'] = True
+                enabled_count += 1
+
+        if enabled_count > 0:
+            self._save_with_undo(rules)
+            self._refresh_tree()
+            log_buffer.log('Config', f'Enabled {format_count(enabled_count, "profile")}')
+
+    def _disable_selected(self):
+        """Disable selected rules."""
+        paths = self._selected_profile_paths()
+        if not paths:
+            return
+
+        rules = deepcopy(self.config_manager.replacement_rules)
+        disabled_count = 0
+        for path in paths:
+            rule = self._entry_at_path(rules, path)
+            if self._is_profile(rule) and rule.get('enabled', True):
+                rule['enabled'] = False
+                disabled_count += 1
+
+        if disabled_count > 0:
+            self._save_with_undo(rules)
+            self._refresh_tree()
+            log_buffer.log('Config', f'Disabled {format_count(disabled_count, "profile")}')
+
+    def _iter_tree_items(self):
+        def walk(item: QTreeWidgetItem):
+            yield item
+            for child_index in range(item.childCount()):
+                yield from walk(item.child(child_index))
+
+        for top_index in range(self.tree.topLevelItemCount()):
+            yield from walk(self.tree.topLevelItem(top_index))
+
+    def _item_for_path(self, path: tuple[int, ...]) -> QTreeWidgetItem | None:
+        for item in self._iter_tree_items():
+            if item.data(0, _ROLE_PATH) == path:
+                return item
+        return None
+
+    @staticmethod
+    def _is_descendant_path(path: tuple[int, ...], parent: tuple[int, ...]) -> bool:
+        return len(path) > len(parent) and path[: len(parent)] == parent
+
+    def _group_depth(self, path: tuple[int, ...], rules: list | None = None) -> int:
+        cached_depth = getattr(self, '_group_depth_by_path', {}).get(path)
+        if cached_depth is not None:
+            return cached_depth
+        if rules is None:
+            rules = self.config_manager.replacement_rules
+        depth = 0
+        for index in range(1, len(path) + 1):
+            entry = self._entry_at_path(rules, path[:index])
+            if self._is_group(entry):
+                depth += 1
+        return depth
+
+    def _entry_display_name(self, name: str, group_depth: int | tuple[int, ...]) -> str:
+        if isinstance(group_depth, tuple):
+            group_depth = self._group_depth(group_depth[:-1])
+        indent = ' ' * (_GROUP_CONTENT_INDENT_SPACES * max(0, group_depth))
+        return f'{indent}{name}'
+
+    def _group_display_name(self, name: str, path: tuple[int, ...]) -> str:
+        return name
+
+    def _group_guide_x(self, group_path: tuple[int, ...]) -> int:
+        name_left = self.tree.columnViewportPosition(_PROFILE_NAME_COLUMN)
+        group_depth = getattr(self, '_group_depth_by_path', {}).get(group_path)
+        if group_depth is None:
+            group_depth = self._group_depth(group_path)
+        depth_offset = max(0, group_depth - 1) * _GROUP_GUIDE_STEP_PX
+        return name_left + _GROUP_GUIDE_GUTTER_PX + depth_offset + 1
+
+    def _paint_group_guides(self, viewport):
+        if not hasattr(self, 'tree'):
+            return
+        if not getattr(self, '_group_depth_by_path', None) and not self._config_has_groups():
+            return
+
+        palette = self.tree.palette()
+        is_dark = palette.window().color().lightness() < 128
+        guide_color = QColor('#5f6368' if is_dark else '#c4c7c5')
+        selected_color = guide_color.lighter(175 if is_dark else 115)
+
+        painter = QPainter(viewport)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing, False)
+
+        selected_group_paths: set[tuple[int, ...]] = set()
+        for path in self._selected_entry_paths():
+            item = self._item_for_path(path)
+            if item is not None and item.data(0, _ROLE_KIND) == _KIND_GROUP:
+                selected_group_paths.add(path)
+                continue
+            ancestors = item.data(0, _ROLE_GROUP_ANCESTORS) if item is not None else ()
+            if ancestors:
+                selected_group_paths.add(ancestors[-1])
+
+        guide_pen = QPen(guide_color)
+        guide_pen.setWidth(1)
+        guide_pen.setCosmetic(True)
+        selected_pen = QPen(selected_color)
+        selected_pen.setWidth(1)
+        selected_pen.setCosmetic(True)
+
+        visible_spans: dict[tuple[int, ...], tuple[int, int]] = {}
+
+        for item in self._iter_tree_items():
+            rect = self.tree.visualItemRect(item)
+            if not rect.isValid() or rect.bottom() < 0 or rect.top() > viewport.height():
+                continue
+
+            item_path = item.data(0, _ROLE_PATH)
+            if not isinstance(item_path, tuple):
+                continue
+
+            ancestors = item.data(0, _ROLE_GROUP_ANCESTORS) or ()
+            for ancestor_path in ancestors:
+                span = visible_spans.get(ancestor_path)
+                if span is None:
+                    visible_spans[ancestor_path] = (rect.top(), rect.bottom())
+                else:
+                    visible_spans[ancestor_path] = (
+                        min(span[0], rect.top()),
+                        max(span[1], rect.bottom()),
+                    )
+
+        for group_path, (top, bottom) in visible_spans.items():
+            painter.setPen(selected_pen if group_path in selected_group_paths else guide_pen)
+            x = self._group_guide_x(group_path)
+            painter.drawLine(x, top, x, bottom)
+
+        painter.end()
+
+    def _set_drag_hint_active(self, active: bool):
+        """Highlight valid group/root drop targets while dragging profiles."""
+        if not hasattr(self, 'tree'):
+            return
+        items = list(self._iter_tree_items())
+        for item in items:
+            for column in range(self.tree.columnCount()):
+                item.setBackground(column, QBrush())
+
+        highlight = self.palette().highlight().color()
+        if active:
+            brushes: dict[tuple[int, ...], QBrush] = {}
+            for item in items:
+                path = item.data(0, _ROLE_PATH)
+                if not isinstance(path, tuple):
+                    continue
+                if item.data(0, _ROLE_KIND) == _KIND_GROUP:
+                    group_path = path
+                else:
+                    ancestors = item.data(0, _ROLE_GROUP_ANCESTORS) or ()
+                    if not ancestors:
+                        continue
+                    group_path = ancestors[-1]
+                brush = brushes.get(group_path)
+                if brush is None:
+                    depth = getattr(self, '_group_depth_by_path', {}).get(
+                        group_path, self._group_depth(group_path)
+                    )
+                    color = QColor(_DRAG_GROUP_COLORS[(depth - 1) % len(_DRAG_GROUP_COLORS)])
+                    color.setAlpha(58)
+                    brush = QBrush(color)
+                    brushes[group_path] = brush
+                for column in range(self.tree.columnCount()):
+                    item.setBackground(column, brush)
+
+        if active:
+            self.tree.setStyleSheet(f'QTreeWidget {{ border: 1px solid {highlight.name()}; }}')
+        else:
+            self.tree.setStyleSheet('')
+
+    def _drop_plan(self, target: QTreeWidgetItem | None, drop_position):
+        selected_paths = self._selected_movable_paths()
+        if not selected_paths or not self._config_has_groups():
+            return None
+
+        on_viewport = QAbstractItemView.DropIndicatorPosition.OnViewport
+        on_item = QAbstractItemView.DropIndicatorPosition.OnItem
+        above_item = QAbstractItemView.DropIndicatorPosition.AboveItem
+        below_item = QAbstractItemView.DropIndicatorPosition.BelowItem
+
+        if target is None or drop_position == on_viewport:
+            return ('insert', (), None)
+
+        target_path = target.data(0, _ROLE_PATH)
+        if not isinstance(target_path, tuple) or target_path in selected_paths:
+            return None
+        if any(self._is_descendant_path(target_path, path) for path in selected_paths):
+            return None
+
+        if drop_position == on_item:
+            if target.data(0, _ROLE_KIND) == _KIND_GROUP:
+                return ('insert', target_path, None)
+            return ('insert', target_path[:-1], None)
+
+        if drop_position in (above_item, below_item):
+            insert_at = target_path[-1] + (1 if drop_position == below_item else 0)
+            return ('insert', target_path[:-1], insert_at)
+
+        return None
+
+    def _is_valid_item_drop(self, target: QTreeWidgetItem | None, drop_position) -> bool:
+        return self._drop_plan(target, drop_position) is not None
+
+    @staticmethod
+    def _adjust_path_after_removals(
+        path: tuple[int, ...], removed_paths: list[tuple[int, ...]]
+    ) -> tuple[int, ...]:
+        adjusted = []
+        for depth, index in enumerate(path):
+            parent = path[:depth]
+            removed_before = sum(
+                1
+                for removed in removed_paths
+                if len(removed) == depth + 1
+                and removed[:depth] == parent
+                and removed[depth] < index
+            )
+            adjusted.append(index - removed_before)
+        return tuple(adjusted)
+
+    def _move_selected_items_to_drop(self, target: QTreeWidgetItem | None, drop_position) -> bool:
+        plan = self._drop_plan(target, drop_position)
+        if plan is None:
+            return False
+
+        selected_paths = self._selected_movable_paths()
+        current_rules = self.config_manager.replacement_rules
+        moving_entries = [
+            deepcopy(self._entry_at_path(current_rules, path))
+            for path in selected_paths
+            if isinstance(self._entry_at_path(current_rules, path), dict)
+        ]
+        if not moving_entries:
+            return False
+
+        kind = plan[0]
+        if kind != 'insert':
+            return False
+
+        target_parent_path = plan[1]
+        insert_at = plan[2]
+        rules = self._remove_paths(deepcopy(current_rules), set(selected_paths))
+        adjusted_parent_path = self._adjust_path_after_removals(target_parent_path, selected_paths)
+        target_entries = self._entries_at_parent_path(rules, adjusted_parent_path)
+        if target_entries is None:
+            return False
+
+        if insert_at is not None:
+            adjusted_insert = insert_at - sum(
+                1
+                for path in selected_paths
+                if len(path) == len(target_parent_path) + 1
+                and path[: len(target_parent_path)] == target_parent_path
+                and path[-1] < insert_at
+            )
+            adjusted_insert = max(0, min(adjusted_insert, len(target_entries)))
+            for offset, entry in enumerate(moving_entries):
+                target_entries.insert(adjusted_insert + offset, entry)
+        else:
+            target_entries.extend(moving_entries)
+
+        self._save_with_undo(rules)
+        self._refresh_tree()
+        log_buffer.log('Config', f'Moved {format_count(moving_entries, "item")}')
+        return True

@@ -1,0 +1,126 @@
+"""Delete cache window."""
+
+from ..localization import tr
+
+import threading
+import time
+from typing import ClassVar
+
+from PyQt6.QtCore import Qt, QTimer, pyqtSignal
+from PyQt6.QtWidgets import QDialog, QLabel, QPushButton, QTextEdit, QVBoxLayout
+
+from ..utils import delete_cache, get_icon_path, log_buffer
+
+
+class DeleteCacheWindow(QDialog):
+    """Delete cache result window."""
+
+    _CLOSE_AFTER_DONE_MS = 500
+    _live_windows: ClassVar[set[QDialog]] = set()
+
+    log_signal = pyqtSignal(str)
+    done_signal = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+        self._worker_done = False
+        self._dialog_finished = False
+        self._live_windows.add(self)
+        self.finished.connect(self._on_finished)
+        self.setWindowTitle(tr('ui.gui.delete_cache.clear_cache'))
+        self.setFixedSize(400, 200)
+
+        # Set window flags to allow minimize
+        self.setWindowFlags(
+            Qt.WindowType.Window
+            | Qt.WindowType.WindowMinimizeButtonHint
+            | Qt.WindowType.WindowCloseButtonHint
+        )
+
+        self._setup_ui()
+        self._set_icon()
+        self._start_deletion()
+
+    def _set_icon(self):
+        """Set window icon."""
+        if icon_path := get_icon_path():
+            from PyQt6.QtGui import QIcon
+
+            self.setWindowIcon(QIcon(str(icon_path)))
+
+    def _setup_ui(self):
+        """Setup the UI."""
+        layout = QVBoxLayout()
+        layout.setContentsMargins(20, 20, 20, 20)
+
+        # Title
+        title_label = QLabel(tr('ui.gui.delete_cache.deleting_cache'))
+        title_label.setStyleSheet('font-size: 11pt; font-weight: bold;')
+        layout.addWidget(title_label)
+
+        # Status text area
+        self.status_text = QTextEdit()
+        self.status_text.setReadOnly(True)
+        self.status_text.setFont(self._get_monospace_font())
+        self.status_text.setFixedHeight(120)
+        layout.addWidget(self.status_text)
+
+        self.setLayout(layout)
+
+        # Connect signals
+        self.log_signal.connect(self._append_log)
+        self.done_signal.connect(self._on_done)
+
+    def _get_monospace_font(self):
+        """Get a monospace font."""
+        from PyQt6.QtGui import QFontDatabase
+
+        font = QFontDatabase.systemFont(QFontDatabase.SystemFont.FixedFont)
+        font.setPointSize(9)
+        return font
+
+    def _append_log(self, message: str):
+        """Append a log message."""
+        self.status_text.append(message)
+
+    def _on_done(self):
+        """Called when deletion is complete."""
+        self._worker_done = True
+        self.status_text.append('\nDone.')
+        if self._dialog_finished:
+            self._release_if_finished()
+            return
+        # Keep the completion message visible briefly, then dismiss the
+        # transient progress window.  This window is normally modeless, so
+        # merely appending "Done." otherwise leaves it open indefinitely.
+        QTimer.singleShot(self._CLOSE_AFTER_DONE_MS, self.accept)
+
+    def _on_finished(self, _result: int) -> None:
+        """Track dialog closure without releasing it before the worker exits."""
+        self._dialog_finished = True
+        self._release_if_finished()
+
+    def _release_if_finished(self) -> None:
+        """Release the process-wide keepalive once no worker can own this dialog."""
+        if self._worker_done and self._dialog_finished:
+            self._live_windows.discard(self)
+
+    def _start_deletion(self):
+        """Start the cache deletion in a background thread."""
+
+        def perform():
+            from ..cache.roblox_cache_writer import clear_cache_keeping, exclusive_cache_access
+
+            try:
+                # Never delete the cache halfway through a Cache mode write
+                with exclusive_cache_access():
+                    messages = clear_cache_keeping(delete_cache, force_db=True)
+                for msg in messages:
+                    log_buffer.log('Cache', msg)
+                    self.log_signal.emit(msg)
+                    time.sleep(0.25)
+            finally:
+                self.done_signal.emit()
+
+        thread = threading.Thread(target=perform, daemon=True)
+        thread.start()

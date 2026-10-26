@@ -4,7 +4,7 @@ build-backend = 'uv_build'
 
 [project]
 name = 'fleasion'
-version = "1.0.0b12"
+version = "1.0.1"
 description = 'Replaces Roblox assets through the local cache. A modified version of Fleasion.'
 license = 'GPL-3.0-only'
 license-files = ['LICENSE']

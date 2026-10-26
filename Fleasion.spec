@@ -277,6 +277,7 @@ _bundled_linux_helper = Path('dist/fleasion-linux-proxy-helper')
 datas: list[CollectionEntry] = [
     ('src/fleasion/fleasionlogoHR.ico', '.'),
     ('src/fleasion/recache_logo.png', '.'),
+    ('src/fleasion/recache_logo_transparent.png', '.'),
     ('src/fleasion/fleasionlogoHR.icns', '.'),
     ('src/fleasion/macos_proxy_helper_daemon.py', '.'),
     ('src/fleasion/cache/tools/animpreview', 'tools/animpreview'),
